@@ -714,3 +714,83 @@
         message: |
           Сашка: {% if is_state('device_tracker.iphone_2', 'home') %}Дома{% elif is_state('device_tracker.iphone_2', 'Unico') %}Унико{% elif is_state('device_tracker.iphone_2', 'Magic Smoker') %}Magic Smoker{% elif is_state('device_tracker.iphone_2', 'Dacha') %}На даче{% else %}Не дома{% endif %}
           Лилька: {% if is_state('device_tracker.iphone', 'home') %}Дома{% else %}Не дома{% endif %}
+
+######### Отопление
+
+#Установить температуру обогрева на 20 градусов, когда никого нет дома
+- alias: Temperature heater 20 if all people out
+  trigger:
+    platform: state
+    entity_id: group.all_devices
+    from: 'home'
+    to: 'not_home'
+  condition:
+    condition: state
+    entity_id: group.all_devices
+    state: not_home
+    for:
+      minutes: 30
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ariston
+        temperature: "20"
+
+#Установить температуру обогрева на 25 градусов, когда я еду домой
+- alias: Temperature heater 25 if hunt_mf go home
+  trigger:
+    platform: zone
+    event: leave
+    zone: zone.unico
+    entity_id: device_tracker.iphone_2
+  condition:
+    condition: state
+    entity_id: group.all_devices
+    state: not_home
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ariston
+        temperature: "25"
+
+#Установить температуру обогрева на 22 градуса ночью
+- alias: Temperature heater 22 on night
+  trigger:
+    platform: state
+    entity_id: group.all_lights
+    from: 'on'
+    to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '23:00:00'
+        before: '05:00:00'
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: group.all_lights
+        state: 'off'
+        for:
+          minutes: 15
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ariston
+        temperature: "22"
+
+#Установить температуру обогрева на 25 градусов утром
+- alias: Temperature heater 25 on morning
+  trigger:
+    platform: time
+    at: '06:30:00'
+  condition:
+    condition: state
+    entity_id: group.all_devices
+    state: home
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ariston
+        temperature: "25"
