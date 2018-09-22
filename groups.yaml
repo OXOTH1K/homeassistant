@@ -1,0 +1,80 @@
+default_view:
+  view: yes
+  entities:
+    - group.kitchen
+    - group.living_room
+    - group.bathroom
+    - group.devices
+    - group.all_automations
+    - group.weather
+    - group.cameras
+    - group.server_state
+    - group.transmission
+    - group.automations
+server_state:
+  name: Ubuntu Server
+  entities:
+    - sensor.cpu_temperature
+    - sensor.processor_use
+    - sensor.memory_use_percent
+    - sensor.disk_use_percent_home
+    - sensor.disk_use_percent_homeubuntutm
+    - sensor.since_last_boot
+living_room:
+  name: Гостиная
+  entities:
+    - light.living_room
+    - binary_sensor.door_window_sensor_158d0001a9c200
+    - binary_sensor.switch_158d0001aaab2d
+    - climate.aeronik
+    - sensor.temperature_158d00023764a1
+    - sensor.humidity_158d00023764a1
+    - sensor.pressure_158d00023764a1
+    - switch.marantz_receiver
+    - switch.plug_158d0001b195fd
+    - media_player.samsungtv
+    - media_player.ubuntu_speaker
+kitchen:
+  name: Кухня
+  entities:
+    - light.gateway_light_286c07f1c549
+    - binary_sensor.__motion
+    - sensor.illumination_286c07f1c549
+    - switch._
+bathroom:
+  name: Ванная
+  entities:
+    - light.bathroom
+    - binary_sensor.motion_sensor_158d0001b177e8
+cameras:
+  name: Камеры
+  entities:
+    - camera.door
+    - camera.kitchen
+weather:
+  name: Погода
+  entities:
+    - weather.openweathermap
+devices:
+  name: Человеки
+  entities:
+    - device_tracker.iphone
+    - device_tracker.iphone_2
+    - sensor.iphone_battery_level_3
+    - sensor.iphone_battery_state_3
+transmission:
+  name: Transmission
+  entities:
+    - sensor.transmission_status
+    - sensor.transmission_active_torrents
+    - sensor.transmission_down_speed
+    - sensor.transmission_up_speed
+    - sensor.transmission_active_torrents
+automations:
+  name: Автоматизации
+  entities:
+    - automation.good_luck_notification
+    - automation.notify_crazy_cat
+    - automation.play_sound_people_at_home
+    - automation.turn_on_bathroom_light
+    - automation.turn_on_living_room_light_for_open_door

@@ -1,0 +1,302 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: OXOTH1Ks home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_lat
+  longitude: !secret home_long
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 60
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Volgograd
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+#  server_port: 8123
+  base_url: !secret home_url 
+#  ssl_certificate: /home/homeassistant/.homeassistant/certificate.pem
+#  ssl_key: /home/homeassistant/.homeassistant/privkey.pem
+#  use_x_forwarded_for: True
+#  ip_ban_enabled: True
+#  login_attempts_threshold: 5
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+#sensor:
+#  - platform: yr
+
+# Text to speech
+#tts:
+#  - platform: google
+
+tts:
+#  - platform: yandextts
+#    api_key: !secret yandex_tts_api_key 
+#    language: 'ru-RU'
+#    codec: wav
+#    voice: oksana
+#    emotion: evil
+#    speed: 2
+  - platform: amazon_polly
+    aws_access_key_id: !secret aws_access_key_id
+    aws_secret_access_key: !secret aws_secret_access_key
+    region_name: eu-central-1
+    voice: Maxim
+
+# Cloud
+cloud:
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+binary_sensor:
+  - platform: hikvision
+    name: Датчик движения
+    host: 192.168.1.138
+    username: admin
+    password: !secret camera_kitchen_switch
+
+media_player:
+  - platform: samsungtv
+    host: 192.168.1.195
+    port: 8001
+    mac: f8:3f:51:9c:7f:6c
+    name: SamsungTV
+  - platform: vlc
+    name: Ubuntu_speaker
+    arguments: '-I dummy --play-and-exit --aout=pulse'
+
+switch:
+  - platform: mqtt
+    name: "Ariston"
+    state_topic: "stat/sonoff/POWER"
+    command_topic: "cmnd/sonoff/POWER"
+    availability_topic: "tele/sonoff/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Он-лайн"
+    payload_not_available: "Офф-лайн"
+    state_on: "ON"
+    state_off: "OFF"
+    retain: true
+  - platform: hikvisioncam
+    host: 192.168.1.138
+    name: Датчик кухня
+    username: admin
+    password: !secret camera_kitchen_switch
+  - platform: broadlink
+    host: 192.168.1.28
+    mac: '78:0f:77:28:00:9e'
+    timeout: 15
+    switches:
+      marantz_receiver:
+        friendly_name: "Ресивер"
+        command_on: 'JgCcAB4dHhweHT0bHhwfHB4dHhwfOh4cOx0eAAuuHxwfGx8bPhseHB8bHx0fGx86Hxs8HB8AC6wfHB4cHxw9Gx8bHxsgHB8bHzofGzwcHwALrB4dHhweHTwcHhweHB8dHhwfOh4cOx0eAAutHh0eHB4dPBweHB4cHx0eHB86Hhw7HR4AC60eHR4cHh08HB4cHh0eHR4dHDweHDsdHgANBQAAAAAAAAAAAAAAAA=='
+        command_off: 'JgCcAB4dHhweHT0bHhwfHB4dHhwfOh4cOx0eAAuuHxwfGx8bPhseHB8bHx0fGx86Hxs8HB8AC6wfHB4cHxw9Gx8bHxsgHB8bHzofGzwcHwALrB4dHhweHTwcHhweHB8dHhwfOh4cOx0eAAutHh0eHB4dPBweHB4cHx0eHB86Hhw7HR4AC60eHR4cHh08HB4cHh0eHR4dHDweHDsdHgANBQAAAAAAAAAAAAAAAA=='
+
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - key: !secret xiaomi_aqara_key
+
+light:
+  - platform: xiaomi_miio
+    name: living_room
+    host: 192.168.1.198
+    token: !secret light_token1
+    model: philips.light.bulb
+  - platform: xiaomi_miio
+    name: bathroom
+    host: 192.168.1.49
+    token: !secret light_token2
+    model: philips.light.bulb
+
+device_tracker:
+  - platform: asuswrt
+    host: 192.168.1.1
+    username: !secret router_login
+    password: !secret router_password
+    track_new_devices: no
+    consider_home: 600
+    interval_seconds: 20
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+shell_command: !include shell_commands.yaml
+
+climate:
+  - platform: generic_thermostat
+    name: Ariston
+    heater: switch.ariston
+    target_sensor: sensor.temperature_158d00023764a1
+    ac_mode: False
+    min_temp: 18
+    max_temp: 30
+    hot_tolerance: 0.5
+  - platform: broadlink
+    name: Aeronik
+    host: 192.168.1.28
+    mac: '78:0f:77:28:00:9e'
+    timeout: 15
+    ircodes_ini: 'broadlink_climate_codes/aeronik.ini'
+    min_temp: 16
+    max_temp: 30
+    target_temp: 24
+    target_temp_step: 1
+    temp_sensor: sensor.temperature_158d00023764a1
+    default_operation: 'off'
+    default_fan_mode: auto
+    customize:
+      operations:
+        - 'off'
+        - cool
+        - heat
+      fan_modes:
+        - auto
+
+homekit:
+  port: 51828 
+  auto_start: false
+  filter:
+    include_domains:
+      - climate
+      - device_tracker
+      - switch
+      - binary_sensor
+      - light
+      - media_player
+    exclude_entities:
+      - binary_sensor.motion_sensor_158d0001b177e8
+      - binary_sensor.switch_158d0001aaab2d
+      - binary_sensor.door_window_sensor_158d0001a9c200
+      - switch.plug_158d0001b195fd
+      - light.gateway_light_286c07f1c549
+  entity_config:
+    media_player.samsungtv:
+      feature_list:
+        - feature: on_off
+
+weather:
+  - platform: openweathermap
+    name: openweathermap
+    api_key: !secret weather_api_key
+    latitude: 48.663378
+    longitude: 44.407046
+    mode: hourly
+
+camera:
+  - platform: ffmpeg
+    name: Kitchen
+    ffmpeg_bin: /usr/bin/ffmpeg
+    input: !secret kitchen_url
+  - platform: ffmpeg
+    name: Door
+    ffmpeg_bin: /usr/bin/ffmpeg
+    input: !secret door_url
+
+sensor: !include sensors.yaml
+
+ios:
+
+zone:
+ - name: Unico
+   latitude: !secret unico_lat
+   longitude: !secret unico_long
+   radius: 100
+   icon: mdi:database
+ - name: Magic Smoker
+   latitude: !secret ms_lat
+   longitude: !secret ms_long
+   radius: 100
+   icon: mdi:water
+ - name: Dacha
+   latitude: !secret dacha_lat
+   longitude: !secret dacha_long
+   radius: 150
+   icon: mdi:shovel
+
+telegram_bot:
+  - platform: polling_proxy
+    proxy_url: !secret telegram_proxy_url
+    proxy_params:
+      username: !secret telegram_proxy_username
+      password: !secret telegram_proxy_password
+    api_key: !secret telegram_bot_api_key
+    allowed_chat_ids:
+      - !secret telegram_bot_chat_id
+      - !secret telegram_bot_chat_id_2
+      - !secret telegram_bot_group_chat_id
+
+notify:
+  - name: telegram
+    platform: telegram
+    chat_id: !secret telegram_bot_chat_id
+  - name: telegram_group
+    platform: telegram
+    chat_id: !secret telegram_bot_group_chat_id
+
+logger:
+  default: critical
+  logs:
+    homeassistant.components.telegram_bot: debug
+
+mqtt:
+  broker: 192.168.1.100
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: !secret mqtt_login
+  password: !secret mqtt_password
+  protocol: 3.1
+  birth_message:
+    topic: "tele/hass1/LWT"
+    payload: "Online"
+    qos: 1
+    retain: true
+  will_message:
+    topic: "tele/hass1/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: true

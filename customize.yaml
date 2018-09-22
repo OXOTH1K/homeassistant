@@ -1,0 +1,17 @@
+light.living_room:
+  friendly_name: Ночник
+light.bathroom:
+  friendly_name: Освещение
+automation.good_luck_notification:
+  friendly_name: Хорошей дороги
+automation.notify_crazy_cat:
+  friendly_name: Кошке на столе
+automation.play_sound_people_at_home:
+  friendly_name: Кожаный ублюдок дома
+automation.turn_on_bathroom_light:
+  friendly_name: Включение света в ванной
+automation.turn_on_living_room_light_for_open_door:
+  friendly_name: Включение света при открытии двери
+
+zone.home:
+  track_ios: true

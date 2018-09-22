@@ -1,0 +1,30 @@
+# CPU temperature
+- platform: command_line
+  name: CPU Temperature
+  command: "cat /sys/class/thermal/thermal_zone0/temp"
+  unit_of_measurement: "°C"
+  value_template: '{{ (value | multiply(0.001)) | round(1) }}'
+
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+      arg: /home
+    - type: disk_use_percent
+      arg: /home/ubuntu/tm
+    - type: memory_use_percent
+    - type: processor_use
+    - type: since_last_boot
+
+- platform: transmission
+  name: Transmission
+  port: 9092
+  host: 192.168.1.100
+  username: admin
+  password: knt9mxsd
+  monitored_variables:
+    - 'current_status'
+    - 'download_speed'
+    - 'upload_speed'
+    - 'active_torrents'
+    - 'paused_torrents'
+    - 'total_torrents'

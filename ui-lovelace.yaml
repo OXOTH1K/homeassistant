@@ -1,0 +1,116 @@
+resources:
+- url: /local/custom_ui/mini-media-player.js
+  type: js
+- url: /local/custom_ui/weather-card-mini.js
+  type: js
+- url: /local/custom_ui/thermostat-card.js?v=1
+  type: module
+
+name: OXOTH1Ks home
+views:
+- title: Дом
+  id: main
+  theme: dark-mode
+  icon: mdi:floor-plan
+  cards:
+#  - type: entities
+#    title: Климат
+#    entities:
+#    - climate.ariston
+#    - climate.aeronik
+  - type: glance
+    title: Кухня
+    entities:
+    - light.gateway_light_286c07f1c549
+    - binary_sensor.__motion
+    - sensor.illumination_286c07f1c549
+    - switch._
+    - climate.ariston
+  - type: glance
+    title: Гостиная
+    entities:
+    - light.living_room
+    - binary_sensor.door_window_sensor_158d0001a9c200
+    - binary_sensor.switch_158d0001aaab2d
+    - climate.aeronik
+    - sensor.temperature_158d00023764a1
+    - sensor.humidity_158d00023764a1
+    - sensor.pressure_158d00023764a1
+    - switch.marantz_receiver
+    - switch.plug_158d0001b195fd
+  - type: glance
+    title: Ванная
+    entities:
+    - light.bathroom
+    - binary_sensor.motion_sensor_158d0001b177e8
+  - type: glance
+    title: Человеки
+    entities:
+    - device_tracker.iphone
+    - device_tracker.iphone_2
+  - type: custom:mini-media-player
+    entity: media_player.samsungtv
+    icon: 'mdi:television'
+  - type: custom:mini-media-player
+    entity: media_player.ubuntu_speaker
+    icon: 'mdi:television'
+#  - type: custom:weather-card-mini
+#    entity_weather: weather.openweathermap
+#    entity_sun: sun.sun
+  - type: weather-forecast
+    entity: weather.openweathermap
+#  - type: custom:thermostat-card
+#    title: Котел
+#    entity: climate.ariston
+#    hvac:
+#      states:
+#        'Off': 'off'
+#        'Heating': 'heat'
+#      attribute: operation_mode
+- title: Сервер HA
+  id: server
+  icon: mdi:desktop-tower
+  cards:
+  - type: glance
+    title: Ubuntu Server
+    show_header_toggle: true
+    entities:
+    - sensor.cpu_temperature
+    - sensor.processor_use
+    - sensor.memory_use_percent
+    - sensor.disk_use_percent_home
+    - sensor.disk_use_percent_homeubuntutm
+    - sensor.since_last_boot
+  - type: glance
+    title: Transmission
+    entities:
+    - sensor.transmission_status
+    - sensor.transmission_active_torrents
+    - sensor.transmission_down_speed
+    - sensor.transmission_up_speed
+    - sensor.transmission_active_torrents
+  - type: entities
+    title: Автоматизации
+    entities:
+    - automation.good_luck_notification
+    - automation.notify_crazy_cat
+    - automation.play_sound_people_at_home
+    - automation.turn_on_bathroom_light
+    - automation.turn_on_living_room_light_for_open_door
+- title: Камеры
+  id: cameras
+  icon: mdi:cctv
+  cards:
+  - type: horizontal-stack
+    cards:
+    - type: picture-entity
+      entity: camera.door
+      camera_image: camera.door
+      show_info: true
+      tap_action: dialog
+    - type: picture-entity
+      entity: camera.kitchen
+      camera_image: camera.kitchen
+      show_info: true
+      tap_action: dialog
+
