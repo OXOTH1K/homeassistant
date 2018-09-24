@@ -175,6 +175,7 @@ climate:
     min_temp: 18
     max_temp: 30
     hot_tolerance: 0.5
+    cold_tolerance: 0.2
   - platform: broadlink
     name: Aeronik
     host: 192.168.1.28
