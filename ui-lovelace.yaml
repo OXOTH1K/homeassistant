@@ -38,6 +38,7 @@ views:
     - sensor.pressure_158d00023764a1
     - switch.marantz_receiver
     - switch.plug_158d0001b195fd
+    - group.heater_automation
   - type: glance
     title: Ванная
     entities:
@@ -97,6 +98,13 @@ views:
     - automation.play_sound_people_at_home
     - automation.turn_on_bathroom_light
     - automation.turn_on_living_room_light_for_open_door
+  - type: entities
+    title: Состояние батарей датчиков
+    entities:
+    - sensor.door_sensor_battery_158d0001a9c200
+    - sensor.motion_sensor_battery_158d0001b177e8
+    - sensor.temperature_sensor_battery_158d00023764a1
+    - sensor.button_sensor_battery_158d0001aaab2d
 - title: Камеры
   id: cameras
   icon: mdi:cctv
