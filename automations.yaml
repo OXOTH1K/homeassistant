@@ -745,7 +745,7 @@
     entity_id: device_tracker.iphone_2
   condition:
     condition: state
-    entity_id: group.all_devices
+    entity_id: group.devices
     state: not_home
   action:
     - service: climate.set_temperature
@@ -787,7 +787,7 @@
     at: '06:30:00'
   condition:
     condition: state
-    entity_id: group.all_devices
+    entity_id: group.devices
     state: home
   action:
     - service: climate.set_temperature
