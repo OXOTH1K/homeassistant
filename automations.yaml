@@ -767,7 +767,7 @@
         after: '23:00:00'
         before: '05:00:00'
       - condition: state
-        entity_id: group.all_devices
+        entity_id: group.devices
         state: home
       - condition: state
         entity_id: group.all_lights
