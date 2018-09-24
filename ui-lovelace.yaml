@@ -72,7 +72,7 @@ views:
   id: server
   icon: mdi:desktop-tower
   cards:
-  - type: glance
+  - type: entities
     title: Ubuntu Server
     show_header_toggle: true
     entities:
@@ -82,7 +82,7 @@ views:
     - sensor.disk_use_percent_home
     - sensor.disk_use_percent_homeubuntutm
     - sensor.since_last_boot
-  - type: glance
+  - type: entities
     title: Transmission
     entities:
     - sensor.transmission_status
