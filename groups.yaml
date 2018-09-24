@@ -78,3 +78,10 @@ automations:
     - automation.play_sound_people_at_home
     - automation.turn_on_bathroom_light
     - automation.turn_on_living_room_light_for_open_door
+heater_automation:
+  name: Автоматизации отопления
+  entities:
+    - automation.temperature_heater_20_if_all_people_out
+    - automation.temperature_heater_22_on_night
+    - automation.temperature_heater_24_if_hunt_mf_go_home
+    - automation.temperature_heater_24_on_morning

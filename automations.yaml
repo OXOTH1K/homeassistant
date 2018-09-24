@@ -736,8 +736,8 @@
         entity_id: climate.ariston
         temperature: "20"
 
-#Установить температуру обогрева на 25 градусов, когда я еду домой
-- alias: Temperature heater 25 if hunt_mf go home
+#Установить температуру обогрева на 24 градуса, когда я еду домой
+- alias: Temperature heater 24 if hunt_mf go home
   trigger:
     platform: zone
     event: leave
@@ -780,8 +780,8 @@
         entity_id: climate.ariston
         temperature: "22"
 
-#Установить температуру обогрева на 25 градусов утром
-- alias: Temperature heater 25 on morning
+#Установить температуру обогрева на 24 градуса утром
+- alias: Temperature heater 24 on morning
   trigger:
     platform: time
     at: '06:30:00'
