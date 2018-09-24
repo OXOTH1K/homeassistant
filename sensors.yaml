@@ -36,38 +36,71 @@
       unit_of_measurement: '%'
       value_template: "{{ states.binary_sensor.door_window_sensor_158d0001a9c200.attributes. battery_level }}"
       icon_template: >-
-        {% if  states.binary_sensor.door_window_sensor_158d0001a9c200.attributes. battery_level | int > 20 %}
-          mdi:battery-50
+        {% set battery_level = (states.binary_sensor.door_window_sensor_158d0001a9c200.attributes.battery_level)|int('unknown') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
         {% else %}
-          mdi:battery-10
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
         {% endif %}
     motion_sensor_battery_158d0001b177e8:
       friendly_name: "Заряд датчика движения"
       unit_of_measurement: '%'
       value_template: "{{ states.binary_sensor.motion_sensor_158d0001b177e8.attributes. battery_level }}"
       icon_template: >-
-        {% if  states.binary_sensor.motion_sensor_158d0001b177e8.attributes. battery_level | int > 20 %}
-          mdi:battery-50
+        {% set battery_level = (states.binary_sensor.motion_sensor_158d0001b177e8.attributes.battery_level)|int('unknown') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
         {% else %}
-          mdi:battery-10
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
         {% endif %}
     temperature_sensor_battery_158d00023764a1:
       friendly_name: "Заряд датчика температуры"
       unit_of_measurement: '%'
       value_template: "{{ states.sensor.temperature_158d00023764a1.attributes. battery_level }}"
       icon_template: >-
-        {% if  states.sensor.humidity_158d00023764a1.attributes. battery_level | int > 20 %}
-          mdi:battery-50
+        {% set battery_level = (states.sensor.temperature_158d00023764a1.attributes.battery_level)|int('unknown') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
         {% else %}
-          mdi:battery-10
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
         {% endif %}
     button_sensor_battery_158d0001aaab2d:
       friendly_name: "Заряд кнопки"
+      unit_of_measurement: '%'
       value_template: "{{ states.binary_sensor.switch_158d0001aaab2d.attributes. battery_level }}"
       icon_template: >-
-        {% if  states.binary_sensor.switch_158d0001aaab2d.attributes. battery_level | int > 20 %}
-          mdi:battery-50
+        {% set battery_level = (states.binary_sensor.switch_158d0001aaab2d.attributes.battery_level)|int('unknown') %}
+        {% set battery_round = (battery_level|int / 10)|int * 10 %}
+        {% if battery_level == 'unknown' %}
+          mdi:battery-unknown
         {% else %}
-          mdi:battery-10
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
         {% endif %}
-      unit_of_measurement: '%'
+      
