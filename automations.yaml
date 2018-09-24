@@ -751,7 +751,7 @@
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ariston
-        temperature: "25"
+        temperature: "24"
 
 #Установить температуру обогрева на 22 градуса ночью
 - alias: Temperature heater 22 on night
@@ -793,4 +793,4 @@
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ariston
-        temperature: "25"
+        temperature: "24"
