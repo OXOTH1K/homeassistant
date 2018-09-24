@@ -721,12 +721,12 @@
 - alias: Temperature heater 20 if all people out
   trigger:
     platform: state
-    entity_id: group.all_devices
+    entity_id: group.devices
     from: 'home'
     to: 'not_home'
   condition:
     condition: state
-    entity_id: group.all_devices
+    entity_id: group.devices
     state: not_home
     for:
       minutes: 30
