@@ -735,10 +735,14 @@
 #Установить температуру обогрева на 24 градуса, когда я еду домой
 - alias: Temperature heater 24 if hunt_mf go home
   trigger:
-    platform: zone
-    event: leave
-    zone: zone.unico
-    entity_id: device_tracker.iphone_2
+    - platform: zone
+      event: leave
+      zone: zone.unico
+      entity_id: device_tracker.iphone_2
+    - platform: zone
+      event: leave
+      zone: zone.unico
+      entity_id: device_tracker.iphone
   condition:
     condition: state
     entity_id: group.devices
