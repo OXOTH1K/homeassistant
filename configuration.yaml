@@ -2,8 +2,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: OXOTH1Ks home
   # Location required to calculate the time the sun rises and sets
-  latitude: !secret home_lat
-  longitude: !secret home_long
+  latitude: 48.66327
+  longitude: 44.40738
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 60
   # metric for Metric, imperial for Imperial
@@ -27,7 +27,7 @@ http:
   api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 #  server_port: 8123
-  base_url: !secret home_url 
+  base_url: http://matfack.ddns.net
 #  ssl_certificate: /home/homeassistant/.homeassistant/certificate.pem
 #  ssl_key: /home/homeassistant/.homeassistant/privkey.pem
 #  use_x_forwarded_for: True
@@ -71,15 +71,15 @@ sun:
 
 tts:
 #  - platform: yandextts
-#    api_key: !secret yandex_tts_api_key 
+#    api_key: 'c3b75e5b-c9d9-44ed-adcd-fdd855cb29c4'
 #    language: 'ru-RU'
 #    codec: wav
 #    voice: oksana
 #    emotion: evil
 #    speed: 2
   - platform: amazon_polly
-    aws_access_key_id: !secret aws_access_key_id
-    aws_secret_access_key: !secret aws_secret_access_key
+    aws_access_key_id: AKIAIFIF7F7644RTQ5BQ
+    aws_secret_access_key: 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
     region_name: eu-central-1
     voice: Maxim
 
@@ -115,8 +115,8 @@ switch:
     qos: 1
     payload_on: "ON"
     payload_off: "OFF"
-    payload_available: "Он-лайн"
-    payload_not_available: "Офф-лайн"
+    payload_available: "Online"
+    payload_not_available: "Offline"
     state_on: "ON"
     state_off: "OFF"
     retain: true
@@ -175,7 +175,6 @@ climate:
     min_temp: 18
     max_temp: 30
     hot_tolerance: 0.5
-    cold_tolerance: 0.2
   - platform: broadlink
     name: Aeronik
     host: 192.168.1.28
@@ -243,19 +242,19 @@ ios:
 
 zone:
  - name: Unico
-   latitude: !secret unico_lat
-   longitude: !secret unico_long
+   latitude: 48.751847
+   longitude: 44.478340
    radius: 100
    icon: mdi:database
  - name: Magic Smoker
-   latitude: !secret ms_lat
-   longitude: !secret ms_long
+   latitude: 48.656086
+   longitude: 44.431515
    radius: 100
    icon: mdi:water
  - name: Dacha
-   latitude: !secret dacha_lat
-   longitude: !secret dacha_long
-   radius: 150
+   latitude: 48.839363
+   longitude: 44.653473
+   radius: 100
    icon: mdi:shovel
 
 telegram_bot:
@@ -267,8 +266,9 @@ telegram_bot:
     api_key: !secret telegram_bot_api_key
     allowed_chat_ids:
       - !secret telegram_bot_chat_id
-      - !secret telegram_bot_chat_id_2
       - !secret telegram_bot_group_chat_id
+      - !secret telegram_bot_chat_id_2
+
 
 notify:
   - name: telegram
