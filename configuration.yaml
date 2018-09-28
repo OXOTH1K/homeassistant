@@ -2,8 +2,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: OXOTH1Ks home
   # Location required to calculate the time the sun rises and sets
-  latitude: 48.66327
-  longitude: 44.40738
+  latitude: !secret home_lat
+  longitude: !secret home_long
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 60
   # metric for Metric, imperial for Imperial
@@ -27,7 +27,7 @@ http:
   api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 #  server_port: 8123
-  base_url: http://matfack.ddns.net
+  base_url: !secret home_url
 #  ssl_certificate: /home/homeassistant/.homeassistant/certificate.pem
 #  ssl_key: /home/homeassistant/.homeassistant/privkey.pem
 #  use_x_forwarded_for: True
@@ -71,15 +71,15 @@ sun:
 
 tts:
 #  - platform: yandextts
-#    api_key: 'c3b75e5b-c9d9-44ed-adcd-fdd855cb29c4'
+#    api_key: !secret yandex_tts_api_key
 #    language: 'ru-RU'
 #    codec: wav
 #    voice: oksana
 #    emotion: evil
 #    speed: 2
   - platform: amazon_polly
-    aws_access_key_id: AKIAIFIF7F7644RTQ5BQ
-    aws_secret_access_key: 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
+    aws_access_key_id: !secret aws_access_key_id
+    aws_secret_access_key: !secret aws_secret_access_key
     region_name: eu-central-1
     voice: Maxim
 
@@ -242,18 +242,18 @@ ios:
 
 zone:
  - name: Unico
-   latitude: 48.751847
-   longitude: 44.478340
+   latitude: !secret unico_lat
+   longitude: !secret unico_long
    radius: 100
    icon: mdi:database
  - name: Magic Smoker
-   latitude: 48.656086
-   longitude: 44.431515
+   latitude: !secret ms_lat
+   longitude: !secret ms_long
    radius: 100
    icon: mdi:water
  - name: Dacha
-   latitude: 48.839363
-   longitude: 44.653473
+   latitude: !secret dacha_lat
+   longitude: !secret dacha_long
    radius: 100
    icon: mdi:shovel
 
