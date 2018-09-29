@@ -743,10 +743,18 @@
       event: leave
       zone: zone.unico
       entity_id: device_tracker.iphone
-  condition:
-    condition: state
-    entity_id: group.devices
-    state: not_home
+    - platform: zone
+      event: leave
+      zone: zone.exnails
+      entity_id: device_tracker.iphone
+  condition: 
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.devices
+        state: not_home
+      - condition: time
+        after: '12:00:00'
   action:
     - service: climate.set_temperature
       data_template:
