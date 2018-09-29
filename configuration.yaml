@@ -241,21 +241,26 @@ sensor: !include sensors.yaml
 ios:
 
 zone:
- - name: Unico
-   latitude: !secret unico_lat
-   longitude: !secret unico_long
-   radius: 100
-   icon: mdi:database
- - name: Magic Smoker
-   latitude: !secret ms_lat
-   longitude: !secret ms_long
-   radius: 100
-   icon: mdi:water
- - name: Dacha
-   latitude: !secret dacha_lat
-   longitude: !secret dacha_long
-   radius: 100
-   icon: mdi:shovel
+  - name: Unico
+    latitude: !secret unico_lat
+    longitude: !secret unico_long
+    radius: 100
+    icon: mdi:database
+  - name: Magic Smoker
+    latitude: !secret ms_lat
+    longitude: !secret ms_long
+    radius: 100
+    icon: mdi:water
+  - name: Dacha
+    latitude: !secret dacha_lat
+    longitude: !secret dacha_long
+    radius: 100
+    icon: mdi:shovel
+  - name: EXNails
+    latitude: !secret nail_lat
+    longitude: !secret nail_long
+    radius: 100
+    icon: mdi:emoticon-poop
 
 telegram_bot:
   - platform: polling_proxy
