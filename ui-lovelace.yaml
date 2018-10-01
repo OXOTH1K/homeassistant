@@ -55,6 +55,9 @@ views:
   - type: custom:mini-media-player
     entity: media_player.ubuntu_speaker
     icon: 'mdi:television'
+  - type: iframe
+    url: !secret grafana_iframe
+    aspect_ratio: 85%
 #  - type: custom:weather-card-mini
 #    entity_weather: weather.openweathermap
 #    entity_sun: sun.sun

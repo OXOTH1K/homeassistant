@@ -235,6 +235,9 @@ camera:
     name: Door
     ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret door_url
+  - platform: local_file
+    name: Grafana heater
+    file_path: /home/homeassistant/.homeassistant/www/grafana/heater.png
 
 sensor: !include sensors.yaml
 
@@ -306,3 +309,10 @@ mqtt:
     payload: "Offline"
     qos: 1
     retain: true
+
+influxdb:
+  host: 192.168.1.100
+  port: 8086
+  username: !secret influx_user
+  password: !secret influx_pass
+  database: home_assistant
