@@ -55,22 +55,8 @@ views:
   - type: custom:mini-media-player
     entity: media_player.ubuntu_speaker
     icon: 'mdi:television'
-  - type: iframe
-    url: !secret grafana_iframe
-    aspect_ratio: 85%
-#  - type: custom:weather-card-mini
-#    entity_weather: weather.openweathermap
-#    entity_sun: sun.sun
   - type: weather-forecast
     entity: weather.openweathermap
-#  - type: custom:thermostat-card
-#    title: Котел
-#    entity: climate.ariston
-#    hvac:
-#      states:
-#        'Off': 'off'
-#        'Heating': 'heat'
-#      attribute: operation_mode
 - title: Сервер HA
   id: server
   icon: mdi:desktop-tower
@@ -124,4 +110,16 @@ views:
       camera_image: camera.kitchen
       show_info: true
       tap_action: dialog
-
+- title: Графики
+  id: graphs
+  icon: mdi:chart-histogram
+  cards:
+  - type: iframe
+    url: !secret grafana_iframe
+    aspect_ratio: 65%
+  - type: iframe
+    url: !secret grafana_iframe2
+    aspect_ratio: 65%
+  - type: iframe
+    url: !secret grafana_iframe3
+    aspect_ratio: 65%
