@@ -103,4 +103,11 @@
             mdi:battery-alert
           {% endif %}
         {% endif %}
-      
+    heater_on_sensor:
+      friendly_name: "Датчик работы"
+      value_template: >
+        {% if states.switch.ariston.state == 'on' %}
+          {{states.sensor.temperature_158d00023764a1.state}}
+        {% else %}
+          0
+        {% endif %}

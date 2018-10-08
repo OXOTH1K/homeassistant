@@ -799,3 +799,5 @@
       data_template:
         entity_id: climate.ariston
         temperature: "24"
+
+

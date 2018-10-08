@@ -55,6 +55,9 @@ views:
   - type: custom:mini-media-player
     entity: media_player.ubuntu_speaker
     icon: 'mdi:television'
+  - type: custom:mini-media-player
+    entity: media_player.appletv
+    icon: 'mdi:apple'
   - type: weather-forecast
     entity: weather.openweathermap
 - title: Сервер HA
@@ -94,6 +97,11 @@ views:
     - sensor.motion_sensor_battery_158d0001b177e8
     - sensor.temperature_sensor_battery_158d00023764a1
     - sensor.button_sensor_battery_158d0001aaab2d
+  - type: entities
+    title: Сцены
+    entities:
+    - scene.livingroom_dim
+    - scene.livingroom_normal
 - title: Камеры
   id: cameras
   icon: mdi:cctv
@@ -102,11 +110,13 @@ views:
     cards:
     - type: picture-entity
       entity: camera.door
+      aspect_ratio: 16:9
       camera_image: camera.door
       show_info: true
       tap_action: dialog
     - type: picture-entity
       entity: camera.kitchen
+      aspect_ratio: 16:9
       camera_image: camera.kitchen
       show_info: true
       tap_action: dialog
@@ -116,10 +126,10 @@ views:
   cards:
   - type: iframe
     url: !secret grafana_iframe
-    aspect_ratio: 65%
+    aspect_ratio: 50%
   - type: iframe
     url: !secret grafana_iframe2
-    aspect_ratio: 65%
+    aspect_ratio: 50%
   - type: iframe
     url: !secret grafana_iframe3
-    aspect_ratio: 65%
+    aspect_ratio: 50%

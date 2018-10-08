@@ -54,7 +54,20 @@ history:
 
 # View all events in a logbook
 logbook:
-
+  exclude:
+    entities:
+      - sensor.memory_use_percent
+      - sensor.cpu_temperature
+      - sensor.disk_use_percent_home
+      - sensor.disk_use_percent_homeubuntutm
+      - sensor.processor_use
+      - sensor.since_last_boot
+      - sensor.transmission_active_torrents
+      - sensor.transmission_down_speed
+      - sensor.transmission_paused_torrents
+      - sensor.transmission_status
+      - sensor.transmission_total_torrents
+      - sensor.transmission_up_speed
 # Enables a map showing the location of tracked devices
 map:
 
@@ -158,13 +171,14 @@ device_tracker:
     username: !secret router_login
     password: !secret router_password
     track_new_devices: no
-    consider_home: 600
-    interval_seconds: 20
+    consider_home: 900
+    interval_seconds: 45
 
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 shell_command: !include shell_commands.yaml
+scene: !include scenes.yaml
 
 climate:
   - platform: generic_thermostat
@@ -316,3 +330,11 @@ influxdb:
   username: !secret influx_user
   password: !secret influx_pass
   database: home_assistant
+
+apple_tv:
+  - host: 192.168.1.239
+    login_id: !secret appletv_login_id
+    name: Apple TV
+#    start_off: true
+    credentials: !secret appletv_creditnails
+
