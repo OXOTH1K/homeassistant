@@ -168,11 +168,12 @@ light:
 device_tracker:
   - platform: asuswrt
     host: 192.168.1.1
+    protocol: telnet
     username: !secret router_login
     password: !secret router_password
     track_new_devices: no
-    consider_home: 900
-    interval_seconds: 45
+    consider_home: 600
+    interval_seconds: 20
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -300,10 +301,10 @@ notify:
     platform: telegram
     chat_id: !secret telegram_bot_group_chat_id
 
-logger:
-  default: critical
-  logs:
-    homeassistant.components.telegram_bot: debug
+#logger:
+#  default: critical
+#  logs:
+#    homeassistant.components.telegram_bot: debug
 
 mqtt:
   broker: 192.168.1.100
