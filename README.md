@@ -13,3 +13,6 @@ My hardware:
 - Hikvision camera
 - Samsung smart TV (tizen)
 - Xiaomi Philips light bulb
+- Aeotec z-wave usb stick EU
+- Sprutstick zigbee
+- Danalock v3 EU
