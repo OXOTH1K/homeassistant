@@ -53,7 +53,7 @@
 #      - service: homeassistant.turn_off
 #        entity_id: light.living_room, switch.plug_158d0001b195fd
 
-# Включение света в ванной ночью и днем 
+# Включение света в ванной
 - id: bathroom light on
   alias: Turn on bathroom light
   trigger:
@@ -61,15 +61,8 @@
     entity_id: binary_sensor.motion_sensor_158d0001b177e8
     to: 'on'
   action:
-    - service: light.turn_on
-      data_template:
-        entity_id: light.bathroom
-        brightness_pct: >
-          {% if is_state('sun.sun', 'below_horizon') and is_state('light.living_room', 'off') %}
-            1
-          {% else %}
-            100
-          {% endif %}
+    service: switch.turn_on
+    entity_id: switch.wall_switch_158d00022ec91b_2
 
 # Выключение света в ванной без движения
 - id: bathroom_light_off
@@ -81,8 +74,8 @@
     for:
       minutes: 0
   action:
-    service: homeassistant.turn_off
-    entity_id: light.bathroom
+    service: switch.turn_off
+    entity_id: switch.wall_switch_158d00022ec91b_2
 
 # Дать кошке пиздюлей
 - id: cat_alarm
@@ -130,7 +123,7 @@
   action:
     - service: light.turn_on
       data_template:
-        entity_id: light.living_room
+        entity_id: light.bathroom
         brightness_pct: >
           {% if is_state('sun.sun', 'below_horizon') %}
             100
@@ -800,4 +793,49 @@
         entity_id: climate.ariston
         temperature: "24"
 
+#Закрыть замок через 8 секунд
+- alias: Lock dor after 8 sec
+  trigger:
+    platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0001a9c200
+    from: 'on'
+    to: 'off'
+    for:
+      seconds: 8
+  action:
+    service: lock.lock
+    entity_id: lock.polycontrol_danalock_v3_btze_locked_2
 
+#Открыть замок, когда кто то приходит домой
+- alias: Open dor when people go home
+  trigger:
+    - platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: device_tracker.iphone_2
+    - platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: device_tracker.iphone    
+  condition:
+    condition: state
+    entity_id: binary_sensor.door_window_sensor_158d0001a9c200
+    state: 'off'
+    for:
+      minutes: 10  
+  action:
+    service: lock.unlock
+    entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+
+#Закрыть замок, когда дома нет никого 2 минуты (страховка)
+- alias: Close dor for 2 minutes when never to home
+  trigger:
+    platform: state
+    entity_id: group.devices
+    from: 'home'
+    to: 'not_home'
+    for:
+      minutes: 2
+  action:
+    service: lock.lock
+    entity_id: lock.polycontrol_danalock_v3_btze_locked_2

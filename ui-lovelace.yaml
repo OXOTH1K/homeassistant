@@ -1,135 +1,158 @@
 resources:
-- url: /local/custom_ui/mini-media-player.js
-  type: js
-- url: /local/custom_ui/weather-card-mini.js
-  type: js
-- url: /local/custom_ui/thermostat-card.js?v=1
-  type: module
+  - url: /local/custom_ui/mini-media-player.js
+    type: js
+  - url: /local/custom_ui/weather-card-mini.js
+    type: js
+  - url: /local/custom_ui/thermostat-card.js?v=1
+    type: module
 
 name: OXOTH1Ks home
 views:
-- title: Дом
-  id: main
-  theme: dark-mode
-  icon: mdi:floor-plan
-  cards:
+  - title: Дом
+    id: main
+    theme: dark-mode
+    icon: mdi:floor-plan
+    cards:
 #  - type: entities
 #    title: Климат
 #    entities:
 #    - climate.ariston
 #    - climate.aeronik
-  - type: glance
-    title: Кухня
-    entities:
-    - light.gateway_light_286c07f1c549
-    - binary_sensor.__motion
-    - sensor.illumination_286c07f1c549
-    - switch._
-    - climate.ariston
-  - type: glance
-    title: Гостиная
-    entities:
-    - light.living_room
-    - binary_sensor.door_window_sensor_158d0001a9c200
-    - binary_sensor.switch_158d0001aaab2d
-    - climate.aeronik
-    - sensor.temperature_158d00023764a1
-    - sensor.humidity_158d00023764a1
-    - sensor.pressure_158d00023764a1
-    - switch.marantz_receiver
-    - switch.plug_158d0001b195fd
-    - group.heater_automation
-  - type: glance
-    title: Ванная
-    entities:
-    - light.bathroom
-    - binary_sensor.motion_sensor_158d0001b177e8
-  - type: glance
-    title: Человеки
-    entities:
-    - device_tracker.iphone
-    - device_tracker.iphone_2
-  - type: custom:mini-media-player
-    entity: media_player.samsungtv
-    icon: 'mdi:television'
-  - type: custom:mini-media-player
-    entity: media_player.ubuntu_speaker
-    icon: 'mdi:television'
-  - type: custom:mini-media-player
-    entity: media_player.appletv
-    icon: 'mdi:apple'
-  - type: weather-forecast
-    entity: weather.openweathermap
-- title: Сервер HA
-  id: server
-  icon: mdi:desktop-tower
-  cards:
-  - type: entities
-    title: Ubuntu Server
-    show_header_toggle: true
-    entities:
-    - sensor.cpu_temperature
-    - sensor.processor_use
-    - sensor.memory_use_percent
-    - sensor.disk_use_percent_home
-    - sensor.disk_use_percent_homeubuntutm
-    - sensor.since_last_boot
-  - type: entities
-    title: Transmission
-    entities:
-    - sensor.transmission_status
-    - sensor.transmission_active_torrents
-    - sensor.transmission_down_speed
-    - sensor.transmission_up_speed
-    - sensor.transmission_active_torrents
-  - type: entities
-    title: Автоматизации
-    entities:
-    - automation.good_luck_notification
-    - automation.notify_crazy_cat
-    - automation.play_sound_people_at_home
-    - automation.turn_on_bathroom_light
-    - automation.turn_on_living_room_light_for_open_door
-  - type: entities
-    title: Состояние батарей датчиков
-    entities:
-    - sensor.door_sensor_battery_158d0001a9c200
-    - sensor.motion_sensor_battery_158d0001b177e8
-    - sensor.temperature_sensor_battery_158d00023764a1
-    - sensor.button_sensor_battery_158d0001aaab2d
-  - type: entities
-    title: Сцены
-    entities:
-    - scene.livingroom_dim
-    - scene.livingroom_normal
-- title: Камеры
-  id: cameras
-  icon: mdi:cctv
-  cards:
-  - type: horizontal-stack
+#      - id: ed17d235f02e444b8a38d01e7013938c  # Automatically created id
+#        type: thermostat
+#        entity: climate.aeronik
+#      - id: 78b21446860c492694cc1883fffd6ab5  # Automatically created id
+#        type: thermostat
+#        entity: climate.ariston
+      - type: glance
+        title: Безопасность
+        entities:
+          - binary_sensor.door_window_sensor_158d0001a9c200
+          - lock.polycontrol_danalock_v3_btze_locked_2
+      - id: 8184128071764c75bb3f3895c7e1f244  # Automatically created id
+        type: glance
+        title: Кухня
+        entities:
+          - light.gateway_light_286c07f1c549
+          - binary_sensor.__motion
+          - sensor.illumination_286c07f1c549
+          - switch._
+          - climate.ariston
+      - id: 54ffcfc2ec7448e9ac61ac5bdb03746e  # Automatically created id
+        type: glance
+        title: Гостиная
+        entities:
+          - light.living_room
+          - light.bathroom
+          - climate.aeronik
+          - sensor.temperature_158d00023764a1
+          - sensor.humidity_158d00023764a1
+          - sensor.pressure_158d00023764a1
+          - switch.marantz_receiver
+          - switch.plug_158d0001b195fd
+          - group.heater_automation
+      - id: b7b1f691a71a4de7832b7372808dd712  # Automatically created id
+        type: glance
+        title: Ванная
+        entities:
+          - switch.wall_switch_158d00022ec91b_2
+          - binary_sensor.motion_sensor_158d0001b177e8
+      - id: f96ef99f3a5e42c6a76a71418923712a  # Automatically created id
+        type: glance
+        title: Человеки
+        entities:
+          - device_tracker.iphone
+          - device_tracker.iphone_2
+      - id: 7af2959387c9499098247daf9ee89573  # Automatically created id
+        type: custom:mini-media-player
+        entity: media_player.samsungtv
+        icon: mdi:television
+      - id: 39305743999b4bca9bdf99116351faae  # Automatically created id
+        type: custom:mini-media-player
+        entity: media_player.ubuntu_speaker
+        icon: mdi:television
+#  - type: custom:mini-media-player
+#    entity: media_player.appletv
+#    icon: 'mdi:apple'
+      - id: 09f38de645b5431db67698b6cf196e66  # Automatically created id
+        type: weather-forecast
+        entity: weather.openweathermap
+  - title: Сервер HA
+    id: server
+    icon: mdi:desktop-tower
+    cards:
+      - id: 7631e6dcf8724de597b4a408be8b56c4  # Automatically created id
+        type: entities
+        title: Ubuntu Server
+        show_header_toggle: true
+        entities:
+          - sensor.cpu_temperature
+          - sensor.processor_use
+          - sensor.memory_use_percent
+          - sensor.disk_use_percent_home
+          - sensor.disk_use_percent_homeubuntutm
+          - sensor.since_last_boot
+      - id: ffaac1d7c4b345e6b9e2283bde634da6  # Automatically created id
+        type: entities
+        title: Transmission
+        entities:
+          - sensor.transmission_status
+          - sensor.transmission_active_torrents
+          - sensor.transmission_down_speed
+          - sensor.transmission_up_speed
+          - sensor.transmission_active_torrents
+      - id: 6bdef0dc3e8847e0b8bdcec31a34e6da  # Automatically created id
+        type: entities
+        title: Автоматизации
+        entities:
+          - automation.good_luck_notification
+          - automation.notify_crazy_cat
+          - automation.play_sound_people_at_home
+          - automation.turn_on_bathroom_light
+          - automation.turn_on_living_room_light_for_open_door
+      - id: 3d7f98ce33df476484b6bd9a623b90ab  # Automatically created id
+        type: entities
+        title: Состояние батарей датчиков
+        entities:
+          - sensor.door_sensor_battery_158d0001a9c200
+          - sensor.motion_sensor_battery_158d0001b177e8
+          - sensor.temperature_sensor_battery_158d00023764a1
+          - sensor.button_sensor_battery_158d0001aaab2d
+      - id: 9061f550110847fbaa71e80036debbe6  # Automatically created id
+        type: entities
+        title: Сцены
+        entities:
+          - scene.livingroom_dim
+          - scene.livingroom_normal
+  - title: Камеры
+    id: cameras
+    icon: mdi:cctv
     cards:
     - type: picture-entity
       entity: camera.door
       aspect_ratio: 16:9
       camera_image: camera.door
       show_info: true
-      tap_action: dialog
     - type: picture-entity
       entity: camera.kitchen
       aspect_ratio: 16:9
       camera_image: camera.kitchen
       show_info: true
-      tap_action: dialog
-- title: Графики
-  id: graphs
-  icon: mdi:chart-histogram
-  cards:
-  - type: iframe
-    url: !secret grafana_iframe
-    aspect_ratio: 50%
-  - type: iframe
-    url: !secret grafana_iframe2
-    aspect_ratio: 50%
-  - type: iframe
-    url: !secret grafana_iframe3
-    aspect_ratio: 50%
+    - type: picture-entity
+      entity: camera.dacha
+      aspect_ratio: 16:9
+      camera_image: camera.dacha
+      show_info: true
+#- title: Графики
+#  id: graphs
+#  icon: mdi:chart-histogram
+#  cards:
+#  - type: iframe
+#    url: !secret grafana_iframe
+#    aspect_ratio: 50%
+#  - type: iframe
+#    url: !secret grafana_iframe2
+#    aspect_ratio: 50%
+#  - type: iframe
+#    url: !secret grafana_iframe3
+#    aspect_ratio: 50%

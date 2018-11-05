@@ -120,6 +120,14 @@ media_player:
     arguments: '-I dummy --play-and-exit --aout=pulse'
 
 switch:
+  - platform: "mqtt"
+    name: "wall_switch_158d00022ec91b"
+    state_topic: "zigbee2mqtt/0x00158d00022ec91b"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/0x00158d00022ec91b/set"
   - platform: mqtt
     name: "Ariston"
     state_topic: "stat/sonoff/POWER"
@@ -168,7 +176,6 @@ light:
 device_tracker:
   - platform: asuswrt
     host: 192.168.1.1
-    protocol: telnet
     username: !secret router_login
     password: !secret router_password
     track_new_devices: no
@@ -222,12 +229,10 @@ homekit:
       - binary_sensor
       - light
       - media_player
+      - lock
+      - sensor
     exclude_entities:
-      - binary_sensor.motion_sensor_158d0001b177e8
-      - binary_sensor.switch_158d0001aaab2d
-      - binary_sensor.door_window_sensor_158d0001a9c200
-      - switch.plug_158d0001b195fd
-      - light.gateway_light_286c07f1c549
+      - sensor.cpu_temperature
   entity_config:
     media_player.samsungtv:
       feature_list:
@@ -250,6 +255,10 @@ camera:
     name: Door
     ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret door_url
+  - platform: ffmpeg
+    name: Dacha
+    ffmpeg_bin: /usr/bin/ffmpeg
+    input: !secret dacha_url
   - platform: local_file
     name: Grafana heater
     file_path: /home/homeassistant/.homeassistant/www/grafana/heater.png
@@ -281,7 +290,7 @@ zone:
     icon: mdi:emoticon-poop
 
 telegram_bot:
-  - platform: polling_proxy
+  - platform: polling
     proxy_url: !secret telegram_proxy_url
     proxy_params:
       username: !secret telegram_proxy_username
@@ -332,10 +341,17 @@ influxdb:
   password: !secret influx_pass
   database: home_assistant
 
-apple_tv:
-  - host: 192.168.1.239
-    login_id: !secret appletv_login_id
-    name: Apple TV
+#apple_tv:
+#  - host: 192.168.1.239
+#    login_id: !secret appletv_login_id
+#    name: Apple TV
 #    start_off: true
-    credentials: !secret appletv_creditnails
+#    credentials: !secret appletv_creditnails
 
+zwave:
+  usb_path: /dev/ttyUSB0
+  network_key: !secret zwave_secret
+
+#zha:
+#  usb_path: /dev/ttyACM0
+#  database_path: /home/homeassistant/.homeassistant/zigbee.db

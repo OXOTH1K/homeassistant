@@ -13,5 +13,12 @@ automation.turn_on_bathroom_light:
 automation.turn_on_living_room_light_for_open_door:
   friendly_name: Включение света при открытии двери
 
+climate.aeronik:
+  friendly_name: Кондиционер
+climate.ariston:
+  friendly_name: Котел
+#switch.wall_switch_158d00022ec91b:
+#  hidden: true
+
 zone.home:
   track_ios: true
