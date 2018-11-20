@@ -112,7 +112,7 @@ binary_sensor:
 media_player:
   - platform: samsungtv
     host: 192.168.1.195
-    port: 8001
+    port: 8002
     mac: f8:3f:51:9c:7f:6c
     name: SamsungTV
   - platform: vlc
@@ -162,6 +162,16 @@ xiaomi_aqara:
     - key: !secret xiaomi_aqara_key
 
 light:
+#  - platform: mqtt
+#    name: "stripoffice"
+#    state_topic: "homeassistant-slave/light/stripoffice/state"
+#    command_topic: "homeassistant-master/topic"
+#    brightness_state_topic: "homeassistant-slave/light/stripoffice/brightness"
+#    rgb_state_topic: "homeassistant-slave/light/stripoffice/rgb_color"
+#    qos: 0
+#    payload_on: "ON"
+#    payload_off: "OFF"
+#    optimistic: false
   - platform: xiaomi_miio
     name: living_room
     host: 192.168.1.198
@@ -251,14 +261,17 @@ camera:
     name: Kitchen
     ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret kitchen_url
+#    extra_arguments: -pred 1
   - platform: ffmpeg
     name: Door
     ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret door_url
+#    extra_arguments: -pred 1
   - platform: ffmpeg
     name: Dacha
     ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret dacha_url
+#    extra_arguments: -pred 1
   - platform: local_file
     name: Grafana heater
     file_path: /home/homeassistant/.homeassistant/www/grafana/heater.png
@@ -333,6 +346,13 @@ mqtt:
     payload: "Offline"
     qos: 1
     retain: true
+#mqtt_eventstream:
+#  publish_topic: homeassistant-master/topic
+#  subscribe_topic: homeassistant-slave/#
+#  ignore_event:
+#    - service_registered
+#    - state_changed
+#    - homeassistant_stop
 
 influxdb:
   host: 192.168.1.100

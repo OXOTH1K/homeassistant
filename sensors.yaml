@@ -111,4 +111,17 @@
         {% else %}
           0
         {% endif %}
+#    date_number:
+#        friendly_name: "Date number"
+#        icon_template: mdi:calendar
+#        value_template: "{{(now().strftime('%d') | float) |round(0)}}"
 
+- platform: yandex_weather
+  lat: !secret home_lat
+  lon: !secret home_long
+  api_key: !secret ya_api_weather
+  scan_interval: 1800
+
+- platform: time_date
+  display_options:
+    - 'date'

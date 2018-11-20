@@ -710,8 +710,8 @@
 
 ######### Отопление
 
-#Установить температуру обогрева на 20 градусов, когда никого нет дома
-- alias: Temperature heater 20 if all people out
+#Установить температуру обогрева на 21 градус, когда никого нет дома
+- alias: Temperature heater 21 if all people out
   trigger:
     platform: state
     entity_id: group.devices
@@ -723,10 +723,10 @@
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ariston
-        temperature: "20"
+        temperature: "21"
 
-#Установить температуру обогрева на 24 градуса, когда я еду домой
-- alias: Temperature heater 24 if hunt_mf go home
+#Установить температуру обогрева на 24.5 градуса, когда я еду домой
+- alias: Temperature heater 24.5 if hunt_mf go home
   trigger:
     - platform: zone
       event: leave
@@ -752,7 +752,7 @@
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ariston
-        temperature: "24"
+        temperature: "24.5"
 
 #Установить температуру обогрева на 22 градуса ночью
 - alias: Temperature heater 22 on night
@@ -778,8 +778,8 @@
         entity_id: climate.ariston
         temperature: "22"
 
-#Установить температуру обогрева на 24 градуса утром
-- alias: Temperature heater 24 on morning
+#Установить температуру обогрева на 24.5 градуса утром
+- alias: Temperature heater 24.5 on morning
   trigger:
     platform: time
     at: '06:30:00'
@@ -791,7 +791,7 @@
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ariston
-        temperature: "24"
+        temperature: "24.5"
 
 #Закрыть замок через 8 секунд
 - alias: Lock dor after 8 sec

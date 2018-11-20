@@ -1,6 +1,6 @@
 resources:
   - url: /local/custom_ui/mini-media-player.js
-    type: js
+    type: module
   - url: /local/custom_ui/weather-card-mini.js
     type: js
   - url: /local/custom_ui/thermostat-card.js?v=1
@@ -51,6 +51,7 @@ views:
           - switch.marantz_receiver
           - switch.plug_158d0001b195fd
           - group.heater_automation
+          - sensor.yandex_weather
       - id: b7b1f691a71a4de7832b7372808dd712  # Automatically created id
         type: glance
         title: Ванная
@@ -124,6 +125,12 @@ views:
         entities:
           - scene.livingroom_dim
           - scene.livingroom_normal
+      - type: sensor
+        entity: sensor.humidity_158d00023764a1
+        name: Влажность
+        height: 75
+#        graph: none
+        
   - title: Камеры
     id: cameras
     icon: mdi:cctv
@@ -143,16 +150,16 @@ views:
       aspect_ratio: 16:9
       camera_image: camera.dacha
       show_info: true
-#- title: Графики
-#  id: graphs
-#  icon: mdi:chart-histogram
-#  cards:
-#  - type: iframe
-#    url: !secret grafana_iframe
-#    aspect_ratio: 50%
-#  - type: iframe
-#    url: !secret grafana_iframe2
-#    aspect_ratio: 50%
-#  - type: iframe
-#    url: !secret grafana_iframe3
-#    aspect_ratio: 50%
+  - title: Графики
+    id: graphs
+    icon: mdi:chart-histogram
+    cards:
+    - type: iframe
+      url: !secret grafana_iframe
+      aspect_ratio: 50%
+    - type: iframe
+      url: !secret grafana_iframe2
+      aspect_ratio: 50%
+    - type: iframe
+      url: !secret grafana_iframe3
+      aspect_ratio: 50%
