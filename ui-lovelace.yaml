@@ -163,3 +163,10 @@ views:
     - type: iframe
       url: !secret grafana_iframe3
       aspect_ratio: 50%
+  - title: 17Track
+    id: tracks
+    icon: mdi:package
+    cards:
+    - type: iframe
+      url: !secret 17thack_iframe1
+      aspect_ratio: 50%
