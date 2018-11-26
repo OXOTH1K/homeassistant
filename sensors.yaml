@@ -122,6 +122,12 @@
   api_key: !secret ya_api_weather
   scan_interval: 1800
 
-- platform: time_date
-  display_options:
-    - 'date'
+#- platform: rest
+#  name: Package Title
+#  resource: http://api.iml.ru/Json/GetStatuses
+#  value_template: '{{ value_json["data"]["count"]}}'
+#  json_attributes:
+#    - data
+#  headers:
+#    CustomerOrder: 7181449320614
+#   Content-Type: application/json
