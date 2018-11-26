@@ -839,3 +839,12 @@
   action:
     service: lock.lock
     entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+
+- alias: 'Update Available Notifications'
+  trigger:
+    platform: state
+    entity_id: updater.updater
+  action:
+    - service: notify.telegram
+      data:
+        message: "Доступно обновление Home Assistant"
