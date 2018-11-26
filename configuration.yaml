@@ -28,17 +28,12 @@ http:
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 #  server_port: 8123
   base_url: !secret home_url
-  ssl_certificate: /home/homeassistant/.homeassistant/fullchain.pem
-  ssl_key: /home/homeassistant/.homeassistant/privkey.pem
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key
 #  use_x_forwarded_for: True
 #  ip_ban_enabled: True
 #  login_attempts_threshold: 5
 
-# Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
@@ -355,6 +350,11 @@ zwave:
   usb_path: /dev/ttyUSB0
   network_key: !secret zwave_secret
 
-#zha:
-#  usb_path: /dev/ttyACM0
-#  database_path: /home/homeassistant/.homeassistant/zigbee.db
+google_assistant:
+  project_id: !secret google_project_id
+  api_key: !secret google_api_key
+  exposed_domains:
+    - switch
+    - light
+    - climate
+    - media_player
