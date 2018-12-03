@@ -13,17 +13,12 @@ views:
     theme: dark-mode
     icon: mdi:floor-plan
     cards:
-#  - type: entities
-#    title: Климат
-#    entities:
-#    - climate.ariston
-#    - climate.aeronik
-#      - id: ed17d235f02e444b8a38d01e7013938c  # Automatically created id
-#        type: thermostat
-#        entity: climate.aeronik
-#      - id: 78b21446860c492694cc1883fffd6ab5  # Automatically created id
-#        type: thermostat
-#        entity: climate.ariston
+      - type: glance
+        title: Управление климатом
+        entities:
+          - climate.aeronik
+          - climate.ariston
+          - fan.xiaomi_miio_device
       - type: glance
         title: Безопасность
         entities:
@@ -37,14 +32,12 @@ views:
           - binary_sensor.__motion
           - sensor.illumination_286c07f1c549
           - switch._
-          - climate.ariston
       - id: 54ffcfc2ec7448e9ac61ac5bdb03746e  # Automatically created id
         type: glance
         title: Гостиная
         entities:
           - light.living_room
           - light.bathroom
-          - climate.aeronik
           - sensor.temperature_158d00023764a1
           - sensor.humidity_158d00023764a1
           - sensor.pressure_158d00023764a1
@@ -72,9 +65,9 @@ views:
         type: custom:mini-media-player
         entity: media_player.ubuntu_speaker
         icon: mdi:television
-#  - type: custom:mini-media-player
-#    entity: media_player.appletv
-#    icon: 'mdi:apple'
+      - type: custom:mini-media-player
+        entity: media_player.appletv
+        icon: 'mdi:apple'
       - id: 09f38de645b5431db67698b6cf196e66  # Automatically created id
         type: weather-forecast
         entity: weather.openweathermap
@@ -167,6 +160,7 @@ views:
     id: tracks
     icon: mdi:package
     cards:
-    - type: iframe
-      url: !secret 17thack_iframe1
-      aspect_ratio: 50%
+    - type: entities
+      title: Посылки
+      entities:
+      - sensor.7181449320614

@@ -12,7 +12,7 @@
   initial_state: 'on'
   trigger:
     - platform: event
-      event_type: click
+      event_type: xiaomi_aqara.click
       event_data:
         entity_id: binary_sensor.switch_158d0001aaab2d
         click_type: double
@@ -32,7 +32,7 @@
   hide_entity: false
   trigger:
     - platform: event
-      event_type: click
+      event_type: xiaomi_aqara.click
       event_data:
         entity_id: binary_sensor.switch_158d0001aaab2d
         click_type: single
@@ -173,11 +173,12 @@
       entity_id: device_tracker.iphone
       to: 'home'
   action:
-    service: tts.amazon_polly_say
-    entity_id: media_player.ubuntu_speaker
-    data_template:
-      message: "Мешок с костями опять идет домой"
-      cache: false
+    - service: tts.amazon_polly_say
+      entity_id: media_player.ubuntu_speaker
+      data_template:
+        message: "Мешок с костями опять идет домой"
+        cache: false
+
 
 - alias: "Power state on HA start-up"
   trigger:
@@ -708,10 +709,10 @@
           Сашка: {% if is_state('device_tracker.iphone_2', 'home') %}Дома{% elif is_state('device_tracker.iphone_2', 'Unico') %}Унико{% elif is_state('device_tracker.iphone_2', 'Magic Smoker') %}Magic Smoker{% elif is_state('device_tracker.iphone_2', 'Dacha') %}На даче{% else %}Не дома{% endif %}
           Лилька: {% if is_state('device_tracker.iphone', 'home') %}Дома{% else %}Не дома{% endif %}
 
-######### Отопление
+######### Отопление и влажность
 
-#Установить температуру обогрева на 21 градус, когда никого нет дома
-- alias: Temperature heater 21 if all people out
+#Установить температуру обогрева на 21 градус и увлажнитель на максимум, когда никого нет дома
+- alias: Temperature heater 21 and humidifier on max if all people out
   trigger:
     platform: state
     entity_id: group.devices
@@ -724,9 +725,13 @@
       data_template:
         entity_id: climate.ariston
         temperature: "21"
+    - service: fan.set_speed
+      data:
+        entity_id: fan.xiaomi_miio_device
+        speed: High
 
-#Установить температуру обогрева на 24.5 градуса, когда я еду домой
-- alias: Temperature heater 24.5 if hunt_mf go home
+#Установить температуру обогрева на 24.5 градуса и увлажнителя на авто, когда я еду домой
+- alias: Temperature heater 24.5 and humidifier to Auto if hunt_mf go home
   trigger:
     - platform: zone
       event: leave
@@ -747,15 +752,19 @@
         entity_id: group.devices
         state: not_home
       - condition: time
-        after: '12:00:00'
+        after: '14:00:00'
   action:
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ariston
         temperature: "24.5"
+    - service: fan.set_speed
+      data:
+        entity_id: fan.xiaomi_miio_device
+        speed: Auto
 
-#Установить температуру обогрева на 22 градуса ночью
-- alias: Temperature heater 22 on night
+#Установить температуру обогрева на 22 градуса и увлажнителя на минимум ночью
+- alias: Temperature heater 22 and humidifier to Low on night
   trigger:
     platform: state
     entity_id: group.all_lights
@@ -777,6 +786,10 @@
       data_template:
         entity_id: climate.ariston
         temperature: "22"
+    - service: fan.set_speed
+      data:
+        entity_id: fan.xiaomi_miio_device
+        speed: Low
 
 #Установить температуру обогрева на 24.5 градуса утром
 - alias: Temperature heater 24.5 on morning
@@ -848,3 +861,27 @@
     - service: notify.telegram
       data:
         message: "Доступно обновление Home Assistant"
+
+- alias: 17track
+  trigger:
+    platform: state
+    entity_id: sensor.7181449320614
+  action:
+    - service: notify.telegram
+      data_template:
+        message: > 
+          Текущий статус - {{ states.sensor['7181449320614'].attributes. info_text }}. Текущее местоположение - {{ states.sensor['7181449320614'].attributes. location }}
+
+# - alias: test_humiditifier
+#   trigger:
+#     platform: state
+#     entity_id: group.devices
+#     from: 'home'
+#     to: 'not_home'
+#     for:
+#       minutes: 2
+#   action:
+#     - service: fan.set_speed
+#       data:
+#         entity_id: fan.xiaomi_miio_device
+#         speed: High
