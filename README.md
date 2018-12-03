@@ -16,3 +16,4 @@ My hardware:
 - Aeotec z-wave usb stick EU
 - Sprutstick zigbee
 - Danalock v3 EU
+- Xiaomi Smartmi Zhimi Air Humidifier 2
