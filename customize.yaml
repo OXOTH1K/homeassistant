@@ -19,9 +19,8 @@ climate.ariston:
   friendly_name: Котел
 switch.wall_switch_158d00022ec91b_2:
   friendly_name: Освещение
-
-#switch.wall_switch_158d00022ec91b:
-#  hidden: true
+fan.xiaomi_miio_device:
+  friendly_name: Увлажнитель
 
 zone.home:
   track_ios: true

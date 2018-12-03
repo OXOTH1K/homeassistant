@@ -92,7 +92,7 @@ tts:
     voice: Maxim
 
 # Cloud
-cloud:
+#cloud:
 
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
@@ -168,14 +168,14 @@ light:
     token: !secret light_token2
     model: philips.light.bulb
 
-device_tracker:
-  - platform: asuswrt
-    host: 192.168.1.1
-    username: !secret router_login
-    password: !secret router_password
-    track_new_devices: no
-    consider_home: 600
-    interval_seconds: 20
+
+asuswrt:
+  host: 192.168.1.1
+  username: !secret router_login
+  password: !secret router_password
+#  track_new_devices: no
+#  consider_home: 600
+#  interval_seconds: 20
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -226,6 +226,7 @@ homekit:
       - media_player
       - lock
       - sensor
+      - fan
     exclude_entities:
       - sensor.cpu_temperature
   entity_config:
@@ -339,12 +340,12 @@ influxdb:
   password: !secret influx_pass
   database: home_assistant
 
-#apple_tv:
-#  - host: 192.168.1.239
-#    login_id: !secret appletv_login_id
-#    name: Apple TV
+apple_tv:
+  - host: 192.168.1.239
+    login_id: !secret appletv_login_id
+    name: Apple TV
 #    start_off: true
-#    credentials: !secret appletv_creditnails
+    credentials: !secret appletv_creditnails
 
 zwave:
   usb_path: /dev/ttyUSB0
@@ -358,3 +359,9 @@ google_assistant:
     - light
     - climate
     - media_player
+
+fan:
+  - platform: xiaomi_miio
+    host: 192.168.1.158
+    token: !secret smartmi_token
+    model: zhimi.humidifier.ca1
