@@ -62,14 +62,6 @@ devices:
     - device_tracker.iphone_2
     - sensor.iphone_battery_level_3
     - sensor.iphone_battery_state_3
-transmission:
-  name: Transmission
-  entities:
-    - sensor.transmission_status
-    - sensor.transmission_active_torrents
-    - sensor.transmission_down_speed
-    - sensor.transmission_up_speed
-    - sensor.transmission_active_torrents
 automations:
   name: Автоматизации
   entities:

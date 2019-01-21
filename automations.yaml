@@ -1,4 +1,5 @@
 - alias: 'HomeKit Delayed Start'
+  initial_state: True
   trigger:
     - platform: homeassistant
       event: start
@@ -8,8 +9,8 @@
 # Включение кондера в зале по даблклику
 - id: doubleclick
   alias: Aeronik toggle
+  initial_state: True
   hide_entity: false
-  initial_state: 'on'
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -29,6 +30,7 @@
 #Переключение света в зале по одинарному нажатию
 - id: click
   alias: Living room light
+  initial_state: True
   hide_entity: false
   trigger:
     - platform: event
@@ -40,33 +42,41 @@
      service: light.toggle
      entity_id: light.living_room
 
-#  - id: long
-#    alias: Good night
-#    hide_entity: false
-#    trigger:
-#      - platform: event
-#        event_type: click
-#        event_data:
-#          entity_id: binary_sensor.switch_158d0001aaab2d
-#          click_type: long
-#    action:
-#      - service: homeassistant.turn_off
-#        entity_id: light.living_room, switch.plug_158d0001b195fd
-
+# - id: long
+#   alias: Good night
+#   hide_entity: false
+#   trigger:
+#     - platform: event
+#       event_type: click
+#       event_data:
+#         entity_id: binary_sensor.switch_158d0001aaab2d
+#         click_type: long
+#   action:
+#     - service: media_player.play_media
+#       data:
+#         entity_id: media_player.mpd
+#         media_content_type: playlist
+#         media_content_id: maximum
+#     - service: media_player.volume_set
+#       data:
+#         entity_id: media_player.mpd
+#         volume_level: 0.60
 # Включение света в ванной
 - id: bathroom light on
   alias: Turn on bathroom light
+  initial_state: True
   trigger:
     platform: state
     entity_id: binary_sensor.motion_sensor_158d0001b177e8
     to: 'on'
   action:
     service: switch.turn_on
-    entity_id: switch.wall_switch_158d00022ec91b_2
+    entity_id: switch.wall_switch_158d00022ec91b
 
 # Выключение света в ванной без движения
 - id: bathroom_light_off
   alias: Turn off bathroom light
+  initial_state: True
   trigger:
     platform: state
     entity_id: binary_sensor.motion_sensor_158d0001b177e8
@@ -75,25 +85,23 @@
       minutes: 0
   action:
     service: switch.turn_off
-    entity_id: switch.wall_switch_158d00022ec91b_2
+    entity_id: switch.wall_switch_158d00022ec91b
 
 # Дать кошке пиздюлей
 - id: cat_alarm
   alias: Notify Crazy Cat
+  initial_state: True
   trigger:
     platform: state
     entity_id: binary_sensor.__motion
     to: 'on'
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{  states.device_tracker.iphone.state != 'home'  }}"
-      - condition: template
-        value_template: "{{  states.device_tracker.iphone_2.state != 'home'  }}"
+    condition: state
+    entity_id: group.devices
+    state: not_home
   action:
     - service: tts.amazon_polly_say
-      entity_id: media_player.ubuntu_speaker
+      entity_id: media_player.mpd
       data_template: 
         message: "Эй! Шкура серая, cлезь со стола!"
     - service: telegram_bot.send_photo
@@ -103,6 +111,7 @@
         caption: "Серая шкура на столе"
 
 - alias: 'pingpong'
+  initial_state: True
   trigger:
     platform: event
     event_type: telegram_command
@@ -115,22 +124,28 @@
 
 # Включение света при открытии двери 
 - id: living light on for open door
+  initial_state: True
   alias: Turn on Living room light for open door
   trigger:
     platform: state
     entity_id: binary_sensor.door_window_sensor_158d0001a9c200
     to: 'on'
+  condition:
+    condition: state
+    entity_id: sun.sun
+    state: 'below_horizon'
   action:
     - service: light.turn_on
-      data_template:
-        entity_id: light.bathroom
-        brightness_pct: >
-          {% if is_state('sun.sun', 'below_horizon') %}
-            100
-          {% endif %}
+      data:
+        brightness_pct: 100
+        entity_id:
+          - light.bathroom
+          - light.living_room
+        
   
 # Оповоещение в телеге перед дорогой
 - id: weather and good luck
+  initial_state: True
   alias: Good Luck notification
   trigger:
     platform: state
@@ -146,12 +161,13 @@
 
           Температура дома {{ states('sensor.temperature_158d00023764a1') }}°
 
-          Температура на улице {{ states.weather.openweathermap.attributes. temperature }}°
+          Температура на улице {{ states.weather.dark_sky.attributes. temperature }}°
 
           Входная дверь {% if is_state('binary_sensor.door_window_sensor_158d0001a9c200', 'off') %}закрыта{% else %}открыта{% endif %}
 
 # Оповещение о севшей батарейке
 - id: battery temperature sensor
+  initial_state: True
   alias: Battery temperature sensor
   trigger:
     platform: template
@@ -164,6 +180,7 @@
 
 # Оповещение о пришедшем человеке
 - id: play sound people at home
+  initial_state: True
   alias: Play sound people at home
   trigger:
     - platform: state
@@ -174,25 +191,15 @@
       to: 'home'
   action:
     - service: tts.amazon_polly_say
-      entity_id: media_player.ubuntu_speaker
+      entity_id: media_player.mpd
       data_template:
         message: "Мешок с костями опять идет домой"
         cache: false
 
 
-- alias: "Power state on HA start-up"
-  trigger:
-    platform: homeassistant
-    event: start
-  action:
-    - service: mqtt.publish
-      data:
-        topic: "cmnd/sonoff/POWER"
-        payload: ""
-
-
 ####### Меню телеги
 - alias: Telegram Bot Main Menu
+  initial_state: True
   trigger:
     platform: event
     event_type: telegram_command
@@ -213,6 +220,7 @@
           - '{{"\U0001F465"}}, {{"\U0001F512"}}'
         
 - alias: Telegram Bot Main Menu key
+  initial_state: True
   trigger:
     platform: event
     event_type: telegram_command
@@ -231,6 +239,7 @@
 
 #Действия для комнат
 - alias: Telegram bot actions for rooms
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -251,6 +260,7 @@
 
 #Для гостиной
 - alias: Telegram bot actions for living room
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -274,6 +284,7 @@
 
 #Для Кухни 
 - alias: Telegram bot actions for kitchen
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -295,6 +306,7 @@
 
 #Для Ванной 
 - alias: Telegram bot actions for bathroom
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -315,6 +327,7 @@
 
 #Действия для фото
 - alias: Telegram bot actions for photo
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -335,6 +348,7 @@
 
 #Фото для гостиной
 - alias: Telegram bot actions for photo living room
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -350,6 +364,7 @@
 
 #Фото для кухни
 - alias: Telegram bot actions for photo kitchen
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -365,6 +380,7 @@
 
 #Действия для Климата
 - alias: Telegram bot actions for climate
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -380,13 +396,14 @@
           Сейчас в доме: 
           {{ "\U0001F321" }}: {{ states('sensor.temperature_158d00023764a1') }}°, {{ "\U0001F4A6" }}: {{ states('sensor.humidity_158d00023764a1') }}%
           На улице: 
-          {{ "\U0001F321" }}: {{ states.weather.openweathermap.attributes. temperature }}°, {{ "\U0001F4A6" }}: {{ states.weather.openweathermap.attributes. humidity }}%
+          {{ "\U0001F321" }}: {{ states.weather.dark_sky.attributes. temperature }}°, {{ "\U0001F4A6" }}: {{ states.weather.dark_sky.attributes. humidity }}%
           Выберите, что надо настроить?
         inline_keyboard:
           - 'Обогрев:/heater, Охлаждение:/conditioner'
 
 #Действия для обогрева
 - alias: Telegram bot actions for heater
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -412,6 +429,7 @@
 
 #Действия для обогрева + 0.5
 - alias: Telegram bot actions for heater up
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -438,6 +456,7 @@
 
 #Действия для обогрева - 0.5
 - alias: Telegram bot actions for heater down
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -464,6 +483,7 @@
 
 #Действия для обогрева выкл
 - alias: Telegram bot actions for heater off
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -490,6 +510,7 @@
 
 #Действия для обогрева вкл
 - alias: Telegram bot actions for heater on
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -516,6 +537,7 @@
 
 #Действия для охлаждения
 - alias: Telegram bot actions for conditioner
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -541,6 +563,7 @@
 
 #Действия для охлаждения + 1
 - alias: Telegram bot actions for conditioner up
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -567,6 +590,7 @@
 
 #Действия для охлаждения - 1
 - alias: Telegram bot actions for conditioner down
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -593,6 +617,7 @@
 
 #Действия для охлаждения выкл
 - alias: Telegram bot actions for conditioner off
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -619,6 +644,7 @@
 
 #Действия для охлаждения вкл
 - alias: Telegram bot actions for conditioner on
+  initial_state: True
   hide_entity: true
   trigger:
     platform: event
@@ -645,6 +671,7 @@
 
 #Действия для погоды
 - alias: Telegram bot actions for meteo
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -664,10 +691,11 @@
           Сейчас в доме: 
           {{ "\U0001F321" }}: {{ states('sensor.temperature_158d00023764a1') }}°, {{ "\U0001F4A6" }}: {{ states('sensor.humidity_158d00023764a1') }}%
           На улице: 
-          {{ "\U0001F321" }}: {{ states.weather.openweathermap.attributes. temperature }}°, {{ "\U0001F4A6" }}: {{ states.weather.openweathermap.attributes. humidity }}%
+          {{ "\U0001F321" }}: {{ states.weather.dark_sky.attributes. temperature }}°, {{ "\U0001F4A6" }}: {{ states.weather.dark_sky.attributes. humidity }}%
 
 #Действия для безопастности
 - alias: Telegram bot actions for security
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -690,6 +718,7 @@
 
 #Действия для людей
 - alias: Telegram bot actions for people
+  initial_state: True
   hide_entity: true
   trigger:
     - platform: event
@@ -713,6 +742,7 @@
 
 #Установить температуру обогрева на 21 градус и увлажнитель на максимум, когда никого нет дома
 - alias: Temperature heater 21 and humidifier on max if all people out
+  initial_state: True
   trigger:
     platform: state
     entity_id: group.devices
@@ -732,6 +762,7 @@
 
 #Установить температуру обогрева на 24.5 градуса и увлажнителя на авто, когда я еду домой
 - alias: Temperature heater 24.5 and humidifier to Auto if hunt_mf go home
+  initial_state: True
   trigger:
     - platform: zone
       event: leave
@@ -762,9 +793,13 @@
       data:
         entity_id: fan.xiaomi_miio_device
         speed: Auto
+    - service: notify.telegram
+      data_template:
+        message: "Включен обогрев, установлен автоматический режим увлажнителя. Хорошей дороги домой!"
 
 #Установить температуру обогрева на 22 градуса и увлажнителя на минимум ночью
 - alias: Temperature heater 22 and humidifier to Low on night
+  initial_state: True
   trigger:
     platform: state
     entity_id: group.all_lights
@@ -789,10 +824,11 @@
     - service: fan.set_speed
       data:
         entity_id: fan.xiaomi_miio_device
-        speed: Low
+        speed: Silent
 
 #Установить температуру обогрева на 24.5 градуса утром
 - alias: Temperature heater 24.5 on morning
+  initial_state: True
   trigger:
     platform: time
     at: '06:30:00'
@@ -806,8 +842,27 @@
         entity_id: climate.ariston
         temperature: "24.5"
 
+#Установить увлажнитель на авто утром
+- alias: humidifier on auto when wake up
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: group.all_lights
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: time
+    after: '06:00:00'
+    before: '10:00:00'
+  action:
+    - service: fan.set_speed
+      data:
+        entity_id: fan.xiaomi_miio_device
+        speed: Auto
+
 #Закрыть замок через 8 секунд
-- alias: Lock dor after 8 sec
+- alias: Lock door after 8 sec
+  initial_state: True
   trigger:
     platform: state
     entity_id: binary_sensor.door_window_sensor_158d0001a9c200
@@ -816,11 +871,15 @@
     for:
       seconds: 8
   action:
-    service: lock.lock
-    entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+    - service: lock.lock
+      entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+    - service: notify.telegram
+      data_template:
+        message: "Замок закрыт автоматически"
 
 #Открыть замок, когда кто то приходит домой
 - alias: Open dor when people go home
+  initial_state: True
   trigger:
     - platform: zone
       event: enter
@@ -837,11 +896,15 @@
     for:
       minutes: 10  
   action:
-    service: lock.unlock
-    entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+    - service: lock.unlock
+      entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+    - service: notify.telegram
+      data_template:
+        message: "Замок открыт по приходу домой"
 
 #Закрыть замок, когда дома нет никого 2 минуты (страховка)
 - alias: Close dor for 2 minutes when never to home
+  initial_state: True
   trigger:
     platform: state
     entity_id: group.devices
@@ -853,35 +916,175 @@
     service: lock.lock
     entity_id: lock.polycontrol_danalock_v3_btze_locked_2
 
-- alias: 'Update Available Notifications'
-  trigger:
-    platform: state
-    entity_id: updater.updater
-  action:
-    - service: notify.telegram
-      data:
-        message: "Доступно обновление Home Assistant"
-
-- alias: 17track
-  trigger:
-    platform: state
-    entity_id: sensor.7181449320614
-  action:
-    - service: notify.telegram
-      data_template:
-        message: > 
-          Текущий статус - {{ states.sensor['7181449320614'].attributes. info_text }}. Текущее местоположение - {{ states.sensor['7181449320614'].attributes. location }}
-
-# - alias: test_humiditifier
+# - alias: 'Update Available Notifications'
 #   trigger:
 #     platform: state
-#     entity_id: group.devices
-#     from: 'home'
-#     to: 'not_home'
-#     for:
-#       minutes: 2
+#     entity_id: updater.updater
 #   action:
-#     - service: fan.set_speed
+#     - service: notify.telegram
 #       data:
-#         entity_id: fan.xiaomi_miio_device
-#         speed: High
+#         message: "Доступно обновление Home Assistant"
+
+# - alias: 17track
+#   trigger:
+#     platform: state
+#     entity_id: sensor.uf052685875sg
+#   action:
+#     - service: notify.telegram
+#       data_template:
+#         message: > 
+#           Текущий статус - {{ states.sensor['uf052685875sg'].attributes. info_text }}. Текущее местоположение - {{ states.sensor['uf052685875sg'].attributes. location }}
+
+
+
+- id: snmp_monitor_traffic_in
+  initial_state: True
+  alias: Monitor Traffic In
+  trigger:
+    platform: state
+    entity_id: sensor.snmp_wan_in
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.internet_traffic_delta_in
+        value: '{{ ((trigger.to_state.state | int - trigger.from_state.state | int) * 8 ) / ( as_timestamp(trigger.to_state.last_updated) - as_timestamp(trigger.from_state.last_updated) ) }}'
+  
+- id: snmp_monitor_traffic_out
+  initial_state: True
+  alias: Monitor Traffic Out
+  trigger:
+    platform: state
+    entity_id: sensor.snmp_wan_out
+  action:
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.internet_traffic_delta_out
+        value: '{{ ((trigger.to_state.state | int - trigger.from_state.state | int) * 8 ) / ( as_timestamp(trigger.to_state.last_updated) - as_timestamp(trigger.from_state.last_updated) ) }}'
+
+- id: hight_temperature_cpu_alarm
+  initial_state: True
+  alias: Alarm hight temperature
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.cpu_temperature
+    above: 65 
+    for:
+      minutes: 5
+  action:
+    - service: notify.ios_iphone_2
+      data:
+        title: "Внимание!"
+        message: "Температура процессора превысила 65°"
+    - service: notify.telegram
+      data:
+        message: "Температура процессора превысила 65°"
+
+- alias: Low Humidifier Water Level
+  initial_state: True
+  hide_entity: true
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.water_level
+    above: 14
+    below: 16
+  action:
+  - service: notify.telegram
+    data_template:
+      message: "В увлажнителе заканчивается вода!"
+
+#Кубик
+#Управление лампой
+- id: Up_light_percent
+  initial_state: True
+  alias: Up light percent
+  trigger:
+    platform: state
+    entity_id: sensor.cube
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.living_room
+        state: 'on'
+      - condition: state
+        entity_id: sensor.cube
+        state: 'rotate_left'
+  action:
+    service: light.turn_on
+    data_template:
+      entity_id: light.living_room
+      brightness: >
+        {%- set bright = (state_attr('light.living_room', 'brightness') + state_attr('sensor.cube', 'angle'))|int %}
+        {% if bright > 255 %}
+          255
+        {% elif bright < 0 %}
+          1
+        {% else %}
+          {{bright}}
+        {% endif %}
+
+- id: Down_light_percent
+  initial_state: True
+  alias: Down light percent
+  trigger:
+    platform: state
+    entity_id: sensor.cube
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.living_room
+        state: 'on'
+      - condition: state
+        entity_id: sensor.cube
+        state: 'rotate_right'
+  action:
+    service: light.turn_on
+    data_template:
+      entity_id: light.living_room
+      brightness: >
+        {%- set bright = (state_attr('light.living_room', 'brightness') + state_attr('sensor.cube', 'angle'))|int %}
+        {% if bright > 255 %}
+          255
+        {% elif bright < 0 %}
+          1
+        {% else %}
+          {{bright}}
+        {% endif %}
+
+- id: Open_door_from_cube
+  initial_state: True
+  alias: Open door from cube
+  trigger:
+    platform: state
+    entity_id: sensor.cube
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.devices
+        state: 'home'
+      - condition: state
+        entity_id: sensor.cube
+        state: 'fall'
+  action:
+    - service: lock.unlock
+      entity_id: lock.polycontrol_danalock_v3_btze_locked_2
+    - service: notify.telegram
+      data_template:
+        message: "Замок открыт кубиком"
+
+- id: Pause_Play_apple_tv
+  initial_state: True
+  alias: Pause Play apple tv
+  trigger:
+    platform: state
+    entity_id: sensor.cube
+  condition:
+    - condition: state
+      entity_id: sensor.cube
+      state: 'tap'
+  action:
+    - service: media_player.media_play_pause
+      data:
+        entity_id: media_player.appletv

@@ -6,12 +6,12 @@ import os.path
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 
+from homeassistant.core import callback
 from homeassistant.components.climate import (ClimateDevice, PLATFORM_SCHEMA, STATE_OFF, STATE_IDLE, STATE_HEAT, STATE_COOL, STATE_AUTO,
 ATTR_OPERATION_MODE, SUPPORT_OPERATION_MODE, SUPPORT_TARGET_TEMPERATURE, SUPPORT_FAN_MODE)
 from homeassistant.const import (ATTR_UNIT_OF_MEASUREMENT, ATTR_TEMPERATURE, CONF_NAME, CONF_HOST, CONF_MAC, CONF_TIMEOUT, CONF_CUSTOMIZE)
 from homeassistant.helpers.event import (async_track_state_change)
-from homeassistant.core import callback
-from homeassistant.helpers.restore_state import async_get_last_state
+from homeassistant.helpers.restore_state import RestoreEntity
 from configparser import ConfigParser
 from base64 import b64encode, b64decode
 
@@ -68,8 +68,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_DEFAULT_OPERATION_FROM_IDLE): cv.string
 })
 
-@asyncio.coroutine
-def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
+async def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     """Set up the Broadlink IR Climate platform."""
     name = config.get(CONF_NAME)
     ip_addr = config.get(CONF_HOST)
@@ -116,7 +115,7 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
         BroadlinkIRClimate(hass, name, broadlink_device, ircodes_ini, min_temp, max_temp, target_temp, target_temp_step, temp_sensor_entity_id, operation_list, fan_list, default_operation, default_fan_mode, default_operation_from_idle)
     ])
 
-class BroadlinkIRClimate(ClimateDevice):
+class BroadlinkIRClimate(ClimateDevice, RestoreEntity):
 
     def __init__(self, hass, name, broadlink_device, ircodes_ini, min_temp, max_temp, target_temp, target_temp_step, temp_sensor_entity_id, operation_list, fan_list, default_operation, default_fan_mode, default_operation_from_idle):
                  
@@ -179,14 +178,13 @@ class BroadlinkIRClimate(ClimateDevice):
                         _LOGGER.error("Failed to send packet to Broadlink RM Device")
         
     
-    @asyncio.coroutine
-    def _async_temp_sensor_changed(self, entity_id, old_state, new_state):
+    async def _async_temp_sensor_changed(self, entity_id, old_state, new_state):
         """Handle temperature changes."""
         if new_state is None:
             return
 
         self._async_update_current_temp(new_state)
-        yield from self.async_update_ha_state()
+        await self.async_update_ha_state()
         
     @callback
     def _async_update_current_temp(self, state):
@@ -303,11 +301,13 @@ class BroadlinkIRClimate(ClimateDevice):
         self.send_ir()
         self.schedule_update_ha_state()
         
-    @asyncio.coroutine
-    def async_added_to_hass(self):
-        state = yield from async_get_last_state(self.hass, self.entity_id)
+    async def async_added_to_hass(self):
+        """Run when entity about to be added."""
+        await super().async_added_to_hass()
+    
+        last_state = await self.async_get_last_state()
         
-        if state is not None:
-            self._target_temperature = state.attributes['temperature']
-            self._current_operation = state.attributes['operation_mode']
-            self._current_fan_mode = state.attributes['fan_mode']
+        if last_state is not None:
+            self._target_temperature = last_state.attributes['temperature']
+            self._current_operation = last_state.attributes['operation_mode']
+            self._current_fan_mode = last_state.attributes['fan_mode']

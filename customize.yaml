@@ -21,6 +21,53 @@ switch.wall_switch_158d00022ec91b_2:
   friendly_name: Освещение
 fan.xiaomi_miio_device:
   friendly_name: Увлажнитель
+light.bathroom_wall:
+  friendly_name: Освещение
+binary_sensor.motion_sensor_158d0001b177e8:
+  friendly_name: Движение
+binary_sensor.door_window_sensor_158d0001a9c200:
+  friendly_name: Дверь
+  device_class: door
+lock.polycontrol_danalock_v3_btze_locked_2:
+  friendly_name: Замок
+light.gateway_light_286c07f1c549:
+  friendly_name: Ночник
+sensor.illumination_286c07f1c549:
+  friendly_name: Освещенность
+sensor.humidity_158d00023764a1:
+  friendly_name: Влажность
+sensor.pressure_158d00023764a1:
+  friendly_name: Давление
+sensor.temperature_158d00023764a1:
+  friendly_name: Температура
+switch.plug_158d0001b195fd:
+  friendly_name: Саб
 
 zone.home:
   track_ios: true
+
+sensor.download_speed_mean:
+  friendly_name: 'SNMP Download Average'
+  icon: mdi:speedometer
+sensor.upload_speed_mean:
+  friendly_name: 'SNMP Upload Average'
+  icon: mdi:speedometer
+sensor.wan_traffic_in_mean:
+  friendly_name: 'Максимальная входящая'
+  icon: mdi:download
+sensor.wan_traffic_out_mean:
+  friendly_name: 'Максимальная исходящая'
+  icon: mdi:upload
+
+script.play_pause_mpd:
+  icon: mdi:play-pause
+script.stop_mpd:
+  icon: mdi:stop
+script.maximum:
+  icon: mdi:podcast
+script.nashe:
+  icon: mdi:podcast
+script.ultra:
+  icon: mdi:podcast
+script.volgogradfm:
+  icon: mdi:podcast

@@ -1,0 +1,59 @@
+maximum:
+  alias: Radio Maximum
+  sequence:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.mpd
+        media_content_type: playlist
+        media_content_id: maximum
+
+nashe:
+  alias: Наше радио
+  sequence:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.mpd
+        media_content_type: playlist
+        media_content_id: nashe
+
+ultra:
+  alias: Radio Ultra
+  sequence:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.mpd
+        media_content_type: playlist
+        media_content_id: ultra
+
+volgogradfm:
+  alias: Волгоград ФМ
+  sequence:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.mpd
+        media_content_type: playlist
+        media_content_id: volgogradfm
+
+play_pause_mpd:
+  alias: Плей, Пауза
+  sequence:
+    - service: media_player.media_play_pause
+      data:
+        entity_id: media_player.mpd
+
+stop_mpd:
+  alias: Остановить
+  sequence:
+    - service: media_player.media_stop
+      data:
+        entity_id: media_player.mpd
+
+restart_ha:
+  alias: Перезагрузка HA
+  sequence:
+    - service: homeassistant.restart
+
+restart_server:
+  alias: Перезагрузка Сервера
+  sequence:
+    - service: shell_command.restart_server
