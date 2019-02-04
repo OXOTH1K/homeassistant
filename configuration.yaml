@@ -69,6 +69,15 @@ binary_sensor:
     host: 192.168.1.138
     username: admin
     password: !secret camera_kitchen_switch
+  - platform: "mqtt"
+    name: "Water leak"
+    state_topic: "zigbee2mqtt/0x00158d000240306d"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: true
+    payload_off: false
+    value_template: "{{ value_json.water_leak }}"
+    device_class: "moisture"
+
 
 xiaomi_aqara:
   discovery_retry: 5
@@ -261,10 +270,11 @@ recorder:
   purge_keep_days: 7
   include:
     entities:
-      - binary_sensor.__motion
+      - binary_sensor.motion
       - binary_sensor.door_window_sensor_158d0001a9c200
       - binary_sensor.motion_sensor_158d0001b177e8
       - binary_sensor.switch_158d0001aaab2d
+      - binary_sensor.water_leak
       - climate.aeronik
       - climate.ariston
       - device_tracker.iphone
@@ -283,7 +293,7 @@ recorder:
       - sensor.processor_use
       - sensor.temperature_158d00023764a1
       - sensor.water_level
-      - switch._
+      - switch.datchik_kukhnia
       - switch.ariston_esphome
       - switch.marantz_receiver
       - switch.plug_158d0001b195fd
@@ -339,7 +349,6 @@ homekit:
       - media_player
       - lock
       - sensor
-      - fan
       - script
     exclude_entities:
       - sensor.cpu_temperature
@@ -356,6 +365,7 @@ media_player:
     port: 8002
     mac: f8:3f:51:9c:7f:6c
     name: SamsungTV
+    timeout: 5
   - platform: mpd
     host: 192.168.1.101
     password: knt9mxsd
