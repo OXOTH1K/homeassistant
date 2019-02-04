@@ -42,6 +42,8 @@ sensor.temperature_158d00023764a1:
   friendly_name: Температура
 switch.plug_158d0001b195fd:
   friendly_name: Саб
+binary_sensor.water_leak:
+  friendly_name: Протечка
 
 zone.home:
   track_ios: true
