@@ -52,7 +52,7 @@ views:
           title: Кухня
           entities:
             - light.gateway_light_286c07f1c549
-            - binary_sensor.__motion
+            - binary_sensor.motion
             - sensor.illumination_286c07f1c549
             - switch.datchik_kukhnia
       - type: custom:card-modder
@@ -82,6 +82,7 @@ views:
           entities:
             - light.bathroom_wall
             - binary_sensor.motion_sensor_158d0001b177e8
+            - binary_sensor.water_leak
       - type: custom:card-modder
         style:
           border-radius: 10px
