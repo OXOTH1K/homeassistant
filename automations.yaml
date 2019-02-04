@@ -1,5 +1,5 @@
 - alias: 'HomeKit Delayed Start'
-  initial_state: True
+  initial_state: true
   trigger:
     - platform: homeassistant
       event: start
@@ -82,7 +82,7 @@
     entity_id: binary_sensor.motion_sensor_158d0001b177e8
     to: 'off'
     for:
-      minutes: 0
+      seconds: 30
   action:
     service: switch.turn_off
     entity_id: switch.wall_switch_158d00022ec91b
@@ -93,7 +93,7 @@
   initial_state: True
   trigger:
     platform: state
-    entity_id: binary_sensor.__motion
+    entity_id: binary_sensor.motion
     to: 'on'
   condition:
     condition: state
@@ -302,7 +302,7 @@
         message: |
           На кухне на данный момент:
           Ночник:  {% if is_state('light.gateway_light_286c07f1c549', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
-          Датчик движения: {% if is_state('switch._', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+          Датчик движения: {% if is_state('switch.datchik_kukhnia', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
 
 #Для Ванной 
 - alias: Telegram bot actions for bathroom
