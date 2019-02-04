@@ -189,3 +189,14 @@
     - "angle_x"
     - "unknown_data"
   force_update: true
+
+- platform: "mqtt"
+  state_topic: "zigbee2mqtt/0x00158d000240306d"
+  availability_topic: "zigbee2mqtt/bridge/state"
+  device_class: "battery"
+  value_template: "{{ value_json.battery }}"
+  json_attributes: 
+    - "linkquality"
+    - "voltage"
+    - "action"
+    - "sensitivity"
