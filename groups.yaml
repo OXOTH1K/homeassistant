@@ -38,9 +38,9 @@ kitchen:
   name: Кухня
   entities:
     - light.gateway_light_286c07f1c549
-    - binary_sensor.__motion
+    - binary_sensor.motion
     - sensor.illumination_286c07f1c549
-    - switch._
+    - switch.datchik_kukhnia
 bathroom:
   name: Ванная
   entities:
