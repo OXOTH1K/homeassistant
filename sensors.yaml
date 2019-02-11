@@ -200,3 +200,10 @@
     - "voltage"
     - "action"
     - "sensitivity"
+
+- platform: "mqtt"
+  state_topic: "/devices/wb-msw-v3_20/controls/CO2"
+  name: "CO2 Kitchen"
+  unit_of_measurement: 'ppm'
+  icon: mdi:periodic-table-co2
+#  value_template: "{{ value_json.co2 }}"
