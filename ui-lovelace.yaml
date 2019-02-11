@@ -47,7 +47,7 @@ views:
         style:
           border-radius: 10px
         card:
-          type: glance
+          type: entities
           show_header_toggle: false
           title: Кухня
           entities:
@@ -55,11 +55,12 @@ views:
             - binary_sensor.motion
             - sensor.illumination_286c07f1c549
             - switch.datchik_kukhnia
+            - sensor.co2_kitchen
       - type: custom:card-modder
         style:
           border-radius: 10px
         card:          
-          type: glance
+          type: entities
           show_header_toggle: false
           title: Гостиная
           entities:
