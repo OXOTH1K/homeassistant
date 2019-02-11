@@ -20,8 +20,8 @@ config:
 logger:
   default: error
 
-lovelace:
-  mode: yaml
+#lovelace:
+#  mode: yaml
 
 http:
   api_password: !secret http_password
@@ -45,6 +45,7 @@ logbook:
 map:
 sun:
 ios:
+system_health:
 
 tts:
   - platform: amazon_polly
@@ -110,6 +111,18 @@ device_tracker:
 
 switch:
   - platform: "mqtt"
+    name: "ariston_wb"
+    state_topic: "/devices/wb-mr6c_103/controls/K1"
+    command_topic: "/devices/wb-mr6c_103/controls/K1/on"
+#    availability_topic: "home/bedroom/switch1/available"
+    payload_on: "1"
+    payload_off: "0"
+    state_on: "1"
+    state_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
+  - platform: "mqtt"
     name: "wall_switch_158d00022ec91b"
     state_topic: "zigbee2mqtt/0x00158d00022ec91b"
     availability_topic: "zigbee2mqtt/bridge/state"
@@ -117,19 +130,6 @@ switch:
     payload_on: "ON"
     value_template: "{{ value_json.state }}"
     command_topic: "zigbee2mqtt/0x00158d00022ec91b/set"
-  - platform: mqtt
-    name: "Ariston"
-    state_topic: "stat/sonoff/POWER"
-    command_topic: "cmnd/sonoff/POWER"
-    availability_topic: "tele/sonoff/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    state_on: "ON"
-    state_off: "OFF"
-    retain: true
   - platform: hikvisioncam
     host: 192.168.1.138
     name: Датчик кухня
@@ -213,7 +213,7 @@ input_number:
 climate:
   - platform: generic_thermostat
     name: Ariston
-    heater: switch.ariston_esphome
+    heater: switch.ariston_wb
     target_sensor: sensor.temperature_158d00023764a1
     ac_mode: False
     min_temp: 18
@@ -288,13 +288,14 @@ recorder:
       - light.living_room
       - lock.polycontrol_danalock_v3_btze_locked_2
       - sensor.cpu_temperature
+      - sensor.co2_kitchen
       - sensor.humidity_158d00023764a1
       - sensor.pressure_158d00023764a1
       - sensor.processor_use
       - sensor.temperature_158d00023764a1
       - sensor.water_level
       - switch.datchik_kukhnia
-      - switch.ariston_esphome
+      - switch.ariston_wb
       - switch.marantz_receiver
       - switch.plug_158d0001b195fd
 
@@ -352,6 +353,7 @@ homekit:
       - script
     exclude_entities:
       - sensor.cpu_temperature
+      - sensor.co2_kitchen
   entity_config:
     media_player.samsungtv:
       feature_list:
