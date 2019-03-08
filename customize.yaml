@@ -24,7 +24,11 @@ fan.xiaomi_miio_device:
 light.bathroom_wall:
   friendly_name: Освещение
 binary_sensor.motion_sensor_158d0001b177e8:
-  friendly_name: Движение
+  friendly_name: Ванная
+binary_sensor.motion_living_room_motion:
+  friendly_name: Гостиная
+binary_sensor.datchik_dvizheniia_motion:
+  friendly_name: Кухня
 binary_sensor.door_window_sensor_158d0001a9c200:
   friendly_name: Дверь
   device_class: door
@@ -33,33 +37,37 @@ lock.polycontrol_danalock_v3_btze_locked_2:
 light.gateway_light_286c07f1c549:
   friendly_name: Ночник
 sensor.illumination_286c07f1c549:
-  friendly_name: Освещенность
+  friendly_name: Кухня
 sensor.humidity_158d00023764a1:
-  friendly_name: Влажность
+  friendly_name: Гостиная
 sensor.pressure_158d00023764a1:
-  friendly_name: Давление
+  friendly_name: Гостиная
 sensor.temperature_158d00023764a1:
-  friendly_name: Температура
+  friendly_name: Гостиная
+sensor.humidity_kitchen:
+  friendly_name: Кухня
+sensor.temperature_kitchen:
+  friendly_name: Кухня
+sensor.home_assistant_v2_db:
+  friendly_name: HA DB размер
+sensor.db_size_influx:
+  friendly_name: InfluxDB размер
 switch.plug_158d0001b195fd:
   friendly_name: Саб
 binary_sensor.water_leak:
-  friendly_name: Протечка
+  friendly_name: Ванная
+sensor.co2_kitchen:
+  friendly_name: Кухня
+switch.marantz_receiver:
+  assumed_state: false
+switch.datchik_gostinaia:
+  friendly_name: Датчик движения
+switch.datchik_kukhnia:
+  friendly_name: Датчик движения
 
 zone.home:
   track_ios: true
 
-sensor.download_speed_mean:
-  friendly_name: 'SNMP Download Average'
-  icon: mdi:speedometer
-sensor.upload_speed_mean:
-  friendly_name: 'SNMP Upload Average'
-  icon: mdi:speedometer
-sensor.wan_traffic_in_mean:
-  friendly_name: 'Максимальная входящая'
-  icon: mdi:download
-sensor.wan_traffic_out_mean:
-  friendly_name: 'Максимальная исходящая'
-  icon: mdi:upload
 
 script.play_pause_mpd:
   icon: mdi:play-pause
@@ -73,3 +81,18 @@ script.ultra:
   icon: mdi:podcast
 script.volgogradfm:
   icon: mdi:podcast
+
+
+sensor.yandex_traffic:
+  friendly_name: Пробки
+  icon: mdi:traffic-light
+  templates:
+    rgb_color: [255, 255, 100]
+sensor.yandex_route_to_work_lilith:
+  friendly_name: Лильке до работы
+sensor.yandex_route_to_home_lilith:
+  friendly_name: Лильке до дома
+sensor.yandex_route_to_work_hunt_mf:  
+  friendly_name: Сашке до работы
+sensor.yandex_route_to_home_hunt_mf:
+  friendly_name: Сашке до дома

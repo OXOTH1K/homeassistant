@@ -6,7 +6,8 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Volgograd
   customize: !include customize.yaml
-
+  whitelist_external_dirs:
+    - /config
 
 # Enables the frontend
 frontend:
@@ -29,16 +30,13 @@ http:
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
 
-
 updater:
   # include_used_components: true
 
 discovery:
 conversation:
 history:
-custom_updater:
-  card_urls:
-    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+
 
 logbook:
 
@@ -66,8 +64,13 @@ ffmpeg:
 
 binary_sensor:
   - platform: hikvision
-    name: Датчик движения
+    name: Motion Kitchen
     host: 192.168.1.138
+    username: admin
+    password: !secret camera_kitchen_switch
+  - platform: hikvision
+    name: Motion Living Room
+    host: 192.168.1.139
     username: admin
     password: !secret camera_kitchen_switch
   - platform: "mqtt"
@@ -101,13 +104,18 @@ light:
     entity_id: switch.wall_switch_158d00022ec91b
 
 device_tracker:
-  - platform: snmp
+#  - platform: xiaomi
+#    host: 192.168.1.24
+#    password: !secret router_password
+  - platform: mikrotik
     host: 192.168.1.1
-    community: !secret snmp_commynity
-    baseoid: 1.3.6.1.2.1.4.22.1.2
-    track_new_devices: no
-    consider_home: 600
-    interval_seconds: 20
+    username: !secret router_login
+    password: !secret router_password
+    method: ip
+    new_device_defaults:
+      track_new_devices: true
+      hide_if_away: false
+
 
 switch:
   - platform: "mqtt"
@@ -135,15 +143,22 @@ switch:
     name: Датчик кухня
     username: admin
     password: !secret camera_kitchen_switch
+  - platform: hikvisioncam
+    host: 192.168.1.139
+    name: Датчик гостиная
+    username: admin
+    password: !secret camera_kitchen_switch
   - platform: broadlink
     host: 192.168.1.28
     mac: '78:0f:77:28:00:9e'
     timeout: 15
     switches:
+      marantz_receiver_test:
+        friendly_name: "Ресивер тест"
+        command_on: 'AAAAcwAAABIAAAAgAAAAIAAAACAAAAAeAAAAIAAAACAAAACgAAAAIAAAAEEAAAAgAAAAHgAAACAAAAAgAAAAIAAAACAAAAAgAAAAQAAACqM=='
+        command_off: 'AAAAcwAAABEAAAAgAAAAIAAAACAAAAAeAAAAIAAAACAAAACgAAAAIAAAAEEAAAAgAAAAHgAAACAAAAAgAAAAIAAAACAAAABBAAAKwQ=='
       marantz_receiver:
         friendly_name: "Ресивер"
-#        command_on: 'AAAAcQAAACQAIAAgACAAIAAgACAAQAAgACAAIAAgACAAIAChACAAIAAgAEAAIAAgAEAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAQAAgCqsAIAAgACAAIAAgACAAQAAgACAAIAAgACAAIAChACAAIAAgAEAAIAAgAEAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAQAAgBLA'
-#        command_off: 'AAAAcQAAACIAIAAgACAAIAAgACAAQAAgACAAIAAgACAAIAChACAAIAAgAEAAIAAgAEAAIAAgACAAIAAgACAAIAAgACAAIABAAEAKqwAgACAAIAAgACAAIABAACAAIAAgACAAIAAgAKEAIAAgACAAQAAgACAAQAAgACAAIAAgACAAIAAgACAAIAAgAEAAQASw'
         command_on: 'JgCcAB4dHhweHT0bHhwfHB4dHhwfOh4cOx0eAAuuHxwfGx8bPhseHB8bHx0fGx86Hxs8HB8AC6wfHB4cHxw9Gx8bHxsgHB8bHzofGzwcHwALrB4dHhweHTwcHhweHB8dHhwfOh4cOx0eAAutHh0eHB4dPBweHB4cHx0eHB86Hhw7HR4AC60eHR4cHh08HB4cHh0eHR4dHDweHDsdHgANBQAAAAAAAAAAAAAAAA=='
         command_off: 'JgCcAB4dHhweHT0bHhwfHB4dHhwfOh4cOx0eAAuuHxwfGx8bPhseHB8bHx0fGx86Hxs8HB8AC6wfHB4cHxw9Gx8bHxsgHB8bHzofGzwcHwALrB4dHhweHTwcHhweHB8dHhwfOh4cOx0eAAutHh0eHB4dPBweHB4cHx0eHB86Hhw7HR4AC60eHR4cHh08HB4cHh0eHR4dHDweHDsdHgANBQAAAAAAAAAAAAAAAA=='
 
@@ -156,19 +171,13 @@ weather:
 camera:
   - platform: ffmpeg
     name: Kitchen
-    ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret kitchen_url
-#    extra_arguments: -pred 1
   - platform: ffmpeg
     name: Door
-    ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret door_url
-#    extra_arguments: -pred 1
   - platform: ffmpeg
     name: Dacha
-    ffmpeg_bin: /usr/bin/ffmpeg
     input: !secret dacha_url
-#    extra_arguments: -pred 
 
 mqtt:
   broker: 192.168.1.101
@@ -197,18 +206,7 @@ fan:
 
 shopping_list:
 
-input_number:
-  internet_traffic_delta_in:
-    name: "Traffic IN Delta"
-    initial: 0
-    min: 0
-    max: 1000000000000
-
-  internet_traffic_delta_out:
-    name: "Traffic OUT Delta"
-    initial: 0
-    min: 0
-    max: 1000000000000
+smartir:
 
 climate:
   - platform: generic_thermostat
@@ -218,27 +216,15 @@ climate:
     ac_mode: False
     min_temp: 18
     max_temp: 30
-    hot_tolerance: 0.5
-  - platform: broadlink
+    hot_tolerance: 0.3
+    cold_tolerance: 0.2
+  - platform: smartir
     name: Aeronik
-    host: 192.168.1.28
-    mac: '78:0f:77:28:00:9e'
-    timeout: 15
-    ircodes_ini: 'broadlink_climate_codes/aeronik.ini'
-    min_temp: 16
-    max_temp: 30
-    target_temp: 24
-    target_temp_step: 1
-    temp_sensor: sensor.temperature_158d00023764a1
-    default_operation: 'off'
-    default_fan_mode: auto
-    customize:
-      operations:
-        - 'off'
-        - cool
-        - heat
-      fan_modes:
-        - auto
+    device_code: 1001
+    controller_send_service: switch.broadlink_send_packet_192_168_1_28
+    temperature_sensor: sensor.temperature_158d00023764a1
+    humidity_sensor: sensor.humidity_158d00023764a1
+#    power_sensor: binary_sensor.ac_power
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -247,10 +233,10 @@ zwave:
 
 telegram_bot:
   - platform: polling
-    proxy_url: !secret telegram_proxy_url
-    proxy_params:
-      username: !secret telegram_proxy_username
-      password: !secret telegram_proxy_password
+#    proxy_url: !secret telegram_proxy_url
+#    proxy_params:
+#      username: !secret telegram_proxy_username
+#      password: !secret telegram_proxy_password
     api_key: !secret telegram_bot_api_key
     allowed_chat_ids:
       - !secret telegram_bot_chat_id
@@ -275,6 +261,7 @@ recorder:
       - binary_sensor.motion_sensor_158d0001b177e8
       - binary_sensor.switch_158d0001aaab2d
       - binary_sensor.water_leak
+      - binary_sensor.motion_living_room_motion
       - climate.aeronik
       - climate.ariston
       - device_tracker.iphone
@@ -293,9 +280,13 @@ recorder:
       - sensor.pressure_158d00023764a1
       - sensor.processor_use
       - sensor.temperature_158d00023764a1
+      - sensor.humidity_kitchen
+      - sensor.temperature_kitchen
+      - sensor.yandex_route_to_home_lilith
       - sensor.water_level
       - switch.datchik_kukhnia
       - switch.ariston_wb
+      - switch.ariston_esphome
       - switch.marantz_receiver
       - switch.plug_158d0001b195fd
 
@@ -335,7 +326,7 @@ apple_tv:
     login_id: !secret appletv_login_id
     name: Apple TV
 #    start_off: true
-#    credentials: !secret appletv_creditnails
+    credentials: !secret appletv_creditnails
 
 homekit:
   port: 51828 
@@ -360,20 +351,14 @@ homekit:
         - feature: on_off
 
 media_player:
-#  - platform: plex
-#    entity_namespace: 'plex'
   - platform: samsungtv
     host: 192.168.1.195
     port: 8002
-    mac: f8:3f:51:9c:7f:6c
     name: SamsungTV
-    timeout: 5
+    timeout: 10
   - platform: mpd
     host: 192.168.1.101
-    password: knt9mxsd
-  # - platform: vlc
-  #   name: Ubuntu_speaker
-  #   arguments: '-I dummy --play-and-exit --aout=pulse'
+    password: !secret mpd_psss
 
 influxdb:
   host: 192.168.1.101
@@ -384,3 +369,6 @@ influxdb:
   max_retries: 3
   default_measurement: state
 
+duckdns:
+  domain: !secret duckdns_domain
+  access_token: !secret duckdns_token

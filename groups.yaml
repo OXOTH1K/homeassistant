@@ -75,5 +75,5 @@ heater_automation:
   entities:
     - automation.temperature_heater_21_and_humidifier_on_max_if_all_people_out
     - automation.temperature_heater_22_and_humidifier_to_low_on_night
-    - automation.temperature_heater_245_and_humidifier_to_auto_if_hunt_mf_go_home
-    - automation.temperature_heater_245_on_morning
+    - automation.temperature_heater_24_5_and_humidifier_to_auto_if_hunt_mf_go_home
+    - automation.temperature_heater_24_5_on_morning
