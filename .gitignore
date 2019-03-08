@@ -22,3 +22,10 @@ www/me.jpg
 www/test.png
 zwcfg_0xd384282a.xml
 zwscene.xml
+lovelace.b
+custom_components/samsungctl
+custom_components/samsungtv
+backup.yaml
+custom_components/media_player/
+www/custom_ui/card-modder.js.b
+www/custom_ui/card-tools.js.b
