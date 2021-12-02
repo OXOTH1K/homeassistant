@@ -1,5 +1,4 @@
 default_view:
-  view: yes
   entities:
     - group.kitchen
     - group.living_room
@@ -58,10 +57,20 @@ weather:
 devices:
   name: Человеки
   entities:
-    - device_tracker.iphone
-    - device_tracker.iphone_2
-    - sensor.iphone_battery_level_3
-    - sensor.iphone_battery_state_3
+    - device_tracker.oxoth1ks_iphone
+    - device_tracker.oxoth1ks_iphone_3
+    - device_tracker.lilia
+    - device_tracker.liliia
+lights:
+  name: Освещение
+  entities:
+    - light.stolovaia
+    - light.kukhnia
+    - light.vannaia
+    - light.spalnia
+    - light.gateway_light_286c07f1c549
+    - light.podsvetka
+    - light.podsvetka_2
 automations:
   name: Автоматизации
   entities:
@@ -73,7 +82,19 @@ automations:
 heater_automation:
   name: Автоматизации отопления
   entities:
-    - automation.temperature_heater_21_and_humidifier_on_max_if_all_people_out
-    - automation.temperature_heater_22_and_humidifier_to_low_on_night
-    - automation.temperature_heater_24_5_and_humidifier_to_auto_if_hunt_mf_go_home
+    - automation.temperature_heater_21_if_all_people_out
+    - automation.temperature_heater_22_on_night
+    - automation.temperature_heater_24_5_if_anybody_go_home
     - automation.temperature_heater_24_5_on_morning
+humidity_automations:
+  name: Автоматизации увлажнителя
+  entities:
+    - automation.humidifier_on_auto_when_wake_up
+    - automation.humidifier_on_max_if_all_people_out
+    - automation.humidifier_to_auto_if_anybody_go_home
+    - automation.humidifier_to_low_on_night
+cooler_automation:
+  name: Автоматизации кондея
+  entities:
+    - automation.power_off_cool_when_people_leaved_cool_zone
+    - automation.power_on_cool_when_people_entered_cool_zone

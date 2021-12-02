@@ -1,0 +1,35 @@
+- alias: PC2_offline
+  trigger:
+    platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0001a9c200
+    from: "off"
+    to: "on"
+  action:
+    - event: tileboard
+      event_data:
+        command: "notify"
+        id: "PC2"
+        icon: "mdi-desktop-tower"
+        type: "info"
+        title: "Status - PC2"
+        message: "PC2 is offline, restart the left &binary_sensor.door_window_sensor_158d0001a9c200.state"
+
+- alias: Door notification sound
+  trigger:
+    platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0001a9c200
+    from: "on"
+    to: "off"
+  action:
+    - event: tileboard
+      event_data:
+        sound_url: "https://freesound.org/data/previews/202/202029_2605156-lq.mp3"
+        command: "play_sound"
+    - event: tileboard
+      event_data:
+        command: "notify"
+        id: "DOORSOUND"
+        icon: "mdi-alarm"
+        type: "info"
+        title: "Звонок в дверь"
+        message: "Кто-то звонит в дверь, посмотрим по камере?"

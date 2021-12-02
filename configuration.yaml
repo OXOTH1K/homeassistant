@@ -2,48 +2,109 @@ homeassistant:
   name: OXOTH1Ks home
   latitude: !secret home_lat
   longitude: !secret home_long
+  currency: RUB
   elevation: 60
   unit_system: metric
-  time_zone: Europe/Volgograd
+  time_zone: Europe/Moscow
   customize: !include customize.yaml
-  whitelist_external_dirs:
+  external_url: !secret external_url
+  internal_url: !secret internal_url
+  allowlist_external_dirs:
     - /config
-
+  customize_glob:
+    "sensor.*_energy":
+      last_reset: "1970-01-01T00:00:00+00:00"
+ssdp:
+default_config:
 # Enables the frontend
 frontend:
   themes: !include_dir_merge_named themes
-  javascript_version: latest
 
 # Enables configuration UI
 config:
-
-#https://home-assistant.io/components/logger/
+start_time:
 logger:
-  default: error
-
-#lovelace:
-#  mode: yaml
-
+  default: warn
+  logs:
+    custom_components.sensor.xiaomi_miio_raw: debug
+    miio: debug
 http:
-  api_password: !secret http_password
-  base_url: !secret home_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
 
 updater:
-  # include_used_components: true
 
 discovery:
-conversation:
 history:
+mobile_app:
 
+yandex_station:
+  username: !secret yandex_station_username
+  password: !secret yandex_station_password
+  tts_service_name: alice_say
+  recognition_lang: ru-RU
+yandex_smart_home:
+  filter:
+    include_domains:
+      - light
+    include_entities:
+      - climate.dining_room
+      - climate.living_room
+      - cover.garage_door
+      - lock.vkhod
+      - lock.domofon
+      - media_player.samsung_tv_remote
+      - media_player.gostinaia
+      - sensor.dining_room_humidity
+      - sensor.dining_room_temperature
 
 logbook:
+person:
+
+proximity:
+  home:
+    devices:
+      - device_tracker.liliia
+      - device_tracker.oxoth1ks_iphone
+    tolerance: 50
+    unit_of_measurement: m
 
 map:
 sun:
-ios:
 system_health:
+input_boolean:
+  lock:
+    name: Состояние домофона
+
+input_number:
+  xiaomi_fresh_air_ventilator_favorite_speed:
+    name: Скорость приточки
+    icon: mdi:weather-windy
+    min: 60
+    max: 150
+    step: 2
+
+lock:
+  - platform: template
+    name: Домофон
+    value_template: "{{ is_state('input_boolean.lock', 'off') }}"
+    unlock:
+      - service: rest_command.domru_open_door
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.lock
+    lock:
+      service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.lock
+  - platform: mqtt
+    name: Вход
+    command_topic: "/spruthub/accessories/75/11/14/Set"
+    state_topic: "/spruthub/accessories/75/11/14"
+    payload_lock: "1"
+    payload_unlock: "0"
+    state_locked: "1"
+    state_unlocked: "0"
 
 tts:
   - platform: amazon_polly
@@ -53,190 +114,268 @@ tts:
     voice: Maxim
 
 group: !include groups.yaml
-automation: !include automations.yaml
+automation: !include_dir_merge_list automations
 script: !include scripts.yaml
 shell_command: !include shell_commands.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
 
+fan:
+  - platform: xiaomi_miio_airpurifier
+    name: Приточка
+    host: 192.168.1.164
+    token: !secret xiaomi_miio_airpurifier_token
+    model: dmaker.airfresh.a1
+
+light:
+  #Spruthub
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/52/11/13/Set"
+    state_topic: "/spruthub/accessories/52/11/13"
+    brightness_command_topic: "/spruthub/accessories/52/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/52/11/14"
+    brightness_scale: 100
+    color_temp_command_topic: "/spruthub/accessories/52/11/15/Set"
+    name: "Кухня"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/53/11/13/Set"
+    state_topic: "/spruthub/accessories/53/11/13"
+    brightness_command_topic: "/spruthub/accessories/53/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/53/11/14"
+    brightness_scale: 100
+    color_temp_command_topic: "/spruthub/accessories/53/11/15/Set"
+    name: "Столовая"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/92/11/13/Set"
+    state_topic: "/spruthub/accessories/92/11/13"
+    brightness_command_topic: "/spruthub/accessories/92/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/92/11/14"
+    brightness_scale: 100
+    name: "Подсветка"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/97/11/13/Set"
+    state_topic: "/spruthub/accessories/97/11/13"
+    name: "Детская"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/61/11/13/Set"
+    state_topic: "/spruthub/accessories/61/11/13"
+    brightness_command_topic: "/spruthub/accessories/61/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/61/11/14"
+    brightness_scale: 100
+    color_temp_command_topic: "/spruthub/accessories/61/11/15/Set"
+    color_temp_state_topic: "/spruthub/accessories/61/11/15"
+    name: "Спальня"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/94/11/13/Set"
+    state_topic: "/spruthub/accessories/94/11/13"
+    brightness_command_topic: "/spruthub/accessories/94/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/94/11/14"
+    brightness_scale: 100
+    name: "Подсветка"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/86/11/13/Set"
+    state_topic: "/spruthub/accessories/86/11/13"
+    name: "Ванная"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/85/11/13/Set"
+    state_topic: "/spruthub/accessories/85/11/13"
+    name: "Коридор"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/88/11/13/Set"
+    state_topic: "/spruthub/accessories/88/11/13"
+    name: "Прачечная"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/115/11/13/Set"
+    state_topic: "/spruthub/accessories/115/11/13"
+    brightness_command_topic: "/spruthub/accessories/115/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/115/11/14"
+    brightness_scale: 100
+    name: "Ночник"
+    payload_on: "true"
+    payload_off: "false"
+
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
-binary_sensor:
-  - platform: hikvision
-    name: Motion Kitchen
-    host: 192.168.1.138
-    username: admin
-    password: !secret camera_kitchen_switch
-  - platform: hikvision
-    name: Motion Living Room
-    host: 192.168.1.139
-    username: admin
-    password: !secret camera_kitchen_switch
-  - platform: "mqtt"
-    name: "Water leak"
-    state_topic: "zigbee2mqtt/0x00158d000240306d"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    payload_on: true
-    payload_off: false
-    value_template: "{{ value_json.water_leak }}"
-    device_class: "moisture"
+ble_monitor:
+  discovery: False
+  bt_interface: "00:1A:7D:DA:71:13"
+  devices:
+    - mac: "A4:C1:38:0F:E9:97"
+      encryption_key: "12A34E57E20934BFE92E3E48879C4738"
+      temperature_unit: C
+    - mac: "A4:C1:38:22:14:A3"
+      temperature_unit: C
+      encryption_key: "75d518668211c28e602286203815e0f2"
+    - mac: "E7:2E:00:13:50:D1"
+    - mac: "AC:9A:22:F2:CA:D2"
+    - mac: "C6:DA:34:3C:AE:CC"
+    - mac: "74:A3:4A:C0:17:13"
+    - mac: "F8:24:41:ED:8F:55"
 
+binary_sensor: !include binary_sensor.yaml
 
-xiaomi_aqara:
-  discovery_retry: 5
-  gateways:
-    - key: !secret xiaomi_aqara_key
-
-light:
-  - platform: xiaomi_miio
-    name: living_room
-    host: 192.168.1.198
-    token: !secret light_token1
-    model: philips.light.bulb
-  - platform: xiaomi_miio
-    name: bathroom
-    host: 192.168.1.49
-    token: !secret light_token2
-    model: philips.light.bulb
-  - platform: switch
-    name: Bathroom wall
-    entity_id: switch.wall_switch_158d00022ec91b
-
-device_tracker:
-#  - platform: xiaomi
-#    host: 192.168.1.24
-#    password: !secret router_password
-  - platform: mikrotik
-    host: 192.168.1.1
-    username: !secret router_login
-    password: !secret router_password
-    method: ip
-    new_device_defaults:
-      track_new_devices: true
-      hide_if_away: false
-
-
+rest_command:
+  on_eco:
+    url: http://192.168.1.240/eco/on
+  domru_open_door:
+    url: "http://192.168.1.247:10080/api/open/340012536816/10737943"
 switch:
-  - platform: "mqtt"
-    name: "ariston_wb"
-    state_topic: "/devices/wb-mr6c_103/controls/K1"
-    command_topic: "/devices/wb-mr6c_103/controls/K1/on"
-#    availability_topic: "home/bedroom/switch1/available"
-    payload_on: "1"
-    payload_off: "0"
-    state_on: "1"
-    state_off: "0"
-    optimistic: false
-    qos: 0
-    retain: true
-  - platform: "mqtt"
-    name: "wall_switch_158d00022ec91b"
-    state_topic: "zigbee2mqtt/0x00158d00022ec91b"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    payload_off: "OFF"
-    payload_on: "ON"
-    value_template: "{{ value_json.state }}"
-    command_topic: "zigbee2mqtt/0x00158d00022ec91b/set"
-  - platform: hikvisioncam
-    host: 192.168.1.138
-    name: Датчик кухня
-    username: admin
-    password: !secret camera_kitchen_switch
-  - platform: hikvisioncam
-    host: 192.168.1.139
-    name: Датчик гостиная
-    username: admin
-    password: !secret camera_kitchen_switch
-  - platform: broadlink
-    host: 192.168.1.28
-    mac: '78:0f:77:28:00:9e'
-    timeout: 15
+  - platform: mqtt
+    name: "sub"
+    command_topic: "/spruthub/accessories/63/11/13/set"
+    state_topic: "/spruthub/accessories/63/11/13"
+    payload_off: "false"
+    payload_on: "true"
+  - platform: wake_on_lan
+    mac: 70:85:c2:2e:9a:4e
+    name: Комп Кусей
+  - platform: template
     switches:
-      marantz_receiver_test:
-        friendly_name: "Ресивер тест"
-        command_on: 'AAAAcwAAABIAAAAgAAAAIAAAACAAAAAeAAAAIAAAACAAAACgAAAAIAAAAEEAAAAgAAAAHgAAACAAAAAgAAAAIAAAACAAAAAgAAAAQAAACqM=='
-        command_off: 'AAAAcwAAABEAAAAgAAAAIAAAACAAAAAeAAAAIAAAACAAAACgAAAAIAAAAEEAAAAgAAAAHgAAACAAAAAgAAAAIAAAACAAAABBAAAKwQ=='
-      marantz_receiver:
-        friendly_name: "Ресивер"
-        command_on: 'JgCcAB4dHhweHT0bHhwfHB4dHhwfOh4cOx0eAAuuHxwfGx8bPhseHB8bHx0fGx86Hxs8HB8AC6wfHB4cHxw9Gx8bHxsgHB8bHzofGzwcHwALrB4dHhweHTwcHhweHB8dHhwfOh4cOx0eAAutHh0eHB4dPBweHB4cHx0eHB86Hhw7HR4AC60eHR4cHh08HB4cHh0eHR4dHDweHDsdHgANBQAAAAAAAAAAAAAAAA=='
-        command_off: 'JgCcAB4dHhweHT0bHhwfHB4dHhwfOh4cOx0eAAuuHxwfGx8bPhseHB8bHx0fGx86Hxs8HB8AC6wfHB4cHxw9Gx8bHxsgHB8bHzofGzwcHwALrB4dHhweHTwcHhweHB8dHhwfOh4cOx0eAAutHh0eHB4dPBweHB4cHx0eHB86Hhw7HR4AC60eHR4cHh08HB4cHh0eHR4dHDweHDsdHgANBQAAAAAAAAAAAAAAAA=='
+      xiaomi_fresh_air_ventilator_display:
+        friendly_name: Дисплей
+        value_template: "{{ is_state_attr('fan.pritochka', 'display', True) }}"
+        turn_on:
+          service: xiaomi_miio_airpurifier.fan_set_display_on
+          data:
+            entity_id: fan.pritochka
+        turn_off:
+          service: xiaomi_miio_airpurifier.fan_set_display_off
+          data:
+            entity_id: fan.pritochka
+        icon_template: mdi:lightbulb-outline
 
+      xiaomi_fresh_air_ventilator_child_lock:
+        friendly_name: Защита от детей
+        value_template: "{{ is_state_attr('fan.pritochka', 'child_lock', True) }}"
+        turn_on:
+          service: xiaomi_miio_airpurifier.fan_set_child_lock_on
+          data:
+            entity_id: fan.pritochka
+        turn_off:
+          service: xiaomi_miio_airpurifier.fan_set_child_lock_off
+          data:
+            entity_id: fan.pritochka
+        icon_template: mdi:lock-outline
+
+      xiaomi_fresh_air_ventilator_buzzer:
+        friendly_name: Пищалка
+        value_template: "{{ is_state_attr('fan.pritochka', 'buzzer', True) }}"
+        turn_on:
+          service: xiaomi_miio_airpurifier.fan_set_buzzer_on
+          data:
+            entity_id: fan.pritochka
+        turn_off:
+          service: xiaomi_miio_airpurifier.fan_set_buzzer_off
+          data:
+            entity_id: fan.pritochka
+        icon_template: mdi:volume-high
 weather:
   - platform: darksky
     api_key: !secret darksky_api_key
-#  - platform: yandex
-#    api_key: !secret ya_api_weather
+    mode: daily
 
 camera:
-  - platform: ffmpeg
-    name: Kitchen
-    input: !secret kitchen_url
-  - platform: ffmpeg
-    name: Door
-    input: !secret door_url
-  - platform: ffmpeg
-    name: Dacha
-    input: !secret dacha_url
+  - platform: generic
+    name: Домофон
+    still_image_url: !secret domofon_pic
+    stream_source: !secret domofon_url
+  - platform: generic
+    name: Парковка
+    still_image_url: !secret parkovka_pic
+    stream_source: !secret parkovka_url
+    username: !secret parkovka_login
+    password: !secret parkovka_password
+  - platform: generic
+    name: dacha
+    still_image_url: !secret dacha_pic
+    stream_source: !secret dacha_url
+    username: !secret dacha_login
+    password: !secret dacha_password
+  - platform: generic
+    name: dacha2
+    still_image_url: !secret dacha2_pic
+    stream_source: !secret dacha2_url
+    username: !secret dacha2_login
+    password: !secret dacha2_password
+  - platform: generic
+    name: dacha3
+    still_image_url: !secret dacha3_pic
+    stream_source: !secret dacha3_url
+    username: !secret dacha3_login
+    password: !secret dacha3_password
+  - platform: generic
+    name: Вход
+    still_image_url: !secret vhod_pic
+    stream_source: !secret vhod_url
+  - platform: generic
+    name: Подъезд
+    still_image_url: podezd_pic
+    stream_source: podezd_url
+    username: !secret podezd_login
+    password: !secret podezd_password
+  - platform: generic
+    name: Двор
+    still_image_url: !secret dvor_pic
+    stream_source: !secret dvor_url
+  - platform: generic
+    name: Парковка2
+    still_image_url: !secret parkovka2_pic
+    stream_source: !secret parkovka2_url
+  - platform: generic
+    name: Парковка3
+    still_image_url: !secret parkovka3_pic
+    stream_source: !secret parkovka3_url
+  - platform: generic
+    name: Парк
+    still_image_url: !secret park_pic
+    stream_source: !secret park_url
+  - platform: generic
+    name: 1 подъезд
+    still_image_url: !secret 1podezd_pic
+    stream_source: !secret 1podezd_url
+  - platform: generic
+    name: 2 подъезд
+    still_image_url: !secret 2podezd_pic
+    stream_source: !secret 2podezd_url
 
-mqtt:
-  broker: 192.168.1.101
-  port: 1883
-  client_id: home-assistant-2
-  keepalive: 60
-  username: !secret mqtt_login
-  password: !secret mqtt_password
-  protocol: 3.1
-  birth_message:
-    topic: "tele/hass2/LWT"
-    payload: "Online"
-    qos: 1
-    retain: true
-  will_message:
-    topic: "tele/hass2/LWT"
-    payload: "Offline"
-    qos: 1
-    retain: true
-
-fan:
-  - platform: xiaomi_miio
-    host: 192.168.1.158
-    token: !secret smartmi_token
-    model: zhimi.humidifier.ca1
-
-shopping_list:
+stream:
 
 smartir:
+  update_branch: rc
 
 climate:
-  - platform: generic_thermostat
-    name: Ariston
-    heater: switch.ariston_wb
-    target_sensor: sensor.temperature_158d00023764a1
-    ac_mode: False
-    min_temp: 18
-    max_temp: 30
-    hot_tolerance: 0.3
-    cold_tolerance: 0.2
   - platform: smartir
     name: Aeronik
-    device_code: 1001
-    controller_send_service: switch.broadlink_send_packet_192_168_1_28
-    temperature_sensor: sensor.temperature_158d00023764a1
-    humidity_sensor: sensor.humidity_158d00023764a1
-#    power_sensor: binary_sensor.ac_power
-
-zwave:
-  usb_path: /dev/ttyACM0
-  network_key: !secret zwave_secret
-
+    device_code: 9999
+    controller_data: 192.168.1.215
+    temperature_sensor: sensor.temperature_nest_living_room
+  - platform: smartir
+    name: Ballu
+    device_code: 5520
+    controller_data: 192.168.1.215
+    temperature_sensor: sensor.temperature_nest_bedroom
 
 telegram_bot:
   - platform: polling
-#    proxy_url: !secret telegram_proxy_url
-#    proxy_params:
-#      username: !secret telegram_proxy_username
-#      password: !secret telegram_proxy_password
     api_key: !secret telegram_bot_api_key
     allowed_chat_ids:
       - !secret telegram_bot_chat_id
@@ -252,52 +391,58 @@ notify:
     chat_id: !secret telegram_bot_group_chat_id
 
 recorder:
-  purge_interval: 1
-  purge_keep_days: 7
-  include:
-    entities:
-      - binary_sensor.motion
-      - binary_sensor.door_window_sensor_158d0001a9c200
-      - binary_sensor.motion_sensor_158d0001b177e8
-      - binary_sensor.switch_158d0001aaab2d
-      - binary_sensor.water_leak
-      - binary_sensor.motion_living_room_motion
-      - climate.aeronik
-      - climate.ariston
-      - device_tracker.iphone
-      - device_tracker.iphone_2
-      - fan.xiaomi_miio_device
-      - group.all_devices
-      - group.all_lights
-      - light.bathroom
-      - light.bathroom_wall
-      - light.gateway_light_286c07f1c549
-      - light.living_room
-      - lock.polycontrol_danalock_v3_btze_locked_2
-      - sensor.cpu_temperature
-      - sensor.co2_kitchen
-      - sensor.humidity_158d00023764a1
-      - sensor.pressure_158d00023764a1
-      - sensor.processor_use
-      - sensor.temperature_158d00023764a1
-      - sensor.humidity_kitchen
-      - sensor.temperature_kitchen
-      - sensor.yandex_route_to_home_lilith
-      - sensor.water_level
-      - switch.datchik_kukhnia
-      - switch.ariston_wb
-      - switch.ariston_esphome
-      - switch.marantz_receiver
-      - switch.plug_158d0001b195fd
+  purge_keep_days: 14
+
+alarm_control_panel:
+  - platform: manual
+    name: Сигнализация
+    code: !secret alarm_code
+    arming_time: 30
+    delay_time: 20
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 0
+      delay_time: 0
+
+utility_meter:
+  ballu_daily_energy:
+    source: sensor.ballu_energy
+    cycle: daily
+    name: Ежедневное потребление кондиционера
+  ballu_monthly_energy:
+    source: sensor.ballu_energy
+    cycle: monthly
+    name: Ежемесячное потребление кондиционера
+  full_daily_energy:
+    source: sensor.full_energy
+    cycle: daily
+    name: Общее ежедневное потребление
+  full_monthly_energy:
+    source: sensor.full_energy
+    cycle: monthly
+    name: Общее ежемесячное потребление
 
 google_assistant:
   project_id: !secret google_project_id
-  api_key: !secret google_api_key
+  service_account: !include service_account.json
+  #  api_key: !secret google_key
+  secure_devices_pin: !secret google_secret
+  #  report_state: true
   exposed_domains:
-    - switch
-    - light
-    - climate
-    - media_player
+    # - sensor
+    # - light
+    # - climate
+    # - media_player
+    # - cover
+    - camera
+
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+  project_id: !secret nest_project_id # ("Project ID" in the Device Access Console)
+  subscriber_id: !secret nest_subscriber_id
 
 zone:
   - name: Unico
@@ -305,70 +450,176 @@ zone:
     longitude: !secret unico_long
     radius: 100
     icon: mdi:database
-  - name: Magic Smoker
-    latitude: !secret ms_lat
-    longitude: !secret ms_long
-    radius: 100
-    icon: mdi:water
   - name: Dacha
     latitude: !secret dacha_lat
     longitude: !secret dacha_long
     radius: 100
     icon: mdi:shovel
-  - name: EXNails
-    latitude: !secret nail_lat
-    longitude: !secret nail_long
-    radius: 100
-    icon: mdi:emoticon-poop
-
-apple_tv:
-  - host: 192.168.1.237
-    login_id: !secret appletv_login_id
-    name: Apple TV
-#    start_off: true
-    credentials: !secret appletv_creditnails
 
 homekit:
-  port: 51828 
-  auto_start: false
-  filter:
-    include_domains:
-      - climate
-      - device_tracker
-      - switch
-      - binary_sensor
-      - light
-      - media_player
-      - lock
-      - sensor
-      - script
-    exclude_entities:
-      - sensor.cpu_temperature
-      - sensor.co2_kitchen
-  entity_config:
-    media_player.samsungtv:
-      feature_list:
-        - feature: on_off
-
+  - name: Hassio
+    filter:
+      include_domains:
+        - climate
+        - alarm_control_panel
+      include_entities:
+        - binary_sensor.datchik_dvizheniia_motion
+        - binary_sensor.kitchen_motion_wirenboard
+        - binary_sensor.podezd_motion
+        - binary_sensor.motion_sensor_158d0001b177e8
+        - binary_sensor.water_leak
+        #  - cover.garage_door
+        - media_player.marantz
+        - switch.komp_kusei
+        - switch.plug_158d0001b195fd
+        - light.gateway_light_286c07f1c549
+        - humidifier.smartmi_evaporative_humidifer_2
+        - humidifier.uvlazhnitel
+      exclude_entities:
+        - climate.aeronik
+        - climate.ballu
+    entity_config:
+      alarm_control_panel.signalizatsiia:
+        code: !secret alarm_code
+  - name: Камера Домофон
+    port: 21067
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.domofon
+    entity_config:
+      camera.domofon:
+        video_codec: copy
+        linked_doorbell_sensor: binary_sensor.domofon_incoming_call
+        support_audio: false
+  - name: Камера Двор
+    port: 21068
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.dvor
+    entity_config:
+      camera.dvor:
+        video_codec: copy
+        support_audio: false
+  - name: Камера 1 Подъезд
+    port: 21069
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.1_podezd
+    entity_config:
+      camera.1_podezd:
+        video_codec: copy
+        support_audio: false
+  - name: Камера 2 Подъезд
+    port: 21070
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.2_podezd
+    entity_config:
+      camera.2_podezd:
+        video_codec: copy
+        support_audio: false
+  - name: Камера Парк
+    port: 21071
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.park
+    entity_config:
+      camera.park:
+        video_codec: copy
+        support_audio: false
+  - name: Камера Парковка
+    port: 21072
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.parkovka
+    entity_config:
+      camera.parkovka:
+        video_codec: copy
+        support_audio: false
+  - name: Камера Парковка 2
+    port: 21073
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.parkovka2
+    entity_config:
+      camera.parkovka2:
+        video_codec: copy
+        support_audio: false
+  - name: Камера Парковка 3
+    port: 21074
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.parkovka3
+    entity_config:
+      camera.parkovka3:
+        video_codec: copy
+        support_audio: false
+  - name: Камера Вход
+    port: 21075
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.vkhod
+    entity_config:
+      camera.vkhod:
+        video_codec: copy
+        audio_codec: copy
+        stream_source: !secret vhod_stream_source
+  - name: Камера Подъезд
+    port: 21076
+    mode: accessory
+    filter:
+      include_entities:
+        - camera.podezd
+    entity_config:
+      camera.podezd:
+        video_codec: copy
+        support_audio: false
+        stream_source: !secret podezd_stream_source
+        linked_motion_sensor: binary_sensor.podezd_motion
+        linked_doorbell_sensor: binary_sensor.zvonok
+  - name: Замок домофон
+    port: 21077
+    mode: accessory
+    filter:
+      include_entities:
+        - lock.domofon
+ 
 media_player:
-  - platform: samsungtv
-    host: 192.168.1.195
-    port: 8002
-    name: SamsungTV
-    timeout: 10
   - platform: mpd
-    host: 192.168.1.101
-    password: !secret mpd_psss
+    host: 192.168.1.247
+  - platform: smartir
+    name: Marantz
+    unique_id: marantz
+    device_code: 9001
+    controller_data: 192.168.1.240
 
-influxdb:
-  host: 192.168.1.101
-  port: 8086
-  database: homeassistant
-  username: !secret influx_user
-  password: !secret influx_pass
-  max_retries: 3
-  default_measurement: state
 
-duckdns:
-  domain: !secret duckdns_domain
-  access_token: !secret duckdns_token
+webhook:
+wake_on_lan:
+
+bodymiscale:
+  alex:
+    sensors:
+      weight: sensor.weight_alex
+      impedance: sensor.impedance_alex
+    height: 180
+    born: "1989-11-14"
+    gender: "male"
+    model_miscale: "181B"
+  lilypad:
+    sensors:
+      weight: sensor.weight_lilypad
+      impedance: sensor.impedance_lilypad
+    height: 156
+    born: "1993-01-14"
+    gender: "female"
+    model_miscale: "181B"

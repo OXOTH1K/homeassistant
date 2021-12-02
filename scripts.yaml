@@ -1,59 +1,86 @@
 maximum:
   alias: Radio Maximum
   sequence:
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.mpd
-        media_content_type: playlist
-        media_content_id: maximum
-
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.mpd
+      media_content_type: playlist
+      media_content_id: maximum
 nashe:
   alias: Наше радио
   sequence:
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.mpd
-        media_content_type: playlist
-        media_content_id: nashe
-
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.mpd
+      media_content_type: playlist
+      media_content_id: nashe
 ultra:
   alias: Radio Ultra
   sequence:
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.mpd
-        media_content_type: playlist
-        media_content_id: ultra
-
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.mpd
+      media_content_type: playlist
+      media_content_id: ultra
 volgogradfm:
   alias: Волгоград ФМ
   sequence:
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.mpd
-        media_content_type: playlist
-        media_content_id: volgogradfm
-
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.mpd
+      media_content_type: playlist
+      media_content_id: volgogradfm
 play_pause_mpd:
   alias: Плей, Пауза
   sequence:
-    - service: media_player.media_play_pause
-      data:
-        entity_id: media_player.mpd
-
+  - service: media_player.media_play_pause
+    data:
+      entity_id: media_player.mpd
 stop_mpd:
   alias: Остановить
   sequence:
-    - service: media_player.media_stop
-      data:
-        entity_id: media_player.mpd
-
+  - service: media_player.media_stop
+    data:
+      entity_id: media_player.mpd
 restart_ha:
   alias: Перезагрузка HA
   sequence:
-    - service: homeassistant.restart
-
+  - service: homeassistant.restart
 restart_server:
   alias: Перезагрузка Сервера
   sequence:
-    - service: shell_command.restart_server
+  - service: shell_command.restart_server
+yandex_tts1:
+  alias: TTS зависит от настройки "Режим звука"!
+  sequence:
+  - service: tts.alice_say
+    entity_id: media_player.yandex_station_ff98f0105f763367a6fa6596
+    data_template:
+      message: Температура в комнате {{ states("sensor.mi_t_e72e001350d1")|round }}
+        градуса.
+yandex_tts2:
+  alias: TTS не зависит от настройки "Режим звука"
+  sequence:
+  - service: media_player.play_media
+    entity_id: media_player.yandex_station_ff98f0105f763367a6fa6596
+    data:
+      media_content_id: Привет хозяин. Как твои дела?
+      media_content_type: text
+update_shopping_list:
+  alias: Обновить список покупок
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: update
+      media_content_type: shopping_list
+    target:
+      device_id: a75c0f8c23ca48c0ad5f734816e5a577
+  mode: single
+yandex_beta:
+  alias: Включить режим Бета
+  sequence:
+  - service: media_player.play_media
+    entity_id: media_player.yandex_station_ff98f0105f763367a6fa6596
+    data:
+      media_content_id: true
+      media_content_type: beta

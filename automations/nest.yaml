@@ -1,0 +1,159 @@
+#Установить температуру обогрева на 21 градус и увлажнитель на максимум, когда никого нет дома
+- alias: Mode Nest to eco if all people out
+  trigger:
+    platform: numeric_state
+    entity_id: proximity.home
+    above: 4000
+  condition:
+    condition: template
+    value_template: "{{ state_attr('proximity.home', 'dir_of_travel') == 'away_from' }}"
+  action:
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: eco
+
+#Установить температуру обогрева на 24.5 градуса и увлажнителя на авто, когда я еду домой
+- alias: Mode Nest to none if anybody go home
+  trigger:
+    - platform: zone
+      event: leave
+      zone: zone.unico
+      entity_id: device_tracker.oxoth1ks_iphone
+    - platform: zone
+      event: leave
+      zone: zone.unico
+      entity_id: device_tracker.liliia
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.devices
+        state: not_home
+      - condition: time
+        after: "14:00:00"
+  action:
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: none
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: heat
+    - service: notify.telegram
+      data_template:
+        message: "Включен обогрев."
+
+#Установить температуру обогрева на 22 градуса и увлажнителя на минимум ночью
+- alias: Mode Nest to Eco on night
+  trigger:
+    platform: state
+    entity_id: group.lights
+    from: "on"
+    to: "off"
+    for:
+      minutes: 15
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: "23:00:00"
+        before: "05:00:00"
+      - condition: state
+        entity_id: group.devices
+        state: home
+  action:
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: eco
+
+#Установить температуру обогрева на 24.5 градуса утром
+- alias: Mode Nest to none on morning
+  trigger:
+    platform: time
+    at: "05:00:00"
+  condition:
+    condition: state
+    entity_id: group.devices
+    state: home
+  action:
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: none
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: heat
+#Установить температуру обогрева на 24.5 градуса когда кто то приходит домой (страховка)
+- alias: Mode Nest to none when somebody in home
+  trigger:
+    platform: state
+    entity_id: group.devices
+    from: "not_home"
+    to: "home"
+  condition:
+    - condition: time
+      after: "07:00:00"
+      before: "23:55:00"
+  action:
+    - service: climate.set_preset_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: none
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.living_room
+        preset_mode: heat
+
+#Включить охлаждение конциционера
+- alias: Set Nest cool to on
+  trigger:
+    platform: state
+    entity_id: binary_sensor.nest_cooler
+    from: "off"
+    to: "on"
+    for:
+      seconds: 5
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ballu
+        temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
+        hvac_mode: cool
+
+#Выключить охлаждение конциционера
+- alias: Set Nest cool to off
+  trigger:
+    platform: state
+    entity_id: binary_sensor.nest_cooler
+    from: "on"
+    to: "off"
+    for:
+      seconds: 5
+  action:
+    - service: climate.turn_off
+      entity_id: climate.ballu
+
+#Синхронизация температуры охлаждения конциционера
+- alias: Sync Nest Cool temp
+  trigger:
+    platform: state
+    entity_id: sensor.temperature_nest_set_bedroom
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: climate.ballu
+        state: "cool"
+      - condition: state
+        entity_id: binary_sensor.nest_cooler
+        state: "on"
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ballu
+        temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
+        hvac_mode: cool

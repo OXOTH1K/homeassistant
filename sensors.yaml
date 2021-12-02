@@ -1,126 +1,129 @@
-- platform: command_line
-  name: CPU Temperature
-  command: "cat /sys/class/thermal/thermal_zone2/temp"
-  unit_of_measurement: "°C"
-  value_template: '{{ (value | multiply(0.001)) | round(1) }}'
-
-
 - platform: systemmonitor
   resources:
     - type: disk_use_percent
       arg: /home
-#    - type: disk_use_percent
-#      arg: /mnt/home-media
+    #    - type: disk_use_percent
+    #      arg: /mnt/home-media
     - type: memory_use_percent
     - type: processor_use
     - type: last_boot
 
+- platform: github
+  access_token: !secret github_access_token
+  repositories:
+    - path: 'SberHome/infra'
+    - path: 'SberHome/devops_stuff'
+
+- platform: time_date
+  display_options:
+    - "time"
 
 - platform: template
   sensors:
-    door_sensor_battery_158d0001a9c200:
-      friendly_name: "Заряд датчика открытия двери"
-      unit_of_measurement: '%'
-      value_template: "{{ states.binary_sensor.door_window_sensor_158d0001a9c200.attributes. battery_level }}"
-      icon_template: >-
-        {% set battery_level = (states.binary_sensor.door_window_sensor_158d0001a9c200.attributes.battery_level)|int('unknown') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
-          mdi:battery-unknown
-        {% else %}
-          {% if battery_round >= 100 %}
-            mdi:battery
-          {% elif battery_round > 0 %}
-            mdi:battery-{{ battery_round }}
-          {% else %}
-            mdi:battery-alert
-          {% endif %}
-        {% endif %}
-    motion_sensor_battery_158d0001b177e8:
-      friendly_name: "Заряд датчика движения"
-      unit_of_measurement: '%'
-      value_template: "{{ states.binary_sensor.motion_sensor_158d0001b177e8.attributes. battery_level }}"
-      icon_template: >-
-        {% set battery_level = (states.binary_sensor.motion_sensor_158d0001b177e8.attributes.battery_level)|int('unknown') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
-          mdi:battery-unknown
-        {% else %}
-          {% if battery_round >= 100 %}
-            mdi:battery
-          {% elif battery_round > 0 %}
-            mdi:battery-{{ battery_round }}
-          {% else %}
-            mdi:battery-alert
-          {% endif %}
-        {% endif %}
-    temperature_sensor_battery_158d00023764a1:
-      friendly_name: "Заряд датчика температуры"
-      unit_of_measurement: '%'
-      value_template: "{{ states.sensor.temperature_158d00023764a1.attributes. battery_level }}"
-      icon_template: >-
-        {% set battery_level = (states.sensor.temperature_158d00023764a1.attributes.battery_level)|int('unknown') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
-          mdi:battery-unknown
-        {% else %}
-          {% if battery_round >= 100 %}
-            mdi:battery
-          {% elif battery_round > 0 %}
-            mdi:battery-{{ battery_round }}
-          {% else %}
-            mdi:battery-alert
-          {% endif %}
-        {% endif %}
-    button_sensor_battery_158d0001aaab2d:
-      friendly_name: "Заряд кнопки"
-      unit_of_measurement: '%'
-      value_template: "{{ states.binary_sensor.switch_158d0001aaab2d.attributes. battery_level }}"
-      icon_template: >-
-        {% set battery_level = (states.binary_sensor.switch_158d0001aaab2d.attributes.battery_level)|int('unknown') %}
-        {% set battery_round = (battery_level|int / 10)|int * 10 %}
-        {% if battery_level == 'unknown' %}
-          mdi:battery-unknown
-        {% else %}
-          {% if battery_round >= 100 %}
-            mdi:battery
-          {% elif battery_round > 0 %}
-            mdi:battery-{{ battery_round }}
-          {% else %}
-            mdi:battery-alert
-          {% endif %}
-        {% endif %}
-    water_level:
-      friendly_name: Уровень воды
-      unit_of_measurement: '%'
-      entity_id:  fan.xiaomi_miio_device
+    currentvoltage_lookin:
+      friendly_name: Заряд LOOK.in
+      device_class: battery
+      unit_of_measurement: "%"
+      value_template: '{{ [(((states.sensor.look_in_sostoianie.attributes["CurrentVoltage"] | int ) - 4473) / 17.13) | round(2) , 100] | min }}'
+    #    water_level:
+    #      friendly_name: Уровень воды
+    #      unit_of_measurement: "%"
+    #      entity_id: fan.xiaomi_miio_device
+    #      value_template: >-
+    #        {{ [state_attr('fan.xiaomi_miio_device', 'depth') / 1.2, 100] | min | int  }}
+    #      icon_template: "mdi:cup"
+    temperature_nest_set_bedroom:
+      friendly_name: "Nest установленная температура в спальне"
+      unit_of_measurement: "°C"
+      value_template: "{{ state_attr('climate.living_room', 'temperature') }}"
+      device_class: temperature
+    temperature_nest_set_living_room:
+      friendly_name: "Nest установленная температура в гостиной"
+      unit_of_measurement: "°C"
+      value_template: "{{ state_attr('climate.dining_room', 'temperature') }}"
+      device_class: temperature
+    temperature_nest_bedroom:
+      friendly_name: "Nest температура в спальне"
+      unit_of_measurement: "°C"
+      value_template: "{{ state_attr('climate.living_room', 'current_temperature') }}"
+      device_class: temperature
+    temperature_nest_living_room:
+      friendly_name: "Nest температура в гостиной"
+      unit_of_measurement: "°C"
+      value_template: "{{ state_attr('climate.dining_room', 'current_temperature') }}"
+      device_class: temperature
+    weight_alex:
+      friendly_name: "Сашин вес"
       value_template: >-
-        {{ [state_attr('fan.xiaomi_miio_device', 'depth') / 1.2, 100] | min | int  }}
-      icon_template: "mdi:cup"
-    heater_on_sensor:
-      friendly_name: "Датчик работы"
-      value_template: >
-        {% if states.switch.ariston.state == 'on' %}
-          {{states.sensor.temperature_158d00023764a1.state}}
-        {% else %}
-          0
-        {% endif %}
+        {% set weight = states('sensor.ble_weight_c6da343caecc') | float %}
+          {% if 74 <= weight <= 80 %}
+            {{ states("sensor.ble_weight_c6da343caecc") }}
+          {% else %}
+            {{ states("sensor.weight_alex") }}
+          {% endif %}
+      unit_of_measurement: "kg"
+      icon_template: mdi:weight-kilogram
+    weight_lilypad:
+      friendly_name: "Лилин вес"
+      value_template: >-
+        {% set weight = states('sensor.ble_weight_c6da343caecc') | float %}
+          {% if 52 <= weight <= 57 %}
+            {{ states("sensor.ble_weight_c6da343caecc") }}
+          {% else %}
+            {{ states("sensor.weight_lilypad") }}
+          {% endif %}
+      unit_of_measurement: "kg"
+      icon_template: mdi:weight-kilogram
+    impedance_alex:
+      friendly_name: "Impedance Саша"
+      value_template: >-
+        {% set weight = states('sensor.ble_weight_c6da343caecc') | float %}
+          {% if 74 <= weight <= 80 %}
+            {{ states("sensor.ble_impedance_c6da343caecc") }}
+          {% else %}
+            {{ states("sensor.impedance_alex") }}
+          {% endif %}
+      unit_of_measurement: "ohm"
+      icon_template: mdi:omega
+    impedance_lilypad:
+      friendly_name: "Impedance Лиля"
+      value_template: >-
+        {% set weight = states('sensor.ble_weight_c6da343caecc') | float %}
+          {% if 52 <= weight <= 57 %}
+            {{ states("sensor.ble_impedance_c6da343caecc") }}
+          {% else %}
+            {{ states("sensor.impedance_lilypad") }}
+          {% endif %}
+      unit_of_measurement: "ohm"
+      icon_template: mdi:omega
+    xiaomi_fresh_air_ventilator_co2:
+      friendly_name: CO² спальня
+      value_template: '{{ states.fan.pritochka.attributes.co2 }}'
+      unit_of_measurement: 'ppm'
+      icon_template: mdi:molecule-co2
+        
+    xiaomi_fresh_air_ventilator_pm25:
+      friendly_name: PM2.5 спальня
+      value_template: '{{ states.fan.pritochka.attributes.pm25 }}'
+      unit_of_measurement: 'µg/m³'
+      icon_template: mdi:grain
+        
+    xiaomi_fresh_air_ventilator_temperature:
+      friendly_name: Температура приточка
+      value_template: '{{ states.fan.pritochka.attributes.temperature }}'
+      unit_of_measurement: '°C'
+      icon_template: mdi:thermometer
 
-# - platform: yandex_weather
-#   lat: !secret home_lat
-#   lon: !secret home_long
-#   api_key: !secret ya_api_weather
-#   scan_interval: 1800
-
-#- platform: seventeentrack
-#  username: !secret 17track_login
-#  password: !secret 17track_pass
-
-
+    xiaomi_fresh_air_ventilator_favorite_speed:
+      friendly_name: Favorite speed
+      value_template: '{{ states.fan.pritochka.attributes.favorite_speed }}'
+      icon_template: mdi:speedometer
 - platform: darksky
   api_key: !secret darksky_api_key
-#  forecast:
-#    - 0
+  forecast:
+    - 0
+    - 1
+    - 2
   language: ru
   monitored_conditions:
     - summary
@@ -131,109 +134,221 @@
     - visibility
     - temperature_high
     - temperature_low
+    - apparent_temperature_high
+    - apparent_temperature_low
     - apparent_temperature
     - precip_probability
 
-
+# Spruthub
 - platform: "mqtt"
-  state_topic: "zigbee2mqtt/0x00158d00029ba6bc"
-  name: "cube"
-  availability_topic: "zigbee2mqtt/bridge/state"
-  icon: "mdi:gesture-double-tap"
-  value_template: "{{ value_json.action }}"
-  json_attributes: 
-    - "linkquality"
-    - "battery"
-    - "voltage"
-    - "angle"
-    - "side"
-    - "from_side"
-    - "to_side"
-    - "brightness"
-    - "angle_x_absolute"
-    - "angle_y_absolute"
-    - "angle_z"
-    - "angle_y"
-    - "angle_x"
-    - "unknown_data"
-  force_update: true
-
-- platform: "mqtt"
-  state_topic: "zigbee2mqtt/0x00158d000240306d"
-  availability_topic: "zigbee2mqtt/bridge/state"
-  device_class: "battery"
-  value_template: "{{ value_json.battery }}"
-  json_attributes: 
-    - "linkquality"
-    - "voltage"
-    - "action"
-    - "sensitivity"
-
-- platform: "mqtt"
-  state_topic: "/devices/wb-msw-v3_20/controls/CO2"
+  state_topic: "/spruthub/accessories/84/21/24"
   name: "CO2 Kitchen"
-  unit_of_measurement: 'ppm'
-  icon: mdi:periodic-table-co2
+  unit_of_measurement: "ppm"
+  icon: mdi:molecule-co2
 
 - platform: "mqtt"
-  state_topic: "/devices/wb-msw-v3_20/controls/Temperature"
+  state_topic: "/spruthub/accessories/84/11/13"
   name: "Temperature Kitchen"
-  unit_of_measurement: '°C'
+  unit_of_measurement: "°C"
+  device_class: temperature
   icon: mdi:thermometer
 
 - platform: "mqtt"
-  state_topic: "/devices/wb-msw-v3_20/controls/Humidity"
+  state_topic: "/spruthub/accessories/84/14/16"
   name: "Humidity Kitchen"
-  unit_of_measurement: '%'
+  unit_of_measurement: "%"
+  device_class: humidity
   icon: mdi:water-percent
 
+- platform: "mqtt"
+  state_topic: "/spruthub/accessories/84/17/20"
+  name: "VOC Kitchen"
+  unit_of_measurement: "ppm"
+  icon: mdi:nuke
 
-#- platform: influxdb
-#  username: !secret influx_user
-#  password: !secret influx_pass
-#  host: 192.168.1.101
-#  queries:
-#    - name: "db_size_influx"
-#      unit_of_measurement: MB
-#      value_template: '{{ (value | float / 1024 /1024) | round(1) }}'
-#      group_function: sum
-#      measurement: '"monitor"."shard"'
-#      database: _internal
-#      where: 'time > now() - 10s'
-#      field: diskBytes
+- platform: "mqtt"
+  state_topic: "/spruthub/accessories/84/29/31"
+  name: "LUX Kitchen"
+  unit_of_measurement: "lx"
+  device_class: illuminance
+
+- platform: "mqtt"
+  state_topic: "/spruthub/accessories/49/21/24"
+  name: "VOC Lifecontrol"
+  unit_of_measurement: "ppm"
+  icon: mdi:nuke
+
+- platform: "mqtt"
+  state_topic: "/spruthub/accessories/49/11/13"
+  name: "Temperature Lifecontrol"
+  unit_of_measurement: "°C"
+  device_class: temperature
+  icon: mdi:thermometer
+
+- platform: "mqtt"
+  state_topic: "/spruthub/accessories/49/14/16"
+  name: "Humidity Lifecontrol"
+  unit_of_measurement: "%"
+  device_class: humidity
+  icon: mdi:water-percent
+
+- platform: "mqtt"
+  state_topic: "/spruthub/accessories/49/17/20"
+  name: "CO2 Lifecontrol"
+  unit_of_measurement: "ppm"
+  icon: mdi:molecule-co2
+#Energy
+- platform: mqtt
+  name: "Напряжение"
+  device_class: voltage
+  unit_of_measurement: V
+  state_topic: "/spruthub/accessories/102/11/13"
+
+- platform: mqtt
+  name: "Full Energy"
+  device_class: energy
+  unit_of_measurement: kWh
+  state_class: measurement
+  state_topic: "/spruthub/accessories/103/14/16"
+
+- platform: mqtt
+  name: "Общee потребление"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/103/11/13"
+
+- platform: mqtt
+  name: "PC Energy"
+  device_class: energy
+  unit_of_measurement: kWh
+  state_class: measurement
+  state_topic: "/spruthub/accessories/104/14/16"
+
+- platform: mqtt
+  name: "Комп потребление"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/104/11/13"
+
+- platform: mqtt
+  name: "Server Energy"
+  device_class: energy
+  unit_of_measurement: kWh
+  state_class: measurement
+  state_topic: "/spruthub/accessories/105/14/16"
+
+- platform: mqtt
+  name: "Серверная потребление"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/105/11/13"
+
+- platform: mqtt
+  name: "Bedroom Energy"
+  device_class: energy
+  unit_of_measurement: kWh
+  state_class: measurement
+  state_topic: "/spruthub/accessories/106/14/16"
+
+- platform: mqtt
+  name: "Спальня потребление"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/106/11/13"
+
+- platform: mqtt
+  name: "Childroom Energy"
+  device_class: energy
+  unit_of_measurement: kWh
+  state_class: measurement
+  state_topic: "/spruthub/accessories/107/14/16"
+
+- platform: mqtt
+  name: "Детская потребление"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/107/11/13"
+
+- platform: mqtt
+  name: "Washing Room Energy"
+  device_class: energy
+  unit_of_measurement: kWh
+  state_class: measurement
+  state_topic: "/spruthub/accessories/108/14/16"
+
+- platform: mqtt
+  name: "Прачечная потребление"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/108/11/13"
+
+- platform: mqtt
+  name: "Ballu Energy"
+  device_class: energy
+  state_class: measurement
+  unit_of_measurement: kWh
+  state_topic: "/spruthub/accessories/63/18/20"
+
+- platform: mqtt
+  name: "Текущее Потребление кондиционера"
+  device_class: power
+  unit_of_measurement: W
+  state_topic: "/spruthub/accessories/63/15/17"
+
+- platform: "mqtt"
+  name: "Вода счетчик 1"
+  state_topic: "powermeter/main/value"
+  value_template: "{{ value }}"
+  unit_of_measurement: "m3"
+  icon: "mdi:water"
 
 - platform: filesize
   file_paths:
-  - /config/home-assistant_v2.db
+    - /config/home-assistant_v2.db
 
+- platform: rest
+  resource: http://192.168.1.215/device
+  name: LOOK.in состояние
+  scan_interval: 900
+  json_attributes:
+    - CurrentVoltage
+    - BluetoothMode
+  value_template: "{{ value_json.PowerMode }}"
 
-###яндекс
-
-- platform: rest # 'Пробки в Волгограде'
-  name: 'Yandex traffic'
-  resource: "https://core-jams-rdr.maps.yandex.net/description/traffic-light?lang=ru_RU&ids=38,10950"
-  value_template: "{{ value_json['data'].features[0]['properties']['JamsMetaData']['level'] }}"
-  scan_interval: 300
-  unit_of_measurement: баллов
-  headers:
-    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36"
+#- platform: rest
+#  resource: http://192.168.1.215/sensors/ir/raw
+#  name: LOOK.in код
+#  scan_interval: 10
+#  value_template: "{{ value_json['Raw']['Updated'] }}"
+#  json_attributes_path: '$.Raw'
+#  json_attributes:
+#    - Value
 
 - platform: yandex_maps
-  start: 'device_tracker.iphone'
+  start: "device_tracker.liliia"
   destination: !secret ya_home
   name: Yandex route to home Lilith
 
 - platform: yandex_maps
-  start: 'device_tracker.iphone'
-  destination: !secret ya_nails
+  start: "device_tracker.liliia"
+  destination: !secret ya_unico
   name: Yandex route to work Lilith
 
 - platform: yandex_maps
-  start: 'device_tracker.iphone_2'
+  start: "device_tracker.oxoth1ks_iphone"
   destination: !secret ya_home
   name: Yandex route to home hunt mf
 
 - platform: yandex_maps
-  start: 'device_tracker.iphone_2'
+  start: "device_tracker.oxoth1ks_iphone"
   destination: !secret ya_unico
   name: Yandex route to work hunt mf
+
+- platform: seventeentrack
+  username: !secret seventeentrack_login
+  password: !secret seventeentrack_password
+#- platform: xiaomi_miio_raw
+#  name: Поилка
+#  host: 192.168.1.121
+#  token: 202aafe5d9944f08adcd780ad5b765d7
+#  default_properties_getter: get_properties

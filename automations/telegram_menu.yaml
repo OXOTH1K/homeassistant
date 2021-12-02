@@ -1,0 +1,635 @@
+####### Меню телеги
+- alias: Telegram Bot Main Menu
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: "/start"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: |
+          Добро пожаловать! 
+          Введите символ / что бы увидеть список команд. 
+          Нажмите на кнопку ниже для вызова необходимого действия.
+        keyboard:
+          - "Гостиная, Кухня, Ванная"
+          - '{{"\U0001F4F7"}}, {{"\U0001F4F9"}}'
+          - '{{"\U0001F321"}}, {{"\U0001F525"}}, {{"\U00002744"}}'
+          - '{{"\U0001F465"}}, {{"\U0001F512"}}, {{"\U0001F6A6"}}'
+
+- alias: Telegram Bot Main Menu key
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: "/key"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: "Нажмите на кнопку ниже для вызова необходимого действия."
+        keyboard:
+          - "Гостиная, Кухня, Ванная"
+          - '{{"\U0001F4F7"}}, {{"\U0001F4F9"}}'
+          - '{{"\U0001F321"}}, {{"\U0001F525"}}, {{"\U00002744"}}'
+          - '{{"\U0001F465"}}, {{"\U0001F512"}}, {{"\U0001F6A6"}}'
+
+#Действия для комнат
+- alias: Telegram bot actions for rooms
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: "/rooms"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U000026AB"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: "Выберите комнату"
+        inline_keyboard:
+          - "Гостиная:/living_room_st, Кухня:/kitchen_st, Ванная:/bathroom_st"
+
+#Для гостиной
+- alias: Telegram bot actions for living room
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/living_room_st"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "Гостиная"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: |
+          В гостиной на данный момент:
+          Освещение:  {% if is_state('light.living_room', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+          Ресивер: {% if is_state('switch.marantz_receiver', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+          Саб: {% if is_state('switch.plug_158d0001b195fd', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+          Телек: {% if is_state('media_player.samsungtv', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+
+#Для Кухни
+- alias: Telegram bot actions for kitchen
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/kitchen_st"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "Кухня"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: |
+          На кухне на данный момент:
+          Ночник:  {% if is_state('light.gateway_light_286c07f1c549', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+          Датчик движения: {% if is_state('switch.datchik_kukhnia', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+
+#Для Ванной
+- alias: Telegram bot actions for bathroom
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/bathroom_st"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "Ванная"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: |
+          В ванной на данный момент:
+          Освещение:  {% if is_state('light.bathroom', 'off') %}{{ "\U000026AB" }}{% else %}{{ "\U0001F4A1" }}{% endif %}
+
+#Действия для фото
+- alias: Telegram bot actions for photo
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: "/picture"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U0001F4F7"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: "Выберите камеру"
+        inline_keyboard:
+          - "Гостиная:/living_room_cam_pic, Кухня:/kitchen_cam_pic"
+
+#Фото для гостиной
+- alias: Telegram bot actions for photo living room
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/living_room_cam_pic"
+  action:
+    - service: telegram_bot.send_photo
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        url: !secret url_camera_door_telegram
+        caption: "Гостинаяв"
+
+#Фото для кухни
+- alias: Telegram bot actions for photo kitchen
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/kitchen_cam_pic"
+  action:
+    - service: telegram_bot.send_photo
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        url: !secret url_camera_kitchen_telegram
+        caption: "Кухня"
+
+#Действия для Климата
+- alias: Telegram bot actions for climate
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: "/climate"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Климат*"
+        message: |
+          Сейчас в доме: 
+          {{ "\U0001F321" }}: {{ states('sensor.temperature_158d00023764a1') }}°, {{ "\U0001F4A6" }}: {{ states('sensor.humidity_158d00023764a1') }}%
+          На улице: 
+          {{ "\U0001F321" }}: {{ states.weather.dark_sky.attributes. temperature }}°, {{ "\U0001F4A6" }}: {{ states.weather.dark_sky.attributes. humidity }}%
+          Выберите, что надо настроить?
+        inline_keyboard:
+          - "Обогрев:/heater, Охлаждение:/conditioner"
+
+#Действия для обогрева
+- alias: Telegram bot actions for heater
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/heater"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U0001F525"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Обогрев*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.ariston.attributes. temperature }}°
+          Статус: {{ states('climate.ariston') }}
+        inline_keyboard:
+          - "+0.5°:/up_temp_heat, -0.5°:/down_temp_heat"
+          - "Включить:/heater_on"
+          - "Выключить:/heater_off"
+
+#Действия для обогрева + 0.5
+- alias: Telegram bot actions for heater up
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/up_temp_heat"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Обогрев*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.ariston.attributes. temperature + 0.5}}°
+          Статус: {{ states('climate.ariston') }}
+        inline_keyboard:
+          - "+0.5°:/up_temp_heat, -0.5°:/down_temp_heat"
+          - "Включить:/heater_on"
+          - "Выключить:/heater_off"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ariston
+        temperature: "{{ states.climate.ariston.attributes.temperature + 0.5 }}"
+
+#Действия для обогрева - 0.5
+- alias: Telegram bot actions for heater down
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/down_temp_heat"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Обогрев*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.ariston.attributes. temperature - 0.5}}°
+          Статус: {{ states('climate.ariston') }}
+        inline_keyboard:
+          - "+0.5°:/up_temp_heat, -0.5°:/down_temp_heat"
+          - "Включить:/heater_on"
+          - "Выключить:/heater_off"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ariston
+        temperature: "{{ states.climate.ariston.attributes.temperature - 0.5 }}"
+
+#Действия для обогрева выкл
+- alias: Telegram bot actions for heater off
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/heater_off"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Обогрев*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.ariston.attributes. temperature }}°
+          Статус: Выкл
+        inline_keyboard:
+          - "+0.5°:/up_temp_heat, -0.5°:/down_temp_heat"
+          - "Включить:/heater_on"
+          - "Выключить:/heater_off"
+    - service: climate.set_operation_mode
+      data_template:
+        entity_id: climate.ariston
+        operation_mode: "off"
+
+#Действия для обогрева вкл
+- alias: Telegram bot actions for heater on
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/heater_on"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Обогрев*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.ariston.attributes. temperature }}°
+          Статус: Вкл
+        inline_keyboard:
+          - "+0.5°:/up_temp_heat, -0.5°:/down_temp_heat"
+          - "Включить:/heater_on"
+          - "Выключить:/heater_off"
+    - service: climate.set_operation_mode
+      data_template:
+        entity_id: climate.ariston
+        operation_mode: "heat"
+
+#Действия для охлаждения
+- alias: Telegram bot actions for conditioner
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/conditioner"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U00002744"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Охлаждение*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.aeronik.attributes. temperature }}°
+          Статус: {{ states('climate.aeronik') }}
+        inline_keyboard:
+          - "+1°:/up_temp_cool, -1°:/down_temp_cool"
+          - "Включить:/conditioner_on"
+          - "Выключить:/conditioner_off"
+
+#Действия для охлаждения + 1
+- alias: Telegram bot actions for conditioner up
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/up_temp_cool"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Охлаждение*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.aeronik.attributes. temperature + 1}}°
+          Статус: {{ states('climate.aeronik') }}
+        inline_keyboard:
+          - "+1°:/up_temp_cool, -1°:/down_temp_cool"
+          - "Включить:/conditioner_on"
+          - "Выключить:/conditioner_off"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.aeronik
+        temperature: "{{ states.climate.aeronik.attributes.temperature + 1 }}"
+
+#Действия для охлаждения - 1
+- alias: Telegram bot actions for conditioner down
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/down_temp_cool"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Охлаждение*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.aeronik.attributes. temperature - 1}}°
+          Статус: {{ states('climate.aeronik') }}
+        inline_keyboard:
+          - "+1°:/up_temp_cool, -1°:/down_temp_cool"
+          - "Включить:/conditioner_on"
+          - "Выключить:/conditioner_off"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.aeronik
+        temperature: "{{ states.climate.aeronik.attributes.temperature - 1 }}"
+
+#Действия для охлаждения выкл
+- alias: Telegram bot actions for conditioner off
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/conditioner_off"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Охлаждение*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.aeronik.attributes. temperature }}°
+          Статус: Выкл
+        inline_keyboard:
+          - "+1°:/up_temp_cool, -1°:/down_temp_cool"
+          - "Включить:/conditioner_on"
+          - "Выключить:/conditioner_off"
+    - service: climate.set_operation_mode
+      data_template:
+        entity_id: climate.aeronik
+        operation_mode: "off"
+
+#Действия для охлаждения вкл
+- alias: Telegram bot actions for conditioner on
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/conditioner_on"
+  action:
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        title: "*Охлаждение*"
+        message: |
+          Заданная {{ "\U0001F321" }}: {{ states.climate.aeronik.attributes. temperature }}°
+          Статус: Вкл
+        inline_keyboard:
+          - "+1°:/up_temp_cool, -1°:/down_temp_cool"
+          - "Включить:/conditioner_on"
+          - "Выключить:/conditioner_off"
+    - service: climate.set_operation_mode
+      data_template:
+        entity_id: climate.aeronik
+        operation_mode: "cool"
+
+#Действия для погоды
+- alias: Telegram bot actions for meteo
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: "/meteo"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U0001F321"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Погодные условия*"
+        message: |
+          Сейчас в доме: 
+          {{ "\U0001F321" }}: {{ states('sensor.temperature_158d00023764a1') }}°, {{ "\U0001F4A6" }}: {{ states('sensor.humidity_158d00023764a1') }}%
+          На улице: 
+          {{ "\U0001F321" }}: {{ states.weather.dark_sky.attributes. temperature }}°, {{ "\U0001F4A6" }}: {{ states.weather.dark_sky.attributes. humidity }}%
+
+#Действия для безопастности
+- alias: Telegram bot actions for security
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: "/security"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U0001F512"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Безопастность*"
+        message: |
+          Дверь: {% if is_state('binary_sensor.door_window_sensor_158d0001a9c200', 'off') %}Закрыта{% else %}Открыта!{% endif %}
+          Датчик ванная: {% if is_state('binary_sensor.motion_sensor_158d0001b177e8', 'off') %}Нет движения{% else %}Движение!{% endif %}
+          Датчик кухня: {% if is_state('binary_sensor.motion_sensor_158d0001b177e8', 'off') %}Нет движения{% else %}Движение!{% endif %}
+
+#Действия для людей
+- alias: Telegram bot actions for people
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: "/people"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U0001F465"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Человеки*"
+        message: |
+          Сашка: {% if is_state('device_tracker.iphone_2', 'home') %}Дома{% elif is_state('device_tracker.iphone_2', 'Unico') %}Унико{% elif is_state('device_tracker.iphone_2', 'Magic Smoker') %}Magic Smoker{% elif is_state('device_tracker.iphone_2', 'Dacha') %}На даче{% else %}Не дома{% endif %}
+          Лилька: {% if is_state('device_tracker.iphone', 'home') %}Дома{% else %}Не дома{% endif %}
+
+#Пробки и прочее
+- alias: Telegram bot actions for jams
+  initial_state: True
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: "/jams"
+    - platform: event
+      event_type: telegram_text
+      event_data:
+        text: "\U0001F6A6"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        message: "Какая информация по пробкам нужна?"
+        inline_keyboard:
+          - "Общая ситуация на дорогах:/jams_all"
+          - "Сашке домой:/jams_home_hunt, Лильке домой:/jams_home_lilith"
+          - "Сашке до работы:/jams_work_hunt, Лильке до работы:/jams_work_lilith"
+
+#Пробки общие
+- alias: Telegram bot actions for jams all
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/jams_all"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Пробки в городе:*"
+        message: >
+          {% if states('sensor.yandex_traffic') | float < 4 %}
+            {{ "\U0001F49A" }} {{ states('sensor.yandex_traffic') }} баллов
+          {% elif states('sensor.yandex_traffic') | float > 6 %}
+            {{ "\U0000E022" }} {{ states('sensor.yandex_traffic') }} баллов
+          {% else %}
+            {{ "\U0001F49B" }} {{ states('sensor.yandex_traffic') }} баллов
+          {% endif %}
+
+#Сашке домой
+- alias: Telegram bot actions for jams home hunt
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/jams_home_hunt"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Сашке до дома:*"
+        message: |
+          {{"\U0001F697"}}Время в пути: {{ states('sensor.yandex_route_to_home_hunt_mf')}} мин. 
+          {{"\U0001F6A6"}}Пробки по дороге: {{ state_attr('sensor.yandex_route_to_home_hunt_mf','jamsrate') }} {{  state_attr('sensor.yandex_route_to_home_hunt_mf','jamsmeasure')}}.
+          {{"\U0001F5FA"}}[Кратчайший маршрут]({{ state_attr('sensor.yandex_route_to_home_hunt_mf','mapurl') }})
+
+#Лильке домой
+- alias: Telegram bot actions for jams home lilith
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/jams_home_lilith"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Лильке до дома:*"
+        message: |
+          {{"\U0001F697"}}Время в пути: {{ states('sensor.yandex_route_to_home_lilith')}} мин. 
+          {{"\U0001F6A6"}}Пробки по дороге: {{ state_attr('sensor.yandex_route_to_home_lilith','jamsrate') }} {{  state_attr('sensor.yandex_route_to_home_lilith','jamsmeasure')}}.
+          {{"\U0001F5FA"}}[Кратчайший маршрут]({{ state_attr('sensor.yandex_route_to_home_lilith','mapurl') }})
+
+#Сашке до работы
+- alias: Telegram bot actions for jams work hunt
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/jams_work_hunt"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Сашке до работы:*"
+        message: |
+          {{"\U0001F697"}}Время в пути: {{ states('sensor.yandex_route_to_work_hunt_mf')}} мин. 
+          {{"\U0001F6A6"}}Пробки по дороге: {{ state_attr('sensor.yandex_route_to_work_hunt_mf','jamsrate') }} {{  state_attr('sensor.yandex_route_to_work_hunt_mf','jamsmeasure')}}.
+          {{"\U0001F5FA"}}[Кратчайший маршрут]({{ state_attr('sensor.yandex_route_to_work_hunt_mf','mapurl') }})
+
+#Лильке до работы
+- alias: Telegram bot actions for jams work lilith
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/jams_work_lilith"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.user_id }}"
+        title: "*Лильке до работы:*"
+        message: |
+          {{"\U0001F697"}}Время в пути: {{ states('sensor.yandex_route_to_work_lilith')}} мин. 
+          {{"\U0001F6A6"}}Пробки по дороге: {{ state_attr('sensor.yandex_route_to_work_lilith','jamsrate') }} {{  state_attr('sensor.yandex_route_to_work_lilith','jamsmeasure')}}.
+          {{"\U0001F5FA"}}[Кратчайший маршрут]({{ state_attr('sensor.yandex_route_to_work_lilith','mapurl') }})

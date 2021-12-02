@@ -1,0 +1,62 @@
+- alias: Hey Lilia
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.door_window_sensor_158d0001a9c200
+      to: "off"
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: "9:00:00"
+        before: "22:00:00"
+      - condition: state
+        entity_id: person.lily
+        state: "home"
+        for:
+          minutes: 5
+  action:
+    - delay: 5
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_ff98f0105f763367a6fa6596
+      data:
+        media_content_id: Привет кусь! Как твои дела?
+        media_content_type: text
+
+#Чайник вскипел
+- id: Kettle_heat
+  alias: Kettle heat
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.ble_temperature_ac9a22f2cad2
+    above: 99
+  action:
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_mg0000000000000192070000e0cd4a69
+      data:
+        media_content_id: Хозяин, чайник вскипел! Садитесь пить чай, пожалуйста.
+        media_content_type: text
+    - service: notify.telegram_group
+      data_template:
+        message: |
+          {{"\U0001FAD6"}} Вскипел!
+- id: weight lilypad
+  alias: weight lilypad
+  trigger:
+    platform: state
+    entity_id: sensor.weight_lilypad
+  action:
+    - service: notify.telegram_group
+      data_template:
+        message: |
+          Лиля, ваш вес: {{ states('sensor.weight_lilypad')}}
+
+- id: weight alex
+  alias: weight alex
+  trigger:
+    platform: state
+    entity_id: sensor.weight_alex
+  action:
+    - service: notify.telegram_group
+      data_template:
+        message: |
+          Саша, ваш вес: {{ states('sensor.weight_alex')}}

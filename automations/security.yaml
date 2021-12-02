@@ -1,0 +1,59 @@
+# Уведомление о движении в гостиной, если никого нет дома
+- id: Notify_Gostinaya
+  alias: Notify_Gostinaya
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_living_room_motion
+    to: "on"
+    for:
+      seconds: 15
+  condition:
+    condition: state
+    entity_id: group.devices
+    state: not_home
+  action:
+    - service: camera.record
+      data_template:
+        entity_id: camera.door
+        filename: "/config/www/video_captures/snapshot_{{ entity_id }}.mp4"
+        lookback: 5
+        duration: 15
+    - delay: 00:00:30
+    - service: telegram_bot.send_video
+      data_template:
+        target:
+          - !secret telegram_bot_chat_id
+          - !secret telegram_bot_chat_id_2
+        file: "/config/www/video_captures/snapshot_{{ entity_id }}.mp4"
+        caption: "Обнаружено движение в гостиной!"
+
+# Уведомление о движении на кухне, если никого нет дома
+- id: Notify_Kuhnya
+  alias: Notify_Kuhnya
+  initial_state: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.datchik_dvizheniia_motion
+    to: "on"
+    for:
+      seconds: 15
+  condition:
+    condition: state
+    entity_id: group.devices
+    state: not_home
+  action:
+    - service: camera.record
+      data_template:
+        entity_id: camera.kitchen
+        filename: "/config/www/video_captures/snapshot_{{ entity_id }}.mp4"
+        lookback: 5
+        duration: 15
+    - delay: 00:00:30
+    - service: telegram_bot.send_video
+      data_template:
+        target:
+          - !secret telegram_bot_chat_id
+          - !secret telegram_bot_chat_id_2
+        file: "/config/www/video_captures/snapshot_{{ entity_id }}.mp4"
+        caption: "Обнаружено движение на кухне!"

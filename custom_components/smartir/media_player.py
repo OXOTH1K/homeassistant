@@ -1,6 +1,4 @@
 import asyncio
-from base64 import b64encode
-import binascii
 import json
 import logging
 import os.path
@@ -8,49 +6,54 @@ import os.path
 import voluptuous as vol
 
 from homeassistant.components.media_player import (
-    MediaPlayerDevice, PLATFORM_SCHEMA)
+    MediaPlayerEntity, PLATFORM_SCHEMA)
 from homeassistant.components.media_player.const import (
     SUPPORT_TURN_OFF, SUPPORT_TURN_ON, SUPPORT_PREVIOUS_TRACK,
-    SUPPORT_NEXT_TRACK, SUPPORT_VOLUME_STEP,SUPPORT_VOLUME_MUTE, 
-    SUPPORT_SELECT_SOURCE, MEDIA_TYPE_CHANNEL)
+    SUPPORT_NEXT_TRACK, SUPPORT_VOLUME_STEP, SUPPORT_VOLUME_MUTE, 
+    SUPPORT_PLAY_MEDIA, SUPPORT_SELECT_SOURCE, MEDIA_TYPE_CHANNEL)
 from homeassistant.const import (
     CONF_NAME, STATE_OFF, STATE_ON, STATE_UNKNOWN)
-from homeassistant.core import callback, split_entity_id
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.restore_state import RestoreEntity
-from . import Helper
+from . import COMPONENT_ABS_DIR, Helper
+from .controller import get_controller
 
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = "SmartIR Media Player"
+DEFAULT_DEVICE_CLASS = "tv"
+DEFAULT_DELAY = 0.5
 
+CONF_UNIQUE_ID = 'unique_id'
 CONF_DEVICE_CODE = 'device_code'
-CONF_CONTROLLER_SEND_SERVICE = "controller_send_service"
+CONF_CONTROLLER_DATA = "controller_data"
+CONF_DELAY = "delay"
 CONF_POWER_SENSOR = 'power_sensor'
+CONF_SOURCE_NAMES = 'source_names'
+CONF_DEVICE_CLASS = 'device_class'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
+    vol.Optional(CONF_UNIQUE_ID): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Required(CONF_DEVICE_CODE): cv.positive_int,
-    vol.Required(CONF_CONTROLLER_SEND_SERVICE): cv.entity_id,
-    vol.Optional(CONF_POWER_SENSOR): cv.entity_id
+    vol.Required(CONF_CONTROLLER_DATA): cv.string,
+    vol.Optional(CONF_DELAY, default=DEFAULT_DELAY): cv.string,
+    vol.Optional(CONF_POWER_SENSOR): cv.entity_id,
+    vol.Optional(CONF_SOURCE_NAMES): dict,
+    vol.Optional(CONF_DEVICE_CLASS, default=DEFAULT_DEVICE_CLASS): cv.string
 })
 
-async def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
+async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the IR Media Player platform."""
-    name = config.get(CONF_NAME)
     device_code = config.get(CONF_DEVICE_CODE)
-    controller_send_service = config.get(CONF_CONTROLLER_SEND_SERVICE)
-    power_sensor = config.get(CONF_POWER_SENSOR)
-
-    abspath = os.path.dirname(os.path.abspath(__file__))
     device_files_subdir = os.path.join('codes', 'media_player')
-    device_files_path = os.path.join(abspath, device_files_subdir)
+    device_files_absdir = os.path.join(COMPONENT_ABS_DIR, device_files_subdir)
 
-    if not os.path.isdir(device_files_path):
-        os.makedirs(device_files_path)
+    if not os.path.isdir(device_files_absdir):
+        os.makedirs(device_files_absdir)
 
     device_json_filename = str(device_code) + '.json'
-    device_json_path = os.path.join(device_files_path, device_json_filename)
+    device_json_path = os.path.join(device_files_absdir, device_json_filename)
 
     if not os.path.exists(device_json_path):
         _LOGGER.warning("Couldn't find the device Json file. The component will " \
@@ -58,37 +61,37 @@ async def async_setup_platform(hass, config, async_add_devices, discovery_info=N
 
         try:
             codes_source = ("https://raw.githubusercontent.com/"
-                            "smartHomeHub/SmartIR/master/smartir/"
+                            "smartHomeHub/SmartIR/master/"
                             "codes/media_player/{}.json")
 
-            Helper.downloader(codes_source.format(device_code), device_json_path)
-        except:
+            await Helper.downloader(codes_source.format(device_code), device_json_path)
+        except Exception:
             _LOGGER.error("There was an error while downloading the device Json file. " \
-                          "Please check your internet connection or the device code " \
+                          "Please check your internet connection or if the device code " \
                           "exists on GitHub. If the problem still exists please " \
-                          "place the file manually in the proper location.")
+                          "place the file manually in the proper directory.")
             return
 
     with open(device_json_path) as j:
         try:
             device_data = json.load(j)
-        except:
+        except Exception:
             _LOGGER.error("The device JSON file is invalid")
             return
 
-    async_add_devices([SmartIRMediaPlayer(
-        hass, name, device_code, device_data, controller_send_service, 
-        power_sensor
+    async_add_entities([SmartIRMediaPlayer(
+        hass, config, device_data
     )])
 
-class SmartIRMediaPlayer(MediaPlayerDevice, RestoreEntity):
-    def __init__(self, hass, name, device_code, device_data, 
-                 controller_send_service, power_sensor):
+class SmartIRMediaPlayer(MediaPlayerEntity, RestoreEntity):
+    def __init__(self, hass, config, device_data):
         self.hass = hass
-        self._name = name
-        self._device_code = device_code
-        self._controller_send_service = controller_send_service
-        self._power_sensor = power_sensor
+        self._unique_id = config.get(CONF_UNIQUE_ID)
+        self._name = config.get(CONF_NAME)
+        self._device_code = config.get(CONF_DEVICE_CODE)
+        self._controller_data = config.get(CONF_CONTROLLER_DATA)
+        self._delay = config.get(CONF_DELAY)
+        self._power_sensor = config.get(CONF_POWER_SENSOR)
 
         self._manufacturer = device_data['manufacturer']
         self._supported_models = device_data['supportedModels']
@@ -100,6 +103,8 @@ class SmartIRMediaPlayer(MediaPlayerDevice, RestoreEntity):
         self._sources_list = []
         self._source = None
         self._support_flags = 0
+
+        self._device_class = config.get(CONF_DEVICE_CLASS)
 
         #Supported features
         if 'off' in self._commands and self._commands['off'] is not None:
@@ -122,13 +127,28 @@ class SmartIRMediaPlayer(MediaPlayerDevice, RestoreEntity):
             self._support_flags = self._support_flags | SUPPORT_VOLUME_MUTE
 
         if 'sources' in self._commands and self._commands['sources'] is not None:
-            self._support_flags = self._support_flags | SUPPORT_SELECT_SOURCE
+            self._support_flags = self._support_flags | SUPPORT_SELECT_SOURCE | SUPPORT_PLAY_MEDIA
+
+            for source, new_name in config.get(CONF_SOURCE_NAMES, {}).items():
+                if source in self._commands['sources']:
+                    if new_name is not None:
+                        self._commands['sources'][new_name] = self._commands['sources'][source]
+
+                    del self._commands['sources'][source]
 
             #Sources list
             for key in self._commands['sources']:
                 self._sources_list.append(key)
 
         self._temp_lock = asyncio.Lock()
+
+        #Init the IR/RF controller
+        self._controller = get_controller(
+            self.hass,
+            self._supported_controller, 
+            self._commands_encoding,
+            self._controller_data,
+            self._delay)
 
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
@@ -139,17 +159,25 @@ class SmartIRMediaPlayer(MediaPlayerDevice, RestoreEntity):
         if last_state is not None:
             self._state = last_state.state
 
-        
-
     @property
     def should_poll(self):
         """Push an update after each command."""
         return True
 
     @property
+    def unique_id(self):
+        """Return a unique ID."""
+        return self._unique_id
+
+    @property
     def name(self):
         """Return the name of the media player."""
         return self._name
+
+    @property
+    def device_class(self):
+        """Return the device_class of the media player."""
+        return self._device_class
 
     @property
     def state(self):
@@ -192,16 +220,20 @@ class SmartIRMediaPlayer(MediaPlayerDevice, RestoreEntity):
 
     async def async_turn_off(self):
         """Turn the media player off."""
-        self._state = STATE_OFF
-        self._source = None
         await self.send_command(self._commands['off'])
-        await self.async_update_ha_state()
+        
+        if self._power_sensor is None:
+            self._state = STATE_OFF
+            self._source = None
+            await self.async_update_ha_state()
 
     async def async_turn_on(self):
         """Turn the media player off."""
-        self._state = STATE_ON
         await self.send_command(self._commands['on'])
-        await self.async_update_ha_state()
+
+        if self._power_sensor is None:
+            self._state = STATE_ON
+            await self.async_update_ha_state()
 
     async def async_media_previous_track(self):
         """Send previous track command."""
@@ -234,48 +266,30 @@ class SmartIRMediaPlayer(MediaPlayerDevice, RestoreEntity):
         await self.send_command(self._commands['sources'][source])
         await self.async_update_ha_state()
 
+    async def async_play_media(self, media_type, media_id, **kwargs):
+        """Support channel change through play_media service."""
+        if self._state == STATE_OFF:
+            await self.async_turn_on()
+
+        if media_type != MEDIA_TYPE_CHANNEL:
+            _LOGGER.error("invalid media type")
+            return
+        if not media_id.isdigit():
+            _LOGGER.error("media_id must be a channel number")
+            return
+
+        self._source = "Channel {}".format(media_id)
+        for digit in media_id:
+            await self.send_command(self._commands['sources']["Channel {}".format(digit)])
+        await self.async_update_ha_state()
+
     async def send_command(self, command):
         async with self._temp_lock:
-            supported_controller = self._supported_controller
-            commands_encoding = self._commands_encoding
-
-            service_domain = split_entity_id(self._controller_send_service)[0]
-            service_name = split_entity_id(self._controller_send_service)[1]
-
-            if supported_controller.lower() == 'broadlink':
-                if commands_encoding.lower() == 'base64':
-                    pass
-                elif commands_encoding.lower() == 'hex':
-                    try:
-                        command = binascii.unhexlify(command)
-                        command = b64encode(command).decode('utf-8')
-                    except:
-                        _LOGGER.error("Error while converting Hex to Base64")
-                        return
-                elif commands_encoding.lower() == 'pronto':
-                    try:
-                        command = command.replace(' ',"")
-                        command = bytearray.fromhex(command)
-                        command = Helper.pronto2lirc(command)
-                        command = Helper.lirc2broadlink(command)
-                        command = b64encode(command).decode('utf-8')
-                    except:
-                        _LOGGER.error("Error while converting Pronto to Base64")
-                        return
-                else:
-                    _LOGGER.error("The commands encoding provided in the JSON file is not supported")
-                    return
-
-                service_data = {
-                    'packet': command
-                }
-
-            else:
-                _LOGGER.error("The controller provided in the JSON file is not supported")
-                return
-
-            await self.hass.services.async_call(service_domain, service_name, service_data)
-
+            try:
+                await self._controller.send(command)
+            except Exception as e:
+                _LOGGER.exception(e)
+            
     async def async_update(self):
         if self._power_sensor is None:
             return

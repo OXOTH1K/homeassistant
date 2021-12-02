@@ -1,0 +1,116 @@
+#Установить температуру обогрева на 21 градус и увлажнитель на максимум, когда никого нет дома
+- alias: Temperature heater 21 if all people out
+  trigger:
+    platform: numeric_state
+    entity_id: proximity.home
+    above: 4000
+  condition:
+    condition: template
+    value_template: "{{ state_attr('proximity.home', 'dir_of_travel') == 'away_from' }}"
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.dining_room
+        temperature: "21"
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.living_room
+        temperature: "21"
+
+#Установить температуру обогрева на 24.5 градуса и увлажнителя на авто, когда я еду домой
+- alias: Temperature heater 24.5 if anybody go home
+  trigger:
+    - platform: zone
+      event: leave
+      zone: zone.unico
+      entity_id: device_tracker.oxoth1ks_iphone
+    - platform: zone
+      event: leave
+      zone: zone.unico
+      entity_id: device_tracker.liliia
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.devices
+        state: not_home
+      - condition: time
+        after: "14:00:00"
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.dining_room
+        temperature: "23.5"
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.living_room
+        temperature: "23"
+    - service: notify.telegram
+      data_template:
+        message: "Включен обогрев."
+
+#Установить температуру обогрева на 22 градуса и увлажнителя на минимум ночью
+- alias: Temperature heater 22 on night
+  trigger:
+    platform: state
+    entity_id: group.lights
+    from: "on"
+    to: "off"
+    for:
+      minutes: 15
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: "23:00:00"
+        before: "05:00:00"
+      - condition: state
+        entity_id: group.devices
+        state: home
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.dining_room
+        temperature: "21"
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.living_room
+        temperature: "21"
+#Установить температуру обогрева на 24.5 градуса утром
+- alias: Temperature heater 24.5 on morning
+  trigger:
+    platform: time
+    at: "05:00:00"
+  condition:
+    condition: state
+    entity_id: group.devices
+    state: home
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.dining_room
+        temperature: "24"
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.living_room
+        temperature: "23"
+#Установить температуру обогрева на 24.5 градуса когда кто то приходит домой (страховка)
+- alias: Temperature heater 24.5 when somebody in home
+  trigger:
+    platform: state
+    entity_id: group.devices
+    from: "not_home"
+    to: "home"
+  condition:
+    - condition: time
+      after: "07:00:00"
+      before: "23:55:00"
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.dining_room
+        temperature: "24"
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.living_room
+        temperature: "23"

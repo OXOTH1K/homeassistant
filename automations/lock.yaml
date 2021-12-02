@@ -1,0 +1,68 @@
+#Закрыть замок через 8 секунд
+- alias: Lock door after 8 sec
+  #  initial_state: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.vkhod
+    from: "on"
+    to: "off"
+    for:
+      seconds: 8
+  action:
+    - service: lock.lock
+      entity_id: lock.vkhod
+    - service: notify.telegram
+      data_template:
+        message: "Замок закрыт автоматически"
+
+#Открыть замок, когда кто то приходит домой
+- alias: Open dor when people go home
+  #  initial_state: True
+  trigger:
+    - platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: device_tracker.oxoth1ks_iphone
+    - platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: device_tracker.iphone
+  condition:
+    condition: state
+    entity_id: binary_sensor.vkhod
+    state: "off"
+    for:
+      minutes: 15
+  action:
+    - service: lock.unlock
+      entity_id: lock.vkhod
+    - service: notify.telegram
+      data_template:
+        message: "Замок открыт по приходу домой"
+
+#Закрыть замок, когда дома нет никого 2 минуты (страховка)
+- alias: Close dor for 2 minutes when never to home
+  #  initial_state: True
+  trigger:
+    platform: state
+    entity_id: group.devices
+    from: "home"
+    to: "not_home"
+    for:
+      minutes: 2
+  action:
+    service: lock.lock
+    entity_id: lock.vkhod
+
+#Домофон открыт - закрыть по покончанию таймера
+- alias: close domofon
+  trigger:
+    platform: state
+    entity_id: input_boolean.lock
+    from: "off"
+    to: "on"
+    for:
+      seconds: 8
+  action:
+    service: lock.lock
+    entity_id: lock.domofon

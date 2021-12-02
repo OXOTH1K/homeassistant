@@ -1,0 +1,90 @@
+# Тест телеги
+- alias: "pingpong"
+  initial_state: True
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: "/ping"
+  action:
+    - service: notify.telegram
+      data:
+        message: "pong!"
+
+# Оповоещение в телеге перед дорогой
+- id: weather and good luck
+  initial_state: True
+  alias: Good Luck notification
+  trigger:
+    platform: state
+    entity_id: device_tracker.oxoth1ks_iphone
+    to: "not_home"
+  action:
+    - service: telegram_bot.send_photo
+      data_template:
+        target: !secret telegram_bot_chat_id
+        url: !secret url_camera_kitchen_telegram
+        caption: >
+          {{ ("Хорошей дороги ", "Не горюй ", "Ни пуха, ни пера ", "пеши на сях, ")|random }}%USERNAME%!
+
+          Температура дома {{ states('sensor.temperature_158d00023764a1') }}°
+
+          Температура на улице {{ states.weather.dark_sky.attributes. temperature }}°
+
+          Входная дверь {% if is_state('binary_sensor.door_window_sensor_158d0001a9c200', 'off') %}закрыта{% else %}открыта{% endif %}
+
+# Низкий уровени воды в увлажнителе
+#- alias: Low Humidifier Water Level
+#  initial_state: True
+#  trigger:
+#    platform: numeric_state
+#    entity_id: sensor.water_level
+#    above: 14
+#    below: 16
+#  action:
+#    - service: notify.telegram
+#      data_template:
+#        message: "В увлажнителе заканчивается вода!"
+
+# Перегрев ЦПУ в сервере
+#- id: hight_temperature_cpu_alarm
+#  initial_state: True
+#  alias: Alarm hight temperature
+#  trigger:
+#    platform: numeric_state
+#    entity_id: sensor.cpu_temperature
+#    above: 65
+#    for:
+#      minutes: 5
+#  action:
+#    - service: notify.ios_iphone_2
+#      data:
+#        title: "Внимание!"
+#        message: "Температура процессора превысила 65°"
+#    - service: notify.telegram
+#      data:
+#        message: "Температура процессора превысила 65°"
+
+# Уведомления о пробках
+- id: Notify_jam_to_home_lilith
+  alias: Notify_jam_to_home_lilith
+  initial_state: True
+  trigger:
+    platform: time
+    at: "17:00:00"
+  condition:
+    condition: time
+    weekday:
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: !secret telegram_bot_chat_id_2
+        title: "*Дорожный дайджест*"
+        message: |
+          {{"\U0001F697"}}Время в пути до дома: {{ states('sensor.yandex_route_to_home_lilith')}} мин. 
+          {{"\U0001F6A6"}}Пробки по дороге: {{ state_attr('sensor.yandex_route_to_home_lilith','jamsrate') }} {{  state_attr('sensor.yandex_route_to_home_lilith','jamsmeasure')}}.
+          {{"\U0001F6A6"}}[Кратчайший маршрут]({{ state_attr('sensor.yandex_route_to_home_lilith','mapurl') }})

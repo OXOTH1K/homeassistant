@@ -1,0 +1,29 @@
+- alias: "Turn off sound"
+  trigger:
+    platform: state
+    entity_id: media_player.samsung_tv_remote
+    to: "off"
+  action:
+    - service: media_player.turn_off
+      data:
+        entity_id:
+          - media_player.marantz
+    - service: switch.turn_off
+      data:
+        entity_id:
+          - switch.sub
+
+- alias: "Turn on sound"
+  trigger:
+    platform: state
+    entity_id: media_player.samsung_tv_remote
+    from: "off"
+  action:
+    - service: media_player.turn_on
+      data:
+        entity_id:
+          - media_player.marantz
+    - service: switch.turn_on
+      data:
+        entity_id:
+          - switch.sub

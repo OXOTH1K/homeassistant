@@ -1,7 +1,5 @@
 light.living_room:
   friendly_name: Ночник
-light.bathroom:
-  friendly_name: Освещение
 automation.good_luck_notification:
   friendly_name: Хорошей дороги
 automation.notify_crazy_cat:
@@ -12,13 +10,10 @@ automation.turn_on_bathroom_light:
   friendly_name: Включение света в ванной
 automation.turn_on_living_room_light_for_open_door:
   friendly_name: Включение света при открытии двери
-
 climate.aeronik:
   friendly_name: Кондиционер
 climate.ariston:
   friendly_name: Котел
-switch.wall_switch_158d00022ec91b_2:
-  friendly_name: Освещение
 fan.xiaomi_miio_device:
   friendly_name: Увлажнитель
 light.bathroom_wall:
@@ -30,45 +25,74 @@ binary_sensor.motion_living_room_motion:
 binary_sensor.datchik_dvizheniia_motion:
   friendly_name: Кухня
 binary_sensor.door_window_sensor_158d0001a9c200:
-  friendly_name: Дверь
   device_class: door
-lock.polycontrol_danalock_v3_btze_locked_2:
-  friendly_name: Замок
-light.gateway_light_286c07f1c549:
-  friendly_name: Ночник
-sensor.illumination_286c07f1c549:
-  friendly_name: Кухня
-sensor.humidity_158d00023764a1:
-  friendly_name: Гостиная
-sensor.pressure_158d00023764a1:
-  friendly_name: Гостиная
-sensor.temperature_158d00023764a1:
-  friendly_name: Гостиная
+  friendly_name: Дверь
 sensor.humidity_kitchen:
-  friendly_name: Кухня
+  friendly_name: Коридор
 sensor.temperature_kitchen:
-  friendly_name: Кухня
+  friendly_name: Коридор
 sensor.home_assistant_v2_db:
   friendly_name: HA DB размер
-sensor.db_size_influx:
-  friendly_name: InfluxDB размер
 switch.plug_158d0001b195fd:
   friendly_name: Саб
 binary_sensor.water_leak:
   friendly_name: Ванная
 sensor.co2_kitchen:
-  friendly_name: Кухня
-switch.marantz_receiver:
-  assumed_state: false
+  friendly_name: Коридор
 switch.datchik_gostinaia:
   friendly_name: Датчик движения
 switch.datchik_kukhnia:
   friendly_name: Датчик движения
-
+sensor.dark_sky_summary_0d:
+  friendly_name: На небе
+sensor.dark_sky_daytime_high_temperature_0d:
+  friendly_name: Максимум
+sensor.dark_sky_daytime_high_apparent_temperature_0d:
+  friendly_name: Максимум по ощущениям
+sensor.dark_sky_overnight_low_temperature_0d:
+  friendly_name: Минимум
+sensor.dark_sky_overnight_low_apparent_temperature_0d:
+  friendly_name: Минимум по ощущениям
+sensor.dark_sky_wind_speed_0d:
+  friendly_name: Скорость ветра
+sensor.dark_sky_precip_probability_0d:
+  friendly_name: Вероятность осадков
+sensor.dark_sky_visibility_0d:
+  friendly_name: Видимость
+sensor.dark_sky_summary_1d:
+  friendly_name: На небе
+sensor.dark_sky_daytime_high_temperature_1d:
+  friendly_name: Максимум
+sensor.dark_sky_daytime_high_apparent_temperature_1d:
+  friendly_name: Максимум по ощущениям
+sensor.dark_sky_overnight_low_temperature_1d:
+  friendly_name: Минимум
+sensor.dark_sky_overnight_low_apparent_temperature_1d:
+  friendly_name: Минимум по ощущениям
+sensor.dark_sky_wind_speed_1d:
+  friendly_name: Скорость ветра
+sensor.dark_sky_precip_probability_1d:
+  friendly_name: Вероятность осадков
+sensor.dark_sky_visibility_1d:
+  friendly_name: Видимость
+sensor.dark_sky_summary_2d:
+  friendly_name: На небе
+sensor.dark_sky_daytime_high_temperature_2d:
+  friendly_name: Максимум
+sensor.dark_sky_daytime_high_apparent_temperature_2d:
+  friendly_name: Максимум по ощущениям
+sensor.dark_sky_overnight_low_temperature_2d:
+  friendly_name: Минимум
+sensor.dark_sky_overnight_low_apparent_temperature_2d:
+  friendly_name: Минимум по ощущениям
+sensor.dark_sky_wind_speed_2d:
+  friendly_name: Скорость ветра
+sensor.dark_sky_precip_probability_2d:
+  friendly_name: Вероятность осадков
+sensor.dark_sky_visibility_2d:
+  friendly_name: Видимость
 zone.home:
   track_ios: true
-
-
 script.play_pause_mpd:
   icon: mdi:play-pause
 script.stop_mpd:
@@ -81,18 +105,35 @@ script.ultra:
   icon: mdi:podcast
 script.volgogradfm:
   icon: mdi:podcast
-
-
 sensor.yandex_traffic:
   friendly_name: Пробки
   icon: mdi:traffic-light
-  templates:
-    rgb_color: [255, 255, 100]
 sensor.yandex_route_to_work_lilith:
   friendly_name: Лильке до работы
 sensor.yandex_route_to_home_lilith:
   friendly_name: Лильке до дома
-sensor.yandex_route_to_work_hunt_mf:  
+sensor.yandex_route_to_work_hunt_mf:
   friendly_name: Сашке до работы
 sensor.yandex_route_to_home_hunt_mf:
   friendly_name: Сашке до дома
+cover.garage_door:
+  device_class: gate
+  friendly_name: Ворота
+person.oxoth1k:
+  entity_picture: /local/me.jpg
+person.lily:
+  entity_picture: /local/lily.jpg
+  friendly_name: Лилька
+device_tracker.liliia:
+  entity_picture: /local/lily.jpg
+device_tracker.oxoth1ks_iphone:
+  entity_picture: /local/me.jpg
+  friendly_name: Сашка
+media_player.samsung_tv_remote:
+  device_class: tv
+media_player.marantz:
+  device_class: speaker
+binary_sensor.lifecontrol_door_ias_zone:
+  device_class: door
+light.podsvetka:
+  icon: hass:led-strip-variant

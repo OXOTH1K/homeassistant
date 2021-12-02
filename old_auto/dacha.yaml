@@ -1,0 +1,26 @@
+#Открытие гаражных ворот по прибытию на дачу
+- alias: Open garage door on dacha when someone enter
+  trigger:
+    - platform: zone
+      event: enter
+      zone: zone.dacha
+      entity_id: device_tracker.oxoth1ks_iphone
+    - platform: zone
+      event: enter
+      zone: zone.dacha
+      entity_id: device_tracker.iphone
+  condition: 
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.devices
+        state: not_home
+      - condition: time
+        after: '9:00:00'
+        before: '22:00:00'
+  action:
+    - service: cover.open_cover
+      entity_id: cover.garage_door
+    - service: notify.telegram
+      data_template:
+        message: "Открыты ворота на даче"

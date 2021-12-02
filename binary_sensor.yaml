@@ -1,0 +1,59 @@
+- platform: mqtt
+  name: "Nest Cooler"
+  state_topic: "/spruthub/accessories/61/11/13"
+  payload_on: "1"
+  payload_off: "0"
+  device_class: power
+# - platform: mqtt
+#   name: "Nest Humidity"
+#   state_topic: "/spruthub/accessories/87/10/ContactSensor/ContactSensorState"
+#   payload_on: "1"
+#   payload_off: "0"
+#   device_class: power
+# - platform: mqtt
+#   name: "Nest Fan"
+#   state_topic: "/spruthub/accessories/88/10/ContactSensor/ContactSensorState"
+#   payload_on: "1"
+#   payload_off: "0"
+#   device_class: power
+- platform: hikvision
+  name: Подъезд
+  host: 192.168.1.155
+  username: !secret camera_kitchen_switch_login
+  password: !secret camera_kitchen_switch_password
+- platform: mqtt
+  name: "kitchen_motion_wirenboard"
+  state_topic: "/spruthub/accessories/84/32/34"
+  payload_on: "true"
+  payload_off: "false"
+  device_class: motion
+- platform: mqtt
+  name: "Ванная протечка"
+  state_topic: "/spruthub/accessories/58/11/13"
+  payload_on: "1"
+  payload_off: "0"
+  device_class: moisture
+- platform: mqtt
+  name: "Прачечная протечка"
+  state_topic: "/spruthub/accessories/65/11/13"
+  payload_on: "1"
+  payload_off: "0"
+  device_class: moisture
+- platform: mqtt
+  name: "Вход"
+  state_topic: "/spruthub/accessories/72/11/13"
+  payload_on: "1"
+  payload_off: "0"
+  device_class: door
+- platform: mqtt
+  name: "Звонок"
+  state_topic: "/spruthub/accessories/120/11/13"
+  payload_on: "0"
+  payload_off: "1"
+  device_class: sound
+- platform: mqtt
+  name: "Ванная"
+  state_topic: "/spruthub/accessories/57/11/13"
+  payload_on: "true"
+  payload_off: "false"
+  device_class: motion

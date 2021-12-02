@@ -1,0 +1,22 @@
+# Выключение света на кухне без движения
+- id: Lookin_eco_on
+  alias: lookin eco on
+  trigger:
+    platform: state
+    entity_id: sensor.look_in_sostoianie
+    to: 'Battery'
+    for:
+      seconds: 20
+  action:
+    service: rest_command.on_eco
+    
+- alias: lookin get new code
+  trigger:
+    platform: state
+    entity_id: sensor.look_in_kod
+  action:
+    - service: persistent_notification.create
+      data_template:
+        title: "Новый код"
+        message: >
+          {{ state_attr('sensor.look_in_kod', 'Value') }}

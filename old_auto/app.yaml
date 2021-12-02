@@ -1,0 +1,47 @@
+- id: Notify_app_Gostinaya
+  alias: Notify_app_Gostinaya
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_living_room_motion
+    to: 'on'
+    for:
+      seconds: 15
+  condition:
+    condition: state
+    entity_id: group.devices
+    state: not_home
+  action:
+    - service: notify.mobile_app_oxoth1ks_iphone
+      data:
+        message: Обнаружено движение в гостиной!
+        data:
+          push:
+            category: "camera"
+          entity_id: camera.door
+    - service: notify.ios_iphone  
+      data:
+        message: Обнаружено движение в гостиной!
+        data:
+          push:
+            category: "camera"
+          entity_id: camera.door
+          
+- alias: Notify_app_Gostinaya_app_on
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      action_name: TURN_ON
+  action:
+    - service: light.turn_on
+      entity_id: light.bathroom_wall
+      
+- alias: Notify_app_Gostinaya_app_off
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      action_name: TURN_OFF
+  action:
+    - service: light.turn_off
+      entity_id: light.bathroom_wall
