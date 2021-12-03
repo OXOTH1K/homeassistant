@@ -11,8 +11,8 @@
 - platform: github
   access_token: !secret github_access_token
   repositories:
-    - path: 'SberHome/infra'
-    - path: 'SberHome/devops_stuff'
+    - path: "SberHome/infra"
+    - path: "SberHome/devops_stuff"
 
 - platform: time_date
   display_options:
@@ -98,25 +98,25 @@
       icon_template: mdi:omega
     xiaomi_fresh_air_ventilator_co2:
       friendly_name: CO² спальня
-      value_template: '{{ states.fan.pritochka.attributes.co2 }}'
-      unit_of_measurement: 'ppm'
+      value_template: "{{ states.fan.pritochka.attributes.co2 }}"
+      unit_of_measurement: "ppm"
       icon_template: mdi:molecule-co2
-        
+
     xiaomi_fresh_air_ventilator_pm25:
       friendly_name: PM2.5 спальня
-      value_template: '{{ states.fan.pritochka.attributes.pm25 }}'
-      unit_of_measurement: 'µg/m³'
+      value_template: "{{ states.fan.pritochka.attributes.pm25 }}"
+      unit_of_measurement: "µg/m³"
       icon_template: mdi:grain
-        
+
     xiaomi_fresh_air_ventilator_temperature:
       friendly_name: Температура приточка
-      value_template: '{{ states.fan.pritochka.attributes.temperature }}'
-      unit_of_measurement: '°C'
+      value_template: "{{ states.fan.pritochka.attributes.temperature }}"
+      unit_of_measurement: "°C"
       icon_template: mdi:thermometer
 
     xiaomi_fresh_air_ventilator_favorite_speed:
       friendly_name: Favorite speed
-      value_template: '{{ states.fan.pritochka.attributes.favorite_speed }}'
+      value_template: "{{ states.fan.pritochka.attributes.favorite_speed }}"
       icon_template: mdi:speedometer
 - platform: darksky
   api_key: !secret darksky_api_key
@@ -343,10 +343,6 @@
   start: "device_tracker.oxoth1ks_iphone"
   destination: !secret ya_unico
   name: Yandex route to work hunt mf
-
-- platform: seventeentrack
-  username: !secret seventeentrack_login
-  password: !secret seventeentrack_password
 #- platform: xiaomi_miio_raw
 #  name: Поилка
 #  host: 192.168.1.121

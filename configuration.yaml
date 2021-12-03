@@ -468,7 +468,7 @@ homekit:
         - binary_sensor.podezd_motion
         - binary_sensor.motion_sensor_158d0001b177e8
         - binary_sensor.water_leak
-        #  - cover.garage_door
+        - cover.garage_door
         - media_player.marantz
         - switch.komp_kusei
         - switch.plug_158d0001b195fd
@@ -592,7 +592,7 @@ homekit:
     filter:
       include_entities:
         - lock.domofon
- 
+
 media_player:
   - platform: mpd
     host: 192.168.1.247
@@ -601,7 +601,6 @@ media_player:
     unique_id: marantz
     device_code: 9001
     controller_data: 192.168.1.240
-
 
 webhook:
 wake_on_lan:
