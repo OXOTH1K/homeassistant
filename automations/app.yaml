@@ -1,0 +1,37 @@
+- alias: test camera notify app
+  trigger:
+    platform: state
+    entity_id: input_number.xiaomi_fresh_air_ventilator_favorite_speed
+  action:
+    - service: notify.mobile_app_oxoth1ks_iphone
+      data:
+        message: Кто-то звонит в домофон
+        data:
+          entity_id: camera.domofon
+          actions:
+            - action: "DOOR_OPEN" # The key you are sending for the event
+              title: "Открыть дверь"
+              destructive: false
+            - action: "DENY" # The key you are sending for the event
+              title: "Отклонить"
+              destructive: true
+
+- alias: reject call
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "DENY"
+  action:
+    - service: switch.turn_on
+      entity_id: switch.domofon_reject_call
+
+- alias: open door
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "DOOR_OPEN"
+  action:
+    - service: lock.unlock
+      entity_id: lock.domofon
