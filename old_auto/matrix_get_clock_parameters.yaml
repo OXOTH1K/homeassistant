@@ -1,0 +1,315 @@
+###################################   ПАРАМЕТРЫ ЧАСОВ   #################################
+
+  - alias: get_matrix_np
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/NP
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_1
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_clock_ntp_sync
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_1
+
+  - alias: get_matrix_ns
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/NS
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_2
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_clock_ntp_server
+          value: "{{ trigger.payload }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_2
+
+  - alias: get_matrix_nt
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/NT
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_3
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_clock_ntp_sync_period
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_3
+
+  - alias: get_matrix_nt
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/NZ
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_3
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_clock_timezone
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_3
+
+  - alias: get_matrix_ck
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/CK
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_5
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_clock_size
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Маленький
+            {% elif trigger.payload | int == 2 %}
+            Большой
+            {% else %}
+            Авто
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_5
+
+  - alias: get_matrix_dw
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/DW
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_6
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_clock_temperature
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_6
+
+  - alias: get_matrix_wc
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/WC
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_7
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_clock_color_temperature_day
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_7
+
+  - alias: get_matrix_wn
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/WN
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_8
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_clock_color_temperature_night
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_8
+
+  - alias: get_matrix_dc
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/DC
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_9
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_clock_date
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_9
+
+  - alias: get_matrix_dd
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/DD
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_10
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_clock_date_duration
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_10
+
+  - alias: get_matrix_di
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/DI
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_10
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_clock_date_interval
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_10
+
+  - alias: get_matrix_ce
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/CE
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_11
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_clock_date_over_effects
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_11
+
+  - alias: get_matrix_co
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/CO
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_12
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_clock_direction
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Вертикально
+            {% else %}
+            Горизонтально
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_12
+
+  - alias: get_matrix_cc
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/CC
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_13
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_clock_color
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Каждая цифра своим цветом
+            {% elif trigger.payload | int == 2 %}
+            Часы, точки, минуты
+            {% else %}
+            Однотонный
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_13
+
+  - alias: get_matrix_nc
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/NC
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_14
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_clock_night_color
+          option: >
+            {% if trigger.payload | int == 0 %}
+            Красный
+            {% elif trigger.payload | int == 1 %}
+            Зеленый
+            {% elif trigger.payload | int == 2 %}
+            Синий
+            {% elif trigger.payload | int == 3 %}
+            Бирюзовый
+            {% elif trigger.payload | int == 4 %}
+            Розовый
+            {% elif trigger.payload | int == 5 %}
+            Желтый
+            {% else %}
+            Белый
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_14
+
+  - alias: get_matrix_sc
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/SC
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_clock_parameters_15
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_clock_speed
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_clock_parameters_15

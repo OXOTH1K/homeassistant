@@ -1,0 +1,233 @@
+###################################   ПАРАМЕТРЫ БЕГУЩЕЙ СТРОКИ   #################################
+  - alias: get_matrix_TE
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/TE
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_TE
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_running_text_over_effects
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_TE
+
+  - alias: get_matrix_TI
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/TI
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_TI
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_running_text_interval
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_TI
+
+  - alias: get_matrix_CT
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/CT
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_CT
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_running_text_color
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Радуга
+            {% elif trigger.payload | int == 2 %}
+            Каждая буква своим цветом
+            {% else %}
+            Однотонный
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_CT
+
+  - alias: get_matrix_C2
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/C2
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_C2
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_running_text_color_red
+          value: '{{ trigger.payload.split(",")[0] | int }}'
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_running_text_color_green
+          value: '{{ trigger.payload.split(",")[1] | int }}'
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_running_text_color_blue
+          value: '{{ trigger.payload.split(",")[2] | int }}'
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_C2
+
+  - alias: get_matrix_ST
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/ST
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_ST
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_running_text_speed
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_ST
+
+# Запит тексту біжучої строки
+  - alias: ask_running_string_text
+    trigger:
+      - platform: state
+        entity_id: input_select.matrix_running_text_string
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '---------' }}"
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_running_string_text
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_running_text_string') == "0" %}
+            $13 2 0;
+            {% elif states('input_select.matrix_running_text_string') == "1" %}
+            $13 2 1;
+            {% elif states('input_select.matrix_running_text_string') == "2" %}
+            $13 2 2;
+            {% elif states('input_select.matrix_running_text_string') == "3" %}
+            $13 2 3;
+            {% elif states('input_select.matrix_running_text_string') == "4" %}
+            $13 2 4;
+            {% elif states('input_select.matrix_running_text_string') == "5" %}
+            $13 2 5;
+            {% elif states('input_select.matrix_running_text_string') == "6" %}
+            $13 2 6;
+            {% elif states('input_select.matrix_running_text_string') == "7" %}
+            $13 2 7;
+            {% elif states('input_select.matrix_running_text_string') == "8" %}
+            $13 2 8;
+            {% elif states('input_select.matrix_running_text_string') == "9" %}
+            $13 2 9;
+            {% elif states('input_select.matrix_running_text_string') == "A" %}
+            $13 2 10;
+            {% elif states('input_select.matrix_running_text_string') == "B" %}
+            $13 2 11;
+            {% elif states('input_select.matrix_running_text_string') == "C" %}
+            $13 2 12;
+            {% elif states('input_select.matrix_running_text_string') == "D" %}
+            $13 2 13;
+            {% elif states('input_select.matrix_running_text_string') == "E" %}
+            $13 2 14;
+            {% elif states('input_select.matrix_running_text_string') == "F" %}
+            $13 2 15;
+            {% elif states('input_select.matrix_running_text_string') == "G" %}
+            $13 2 16;
+            {% elif states('input_select.matrix_running_text_string') == "H" %}
+            $13 2 17;
+            {% elif states('input_select.matrix_running_text_string') == "I" %}
+            $13 2 18;
+            {% elif states('input_select.matrix_running_text_string') == "J" %}
+            $13 2 19;
+            {% elif states('input_select.matrix_running_text_string') == "K" %}
+            $13 2 20;
+            {% elif states('input_select.matrix_running_text_string') == "L" %}
+            $13 2 21;
+            {% elif states('input_select.matrix_running_text_string') == "M" %}
+            $13 2 22;
+            {% elif states('input_select.matrix_running_text_string') == "N" %}
+            $13 2 23;
+            {% elif states('input_select.matrix_running_text_string') == "O" %}
+            $13 2 24;
+            {% elif states('input_select.matrix_running_text_string') == "P" %}
+            $13 2 25;
+            {% elif states('input_select.matrix_running_text_string') == "Q" %}
+            $13 2 26;
+            {% elif states('input_select.matrix_running_text_string') == "R" %}
+            $13 2 27;
+            {% elif states('input_select.matrix_running_text_string') == "S" %}
+            $13 2 28;
+            {% elif states('input_select.matrix_running_text_string') == "T" %}
+            $13 2 29;
+            {% elif states('input_select.matrix_running_text_string') == "U" %}
+            $13 2 30;
+            {% elif states('input_select.matrix_running_text_string') == "V" %}
+            $13 2 31;
+            {% elif states('input_select.matrix_running_text_string') == "W" %}
+            $13 2 32;
+            {% elif states('input_select.matrix_running_text_string') == "X" %}
+            $13 2 33;
+            {% elif states('input_select.matrix_running_text_string') == "Y" %}
+            $13 2 34;
+            {% elif states('input_select.matrix_running_text_string') == "Z" %}
+            $13 2 35;
+            {% else %}
+            {% endif %}
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_running_text_string_contents
+          value: >
+            {% if states('input_select.matrix_running_text_string') == "---------" %}
+            ---------
+            {% else %}
+            {% endif %}
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_running_text_string_name
+          value: >
+            {% if states('input_select.matrix_running_text_string') == "---------" %}
+            ---------
+            {% else %}
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_running_string_text
+
+# Получение текста бегущей строки
+  - alias: get_running_string_text
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/dta
+    condition:
+      - condition: template
+        value_template: '{{ trigger.payload.split(" ")[1].split(":")[0] == "TS" }}'
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_running_string_text
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_running_text_string_name
+          value: '{{ trigger.payload.split("[")[1].split(":")[0] }}'
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_running_text_string_contents
+          value: "{{ trigger.payload.split(\"'\")[1] }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_running_string_text

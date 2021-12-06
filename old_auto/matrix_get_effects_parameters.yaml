@@ -1,0 +1,513 @@
+  - alias: ask_effect_parameters
+    trigger:
+      - platform: state
+        entity_id: input_select.show_effects_settings
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_mode_number
+          value: >
+            {% if states('input_select.show_effects_settings') == "Часы" %}
+            0
+            {% elif states('input_select.show_effects_settings') == "Лампа" %}
+            1
+            {% elif states('input_select.show_effects_settings') == "Снегопад" %}
+            2
+            {% elif states('input_select.show_effects_settings') == "Кубик" %}
+            3
+            {% elif states('input_select.show_effects_settings') == "Радуга" %}
+            4
+            {% elif states('input_select.show_effects_settings') == "Пейнтбол" %}
+            5
+            {% elif states('input_select.show_effects_settings') == "Огонь" %}
+            6
+            {% elif states('input_select.show_effects_settings') == "The Matrix" %}
+            7
+            {% elif states('input_select.show_effects_settings') == "Шарики" %}
+            8
+            {% elif states('input_select.show_effects_settings') == "Звездопад" %}
+            9
+            {% elif states('input_select.show_effects_settings') == "Конфетти" %}
+            10
+            {% elif states('input_select.show_effects_settings') == "Цветовой шум" %}
+            11
+            {% elif states('input_select.show_effects_settings') == "Облака" %}
+            12
+            {% elif states('input_select.show_effects_settings') == "Лава" %}
+            13
+            {% elif states('input_select.show_effects_settings') == "Плазма" %}
+            14
+            {% elif states('input_select.show_effects_settings') == "Радужные переливы" %}
+            15
+            {% elif states('input_select.show_effects_settings') == "Полосатые переливы"" %}
+            16
+            {% elif states('input_select.show_effects_settings') == "Зебра" %}
+            17
+            {% elif states('input_select.show_effects_settings') == "Шум леса" %}
+            18
+            {% elif states('input_select.show_effects_settings') == "Море" %}
+            19
+            {% elif states('input_select.show_effects_settings') == "Изменение цвета" %}
+            20
+            {% elif states('input_select.show_effects_settings') == "Светлячки" %}
+            21
+            {% elif states('input_select.show_effects_settings') == "Водоворот" %}
+            22
+            {% elif states('input_select.show_effects_settings') == "Циклон" %}
+            23
+            {% elif states('input_select.show_effects_settings') == "Мигание" %}
+            24
+            {% elif states('input_select.show_effects_settings') == "Северное сияние" %}
+            25
+            {% elif states('input_select.show_effects_settings') == "Тени" %}
+            26
+            {% elif states('input_select.show_effects_settings') == "Лабиринт" %}
+            27
+            {% elif states('input_select.show_effects_settings') == "Змейка" %}
+            28
+            {% elif states('input_select.show_effects_settings') == "Тетрис" %}
+            29
+            {% elif states('input_select.show_effects_settings') == "Арканоид" %}
+            30
+            {% elif states('input_select.show_effects_settings') == "Палитра" %}
+            31
+            {% elif states('input_select.show_effects_settings') == "Спектр" %}
+            32
+            {% elif states('input_select.show_effects_settings') == "Синусы" %}
+            33
+            {% elif states('input_select.show_effects_settings') == "Вышиванка" %}
+            34
+            {% elif states('input_select.show_effects_settings') == "Дождь" %}
+            35
+            {% elif states('input_select.show_effects_settings') == "Камин" %}
+            36
+            {% elif states('input_select.show_effects_settings') == "Водопад" %}
+            37
+            {% elif states('input_select.show_effects_settings') == "Стрелки" %}
+            38
+            {% elif states('input_select.show_effects_settings') == "Анимация" %}
+            39
+            {% elif states('input_select.show_effects_settings') == "Погода" %}
+            40
+            {% elif states('input_select.show_effects_settings') == "Жизнь" %}
+            41
+            {% elif states('input_select.show_effects_settings') == "Узоры" %}
+            42
+            {% elif states('input_select.show_effects_settings') == "Рассвет" %}
+            43
+            {% else %}
+            -1
+            {% endif %}
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.show_effects_settings') == "Часы" %}
+            $8 0 0;
+            {% elif states('input_select.show_effects_settings') == "Лампа" %}
+            $8 0 1;
+            {% elif states('input_select.show_effects_settings') == "Снегопад" %}
+            $8 0 2;
+            {% elif states('input_select.show_effects_settings') == "Кубик" %}
+            $8 0 3;
+            {% elif states('input_select.show_effects_settings') == "Радуга" %}
+            $8 0 4;
+            {% elif states('input_select.show_effects_settings') == "Пейнтбол" %}
+            $8 0 5;
+            {% elif states('input_select.show_effects_settings') == "Огонь" %}
+            $8 0 6;
+            {% elif states('input_select.show_effects_settings') == "The Matrix" %}
+            $8 0 7;
+            {% elif states('input_select.show_effects_settings') == "Шарики" %}
+            $8 0 8;
+            {% elif states('input_select.show_effects_settings') == "Звездопад" %}
+            $8 0 9;
+            {% elif states('input_select.show_effects_settings') == "Конфетти" %}
+            $8 0 10;
+            {% elif states('input_select.show_effects_settings') == "Цветовой шум" %}
+            $8 0 11;
+            {% elif states('input_select.show_effects_settings') == "Облака" %}
+            $8 0 12;
+            {% elif states('input_select.show_effects_settings') == "Лава" %}
+            $8 0 13;
+            {% elif states('input_select.show_effects_settings') == "Плазма" %}
+            $8 0 14;
+            {% elif states('input_select.show_effects_settings') == "Радужные переливы" %}
+            $8 0 15;
+            {% elif states('input_select.show_effects_settings') == "Полосатые переливы"" %}
+            $8 0 16;
+            {% elif states('input_select.show_effects_settings') == "Зебра" %}
+            $8 0 17;
+            {% elif states('input_select.show_effects_settings') == "Шум леса" %}
+            $8 0 18;
+            {% elif states('input_select.show_effects_settings') == "Море" %}
+            $8 0 19;
+            {% elif states('input_select.show_effects_settings') == "Изменение цвета" %}
+            $8 0 20;
+            {% elif states('input_select.show_effects_settings') == "Светлячки" %}
+            $8 0 21;
+            {% elif states('input_select.show_effects_settings') == "Водоворот" %}
+            $8 0 22;
+            {% elif states('input_select.show_effects_settings') == "Циклон" %}
+            $8 0 23;
+            {% elif states('input_select.show_effects_settings') == "Мигание" %}
+            $8 0 24;
+            {% elif states('input_select.show_effects_settings') == "Северное сияние" %}
+            $8 0 25;
+            {% elif states('input_select.show_effects_settings') == "Тени" %}
+            $8 0 26;
+            {% elif states('input_select.show_effects_settings') == "Лабиринт" %}
+            $8 0 27;
+            {% elif states('input_select.show_effects_settings') == "Змейка" %}
+            $8 0 28;
+            {% elif states('input_select.show_effects_settings') == "Тетрис" %}
+            $8 0 29;
+            {% elif states('input_select.show_effects_settings') == "Арканоид" %}
+            $8 0 30;
+            {% elif states('input_select.show_effects_settings') == "Палитра" %}
+            $8 0 31;
+            {% elif states('input_select.show_effects_settings') == "Спектр" %}
+            $8 0 32;
+            {% elif states('input_select.show_effects_settings') == "Синусы" %}
+            $8 0 33;
+            {% elif states('input_select.show_effects_settings') == "Вышиванка" %}
+            $8 0 34;
+            {% elif states('input_select.show_effects_settings') == "Дождь" %}
+            $8 0 35;
+            {% elif states('input_select.show_effects_settings') == "Камин" %}
+            $8 0 36;
+            {% elif states('input_select.show_effects_settings') == "Водопад" %}
+            $8 0 37;
+            {% elif states('input_select.show_effects_settings') == "Стрелки" %}
+            $8 0 38;
+            {% elif states('input_select.show_effects_settings') == "Анимация" %}
+            $8 0 39;
+            {% elif states('input_select.show_effects_settings') == "Погода" %}
+            $8 0 40;
+            {% elif states('input_select.show_effects_settings') == "Жизнь" %}
+            $8 0 41;
+            {% elif states('input_select.show_effects_settings') == "Узоры" %}
+            $8 0 42;
+            {% elif states('input_select.show_effects_settings') == "Рассвет" %}
+            $8 0 43;
+            {% else %}
+            {% endif %}
+
+  - alias: get_matrix_UE
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/UE
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+    - service_template: >
+        {% if trigger.payload == "X" %}
+        input_boolean.turn_off
+        {% else %}
+        input_boolean.turn_on
+        {% endif %}
+      data:
+        entity_id: input_boolean.matrix_mode_use_in_demo_visibility
+    - service_template: >
+        {% if trigger.payload == "true" %}
+        input_boolean.turn_on
+        {% else %}
+        input_boolean.turn_off
+        {% endif %}
+      data:
+        entity_id: input_boolean.matrix_mode_use_in_demo
+
+  - alias: get_matrix_UT
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/UT
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+    - service_template: >
+        {% if trigger.payload == "X" %}
+        input_boolean.turn_off
+        {% else %}
+        input_boolean.turn_on
+        {% endif %}
+      data:
+        entity_id: input_boolean.matrix_mode_text_overlay_visibility
+    - service_template: >
+        {% if trigger.payload == "true" %}
+        input_boolean.turn_on
+        {% else %}
+        input_boolean.turn_off
+        {% endif %}
+      data:
+        entity_id: input_boolean.matrix_mode_text_overlay
+
+  - alias: get_matrix_UC
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/UC
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+    - service_template: >
+        {% if trigger.payload == "X" %}
+        input_boolean.turn_off
+        {% else %}
+        input_boolean.turn_on
+        {% endif %}
+      data:
+        entity_id: input_boolean.matrix_mode_clock_overlay_visibility
+    - service_template: >
+        {% if trigger.payload == "true" %}
+        input_boolean.turn_on
+        {% else %}
+        input_boolean.turn_off
+        {% endif %}
+      data:
+        entity_id: input_boolean.matrix_mode_clock_overlay
+
+  - alias: get_matrix_BE
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/BE
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+      - service_template: >
+          {% if trigger.payload == "X" %}
+          input_boolean.turn_off
+          {% else %}
+          input_boolean.turn_on
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_mode_contrast_visibility
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_mode_contrast
+          value: "{{ trigger.payload | int }}"
+
+  - alias: get_matrix_SE
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/SE
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+      - service_template: >
+          {% if trigger.payload == "X" %}
+          input_boolean.turn_off
+          {% else %}
+          input_boolean.turn_on
+          {% endif %}
+        data:
+          entity_id:
+            - input_boolean.matrix_mode_color_visibility
+            - input_boolean.matrix_mode_speed_visibility
+      - service: input_number.set_value
+        data:
+          entity_id: > 
+            {% if states('input_number.matrix_mode_number') | int == 1 %}
+            input_number.matrix_mode_color
+            {% else %}
+            input_number.matrix_mode_speed
+            {% endif %}
+          value: "{{ trigger.payload | int }}"
+
+  - alias: get_matrix_SS
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/SS
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+      - service_template: >
+          {% if trigger.payload == "X" %}
+          input_boolean.turn_off
+          {% else %}
+          input_boolean.turn_on
+          {% endif %}
+        data:
+          entity_id:
+            - input_boolean.matrix_mode_saturation_visibility
+            - input_boolean.matrix_mode_variant_visibility
+      - service: input_number.set_value
+        data:
+          entity_id: >
+            {% if states('input_number.matrix_mode_number') | int == 1 %}
+            input_number.matrix_mode_saturation
+            {% else %}
+            input_number.matrix_mode_variant
+            {% endif %}
+          value: "{{ trigger.payload | int }}"
+
+  - alias: get_matrix_SQ_1
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/SQ
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+      - condition: template
+        value_template: '{{ trigger.payload.split(">")[0] == "L" }}'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: > 
+            {% if states('input_select.show_effects_settings') == "Радуга" %}
+            input_select.matrix_rainbow_effect_variant
+            {% elif states('input_select.show_effects_settings') == "Стрелки" %}
+            input_select.matrix_arrows_effect_variant
+            {% elif states('input_select.show_effects_settings') == "Анимация" %}
+            input_select.matrix_animation_effect_variant
+            {% elif states('input_select.show_effects_settings') == "Узоры" %}
+            input_select.matrix_patterns_effect_variant
+            {% else %}
+            Null
+            {% endif %}
+          option: >
+            {% if states('input_select.show_effects_settings') == "Радуга" %}
+              {% if trigger.payload.split(">")[1] == "1" %}
+              Вертикально
+              {% elif trigger.payload.split(">")[1] == "2" %}
+              Горизонтально
+              {% elif trigger.payload.split(">")[1] == "3" %}
+              Диагонально
+              {% elif trigger.payload.split(">")[1] == "4" %}
+              По кругу
+              {% else %}
+              Случайно
+              {% endif %}
+            {% elif states('input_select.show_effects_settings') == "Стрелки" %}
+              {% if trigger.payload.split(">")[1] == "1" %}
+              1-центр
+              {% elif trigger.payload.split(">")[1] == "2" %}
+              2-центр
+              {% elif trigger.payload.split(">")[1] == "3" %}
+              4-центр
+              {% elif trigger.payload.split(">")[1] == "4" %}
+              2-смещение
+              {% elif trigger.payload.split(">")[1] == "5" %}
+              4-смещение
+              {% else %}
+              Случайно
+              {% endif %}
+            {% elif states('input_select.show_effects_settings') == "Анимация" %}
+              {% if trigger.payload.split(">")[1] == "1" %}
+              Марио
+              {% else %}
+              Случайно
+              {% endif %}
+            {% elif states('input_select.show_effects_settings') == "Узоры" %}
+              {% if trigger.payload.split(">")[1] == "1" %}
+              Зигзаг
+              {% elif trigger.payload.split(">")[1] == "2" %}
+              Ноты
+              {% elif trigger.payload.split(">")[1] == "3" %}
+              Ромб
+              {% elif trigger.payload.split(">")[1] == "4" %}
+              Серце
+              {% elif trigger.payload.split(">")[1] == "5" %}
+              Елка
+              {% elif trigger.payload.split(">")[1] == "6" %}
+              Клетка
+              {% elif trigger.payload.split(">")[1] == "7" %}
+              Смайлик
+              {% elif trigger.payload.split(">")[1] == "8" %}
+              Зигзаг 2
+              {% elif trigger.payload.split(">")[1] == "9" %}
+              Полосы
+              {% elif trigger.payload.split(">")[1] == "10" %}
+              Волны
+              {% elif trigger.payload.split(">")[1] == "11" %}
+              Чешуя
+              {% elif trigger.payload.split(">")[1] == "12" %}
+              Портьера
+              {% elif trigger.payload.split(">")[1] == "13" %}
+              Плетинка
+              {% elif trigger.payload.split(">")[1] == "14" %}
+              Снежинка
+              {% elif trigger.payload.split(">")[1] == "15" %}
+              Квадратики
+              {% elif trigger.payload.split(">")[1] == "16" %}
+              Греция
+              {% elif trigger.payload.split(">")[1] == "17" %}
+              Круги
+              {% elif trigger.payload.split(">")[1] == "18" %}
+              Рулет
+              {% elif trigger.payload.split(">")[1] == "19" %}
+              Узор 1
+              {% elif trigger.payload.split(">")[1] == "20" %}
+              Узор 2
+              {% elif trigger.payload.split(">")[1] == "21" %}
+              Узор 3
+              {% elif trigger.payload.split(">")[1] == "22" %}
+              Узор 4
+              {% elif trigger.payload.split(">")[1] == "23" %}
+              Узор 5
+              {% elif trigger.payload.split(">")[1] == "24" %}
+              Узор 6
+              {% elif trigger.payload.split(">")[1] == "25" %}
+              Узор 7
+              {% elif trigger.payload.split(">")[1] == "26" %}
+              Узор 8
+              {% elif trigger.payload.split(">")[1] == "27" %}
+              Узор 9
+              {% elif trigger.payload.split(">")[1] == "28" %}
+              Узор 10
+              {% elif trigger.payload.split(">")[1] == "29" %}
+              Узор 11
+              {% elif trigger.payload.split(">")[1] == "30" %}
+              Узор 12
+              {% elif trigger.payload.split(">")[1] == "31" %}
+              Узор 13
+              {% elif trigger.payload.split(">")[1] == "32" %}
+              Узор 14
+              {% else %}
+              Случайно
+              {% endif %}
+            {% else %}
+            {% endif %}
+
+  - alias: get_matrix_SQ_2
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/SQ
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+    action:
+      - service_template: >
+          {% if trigger.payload.split(">")[0] == "L" or trigger.payload == "X" %}
+          input_boolean.turn_off
+          {% else %}
+          input_boolean.turn_on
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_mode_segments_visibility
+
+  - alias: get_matrix_SQ_3
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/SQ
+    condition:
+      - condition: template
+        value_template: "{{ states('input_number.matrix_mode_number') != '-1.0' }}"
+      - condition: template
+        value_template: '{{ trigger.payload.split(">")[0] == "С" }}'
+    action:
+      - service_template: >
+          {% if trigger.payload.split(">")[1] == "1" %}
+          input_boolean.turn_off
+          {% else %}
+          input_boolean.turn_on
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_mode_segments

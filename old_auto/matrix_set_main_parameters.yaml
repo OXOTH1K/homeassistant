@@ -1,0 +1,129 @@
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+
+  - alias: set_matrix_PS
+    trigger:
+      platform: state
+      entity_id: input_boolean.matrix_switch_state
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "{% if states('input_boolean.matrix_switch_state') == 'on' %}$16 1;{% else %}$14 0;{% endif %}"
+
+  - alias: set_matrix_DM
+    trigger:
+      platform: state
+      entity_id: input_boolean.matrix_auto_mode
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "{% if states('input_boolean.matrix_auto_mode') == 'on' %}$16 1;{% else %}$16 0;{% endif %}"
+
+#Вспомогательная для выбора "---------" в списке эффектов при авторежиме
+  - alias: select_no_effect_if_auto_mode_enabled
+    trigger:
+      platform: state
+      entity_id: input_boolean.matrix_auto_mode
+    condition:
+      - condition: template
+        value_template: "{{ states('input_boolean.matrix_auto_mode') == 'on' }}"
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.show_effects_settings
+          option: "---------"
+
+#Вспомогательная для включения авторежима при выборе "---------" в списке эффектов
+  - alias: turm_on_auto_mode_if_no_effect_selected
+    trigger:
+      platform: state
+      entity_id: input_select.show_effects_settings
+    condition:
+      - condition: template
+        value_template: "{{ states('input_select.show_effects_settings') == '---------' }}"
+    action:
+      - service_template: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.matrix_auto_mode
+
+  - alias: set_matrix_RM
+    trigger:
+      platform: state
+      entity_id: input_boolean.matrix_random_mode
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "{% if states('input_boolean.matrix_random_mode') == 'on' %}$16 5 1;{% else %}$16 5 0;{% endif %}"
+
+  - alias: set_matrix_BR
+    trigger:
+      platform: state
+      entity_id: input_number.matrix_brightness
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "$4 0 {{ states('input_number.matrix_brightness') | int }};"
+
+          
+  - alias: set_matrix_PW
+    trigger:
+      platform: state
+      entity_id: input_number.matrix_current_limit
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "$23 0 {{ states('input_number.matrix_current_limit') | int }};"
+
+  - alias: set_matrix_PD_IT
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_effect_duration
+      - platform: state
+        entity_id: input_number.matrix_auto_mode_in
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "$17 {{ states('input_number.matrix_effect_duration') | int }} {{ states('input_number.matrix_auto_mode_in') | int }};"
+   
+  - alias: set_matrix_WU
+    trigger:
+      platform: state
+      entity_id: input_select.matrix_weather
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_weather') == "Yandex" %}
+            $12 4 1;
+            {% elif states('input_select.matrix_weather') == "OpenWeatherMap" %}
+            $12 4 2;
+            {% else %}
+            $12 4 0;
+            {% endif %}
+            
+  - alias: set_matrix_WR_WS_WT
+    trigger:
+      - platform: state
+        entity_id: input_text.matrix_yandex_region
+      - platform: state
+        entity_id: input_text.matrix_owm_region
+      - platform: state
+        entity_id: input_number.matrix_weather_update_period
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: "$12 5 {{ states('input_number.matrix_weather_update_period')|int }} {{ states('input_text.matrix_yandex_region')|int }} {{ states('input_text.matrix_owm_region')|int }};"
+
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+

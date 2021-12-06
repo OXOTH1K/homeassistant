@@ -1,0 +1,196 @@
+###################################   ОСНОВНЫЕ ПАРАМЕТРЫ   #################################
+
+  - alias: get_matrix_PS
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/PS
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_PS
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_switch_state
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_PS
+
+  - alias: get_matrix_BR
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/BR
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_BR
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_brightness
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_BR
+
+  - alias: get_matrix_DM
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/DM
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_DM
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_auto_mode
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_DM
+
+  - alias: get_matrix_RM
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/RM
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_RM
+      - service_template: >
+          {% if trigger.payload == "true" %}
+          input_boolean.turn_on
+          {% else %}
+          input_boolean.turn_off
+          {% endif %}
+        data:
+          entity_id: input_boolean.matrix_random_mode
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_RM
+
+  - alias: get_matrix_PD
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/PD
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_PD_IT
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_effect_duration
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_PD_IT
+
+  - alias: get_matrix_IT
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/IT
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_PD_IT
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_auto_mode_in
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_PD_IT
+
+  - alias: get_matrix_PW
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/PW
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_PW
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_current_limit
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_PW
+
+  - alias: get_matrix_WU
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/WU
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_WU
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_weather
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Yandex
+            {% elif trigger.payload | int == 2 %}
+            OpenWeatherMap
+            {% else %}
+            Вимкнено
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_WU
+
+  - alias: get_matrix_WR
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/WR
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_WR_WS_WT
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_yandex_region
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_WR_WS_WT
+
+  - alias: get_matrix_WS
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/WS
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_WR_WS_WT
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.matrix_owm_region
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_WR_WS_WT
+
+  - alias: get_matrix_WT
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/WT
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.set_matrix_WR_WS_WT
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_weather_update_period
+          value: "{{ trigger.payload | int }}"
+      - service: automation.turn_on
+        data:
+          entity_id: automation.set_matrix_WR_WS_WT

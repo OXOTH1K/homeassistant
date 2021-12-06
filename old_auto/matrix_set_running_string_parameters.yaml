@@ -1,0 +1,81 @@
+# Установка параметров бегущей строки
+  - alias: set_matrix_TE
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_running_text_over_effects
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {%- if states('input_boolean.matrix_running_text_over_effects') == 'on' -%}
+            $13 18 1;
+            {%- else -%}
+            $13 18 0;
+            {%- endif -%}
+
+  - alias: set_matrix_TI
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_running_text_interval
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $13 9 {{ states('input_number.matrix_running_text_interval')|int }};
+
+  - alias: set_matrix_ST
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_running_text_speed
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $13 13 {{ states('input_number.matrix_running_text_speed')|int }};
+
+  - alias: set_matrix_C2
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_running_text_color_red
+      - platform: state
+        entity_id: input_number.matrix_running_text_color_green
+      - platform: state
+        entity_id: input_number.matrix_running_text_color_blue
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $13 15 {{ '%0x' % states('input_number.matrix_running_text_color_red')|int }}{{ '%0x' % states('input_number.matrix_running_text_color_green')|int }}{{ '%0x' % states('input_number.matrix_running_text_color_blue')|int }};
+
+  - alias: set_matrix_CT
+    trigger:
+      - platform: state
+        entity_id: input_select.matrix_running_text_color
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_running_text_color') == "Радуга" %}
+            $13 11 1;
+            {% elif states('input_select.matrix_running_text_color') == "Каждая буква своим цветом" %}
+            $13 11 2;
+            {% else %}
+            $13 11 0;
+            {% endif %}
+
+# Установка текста бегущей строки
+  - alias: set_running_string_text
+    trigger:
+      - platform: state
+        entity_id: input_text.matrix_running_text_string_contents
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $6 0|{{ states('input_text.matrix_running_text_string_name') }}|{{ states('input_text.matrix_running_text_string_contents') }}

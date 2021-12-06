@@ -72,17 +72,6 @@ proximity:
 map:
 sun:
 system_health:
-input_boolean:
-  lock:
-    name: Состояние домофона
-
-input_number:
-  xiaomi_fresh_air_ventilator_favorite_speed:
-    name: Скорость приточки
-    icon: mdi:weather-windy
-    min: 60
-    max: 150
-    step: 2
 
 lock:
   - platform: template
@@ -113,12 +102,17 @@ tts:
     region_name: eu-central-1
     voice: Maxim
 
-group: !include groups.yaml
 automation: !include_dir_merge_list automations
+group: !include groups.yaml
+input_boolean: !include input_boolean.yaml
+input_number: !include input_number.yaml
+input_select: !include input_select.yaml
+input_text: !include input_text.yaml
 script: !include scripts.yaml
 shell_command: !include shell_commands.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
+
 
 fan:
   - platform: xiaomi_miio_airpurifier

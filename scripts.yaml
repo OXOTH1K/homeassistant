@@ -84,3 +84,25 @@ yandex_beta:
     data:
       media_content_id: true
       media_content_type: beta
+
+###################################   МАТРИЦА   #################################
+
+matrix_test_running_text:
+  alias: "Просмотр"
+  icon: "mdi:motion-play-outline"
+  sequence:
+    - service: mqtt.publish
+      data_template:
+        topic: WiFiPanel-0/cmd
+        payload_template: >
+          $13 1 {{ states('input_text.matrix_running_text_string_name') }};
+
+matrix_set_time:
+  alias: "Установить время"
+  icon: "mdi:web-clock"
+  sequence:
+    - service: mqtt.publish
+      data_template:
+        topic: WiFiPanel-0/cmd
+        payload_template: >
+          $19 8 {{ now().strftime('%Y %m %d %H %M') }};

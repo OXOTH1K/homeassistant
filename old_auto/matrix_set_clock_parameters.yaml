@@ -1,0 +1,212 @@
+# Настройки часов
+  - alias: set_clock_parameters_1
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_clock_ntp_sync
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {%- if states('input_boolean.matrix_clock_ntp_sync') == 'on' -%}
+            $19 2 1;
+            {%- else -%}
+            $19 2 0;
+            {%- endif -%}
+
+  - alias: set_clock_parameters_2
+    trigger:
+      - platform: state
+        entity_id: input_text.matrix_clock_ntp_server
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $6 1|{{ states('input_text.matrix_clock_ntp_server') }}
+
+  - alias: set_clock_parameters_3
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_clock_ntp_sync_period
+      - platform: state
+        entity_id: input_number.matrix_clock_timezone
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $19 3 {{ states('input_number.matrix_clock_ntp_sync_period')|int }} {{ states('input_number.matrix_clock_timezone')|int }};
+
+  - alias: set_clock_parameters_5
+    trigger:
+      - platform: state
+        entity_id: input_select.matrix_clock_size
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_clock_size') == "Маленький" %}
+            $19 7 1;
+            {% elif states('input_select.matrix_clock_size') == "Большой" %}
+            $19 7 2;
+            {% else %}
+            $19 7 0;
+            {% endif %}
+
+  - alias: set_clock_parameters_6
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_clock_temperature
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {%- if states('input_boolean.matrix_clock_temperature') == 'on' -%}
+            $19 9 1;
+            {%- else -%}
+            $19 9 0;
+            {%- endif -%}
+
+  - alias: set_clock_parameters_7
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_clock_color_temperature_day
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {%- if states('input_boolean.matrix_clock_color_temperature_day') == 'on' -%}
+            $12 3 1;
+            {%- else -%}
+            $12 3 0;
+            {%- endif -%}
+
+  - alias: set_clock_parameters_8
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_clock_color_temperature_night
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_boolean.matrix_clock_color_temperature_night') == 'on' %}
+            $12 6 1;
+            {% else %}
+            $12 6 0;
+            {% endif %}
+
+  - alias: set_clock_parameters_9
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_clock_date
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_boolean.matrix_clock_date') == 'on' %}
+            $19 16 1;
+            {% else %}
+            $19 16 0;
+            {% endif %}
+
+  - alias: set_clock_parameters_10
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_clock_date_duration
+      - platform: state
+        entity_id: input_number.matrix_clock_date_interval
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $19 17 {{ states('input_number.matrix_clock_date_duration')|int }} {{ states('input_number.matrix_clock_date_interval')|int }};
+
+  - alias: set_clock_parameters_11
+    trigger:
+      - platform: state
+        entity_id: input_boolean.matrix_clock_date_over_effects
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_boolean.matrix_clock_date_over_effects') == 'on' %}
+            $19 1 1;
+            {% else %}
+            $19 1 0;
+            {% endif %}
+
+  - alias: set_clock_parameters_12
+    trigger:
+      - platform: state
+        entity_id: input_select.matrix_clock_direction
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_clock_direction') == "Вертикально" %}
+            $19 6 1;
+            {% else %}
+            $19 6 0;
+            {% endif %}
+
+  - alias: set_clock_parameters_13
+    trigger:
+      - platform: state
+        entity_id: input_select.matrix_clock_color
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_clock_color') == "Каждая цифра своим цветом" %}
+            $19 5 1;
+            {% elif states('input_select.matrix_clock_color') == "Часы, точки, минуты" %}
+            $19 5 2;
+            {% else %}
+            $19 5 0;
+            {% endif %}
+
+  - alias: set_clock_parameters_14
+    trigger:
+      - platform: state
+        entity_id: input_select.matrix_clock_night_color
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            {% if states('input_select.matrix_clock_night_color') == "Красный" %}
+            $19 10 0;
+            {% elif states('input_select.matrix_clock_night_color') == "Зеленый" %}
+            $19 10 1;
+            {% elif states('input_select.matrix_clock_night_color') == "Синий" %}
+            $19 10 2;
+            {% elif states('input_select.matrix_clock_night_color') == "Бирюзовый" %}
+            $19 10 3;
+            {% elif states('input_select.matrix_clock_night_color') == "Розовый" %}
+            $19 10 4;
+            {% elif states('input_select.matrix_clock_night_color') == "Желтый" %}
+            $19 10 5;
+            {% else %}
+            $19 10 6;
+            {% endif %}
+
+  - alias: set_clock_parameters_15
+    trigger:
+      - platform: state
+        entity_id: input_number.matrix_clock_speed
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: WiFiPanel-0/cmd
+          payload_template: >
+            $19 12 {{ states('input_number.matrix_clock_speed') }};

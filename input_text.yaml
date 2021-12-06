@@ -1,0 +1,22 @@
+###################################   МАТРИЦА   #################################
+
+  matrix_yandex_region:
+    name: Регион Yandex
+    
+  matrix_owm_region:
+    name: Регион OpenWeatherMap
+
+###################################   БЕГУЩАЯ СТРОКА   #################################
+
+  matrix_running_text_string_contents:
+    name: Текст строки
+    icon: "mdi:text-subject"
+
+  matrix_running_text_string_name:
+    name: Название строки
+
+###################################   НАСТРОЙКИ ЧАСОВ   #################################
+
+  matrix_clock_ntp_server:
+    name: "Сервер NTP"
+    icon: "mdi:desktop-classic"

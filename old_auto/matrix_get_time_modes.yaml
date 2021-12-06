@@ -1,0 +1,187 @@
+  - alias: get_matrix_AM1T
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM1T
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_1_hours
+          value: '{{ trigger.payload.split(" ")[0] | int }}'
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_1_minutes
+          value: '{{ trigger.payload.split(" ")[1] | int }}'
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM1A
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM1A
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_time_mode_1_action
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Часы
+            {% elif trigger.payload | int == 0 %}
+            Демо-режим
+            {% elif trigger.payload | int == -1 %}
+            Ночные часы
+            {% elif trigger.payload | int == -2 %}
+            Выключить матрицу
+            {% else %}
+            Ничего
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM2T
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM2T
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_2_hours
+          value: '{{ trigger.payload.split(" ")[0] | int }}'
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_2_minutes
+          value: '{{ trigger.payload.split(" ")[1] | int }}'
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM2A
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM2A
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_time_mode_2_action
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Часы
+            {% elif trigger.payload | int == 0 %}
+            Демо-режим
+            {% elif trigger.payload | int == -1 %}
+            Ночные часы
+            {% elif trigger.payload | int == -2 %}
+            Выключить матрицу
+            {% else %}
+            Ничего
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM3T
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM3T
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_3_hours
+          value: '{{ trigger.payload.split(" ")[0] | int }}'
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_3_minutes
+          value: '{{ trigger.payload.split(" ")[1] | int }}'
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM3A
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM3A
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_time_mode_3_action
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Часы
+            {% elif trigger.payload | int == 0 %}
+            Демо-режим
+            {% elif trigger.payload | int == -1 %}
+            Ночные часы
+            {% elif trigger.payload | int == -2 %}
+            Выключить матрицу
+            {% else %}
+            Ничего
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM4T
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM4T
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_4_hours
+          value: '{{ trigger.payload.split(" ")[0] | int }}'
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.matrix_time_mode_4_minutes
+          value: '{{ trigger.payload.split(" ")[1] | int }}'
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
+
+  - alias: get_matrix_AM4A
+    trigger:
+      - platform: mqtt
+        topic: WiFiPanel-0/stt/AM4A
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.matrix_set_time_modes
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.matrix_time_mode_4_action
+          option: >
+            {% if trigger.payload | int == 1 %}
+            Часы
+            {% elif trigger.payload | int == 0 %}
+            Демо-режим
+            {% elif trigger.payload | int == -1 %}
+            Ночные часы
+            {% elif trigger.payload | int == -2 %}
+            Выключить матрицу
+            {% else %}
+            Ничего
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id: automation.matrix_set_time_modes
