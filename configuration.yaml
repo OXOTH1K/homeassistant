@@ -383,6 +383,11 @@ notify:
   - name: telegram_group
     platform: telegram
     chat_id: !secret telegram_bot_group_chat_id
+  - name: ALL_DEVICES
+    platform: group
+    services:
+      - service: mobile_app_oxoth1ks_iphone
+      - service: mobile_app_liliia
 
 recorder:
   purge_keep_days: 14
