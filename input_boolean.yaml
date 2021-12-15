@@ -1,76 +1,78 @@
 # Домофон
-  lock:
-    name: Состояние домофона
+lock:
+  name: Состояние домофона
+# Сон
+sleep_alex:
+  name: "Саша спит"
+sleep_lilypad:
+  name: "Лиля спит"
 
 ###################################   МАТРИЦА   #################################
 
 # Логическое значение выключателя гирлянды
-  matrix_switch_state:
-    name: "Гирлянда на окне"
-    
-  matrix_auto_mode:
-    name: "Автоматический режим"
-    
+matrix_switch_state:
+  name: "Гирлянда на окне"
+
+matrix_auto_mode:
+  name: "Автоматический режим"
+
 # Логическое значение случайного режима
-  matrix_random_mode:
-    name: "Случайный порядок"
+matrix_random_mode:
+  name: "Случайный порядок"
 
 ###################################   ЭФФЕКТЫ   #################################
 
-  matrix_mode_use_in_demo:
-    name: "Исп. в демо-режиме"
+matrix_mode_use_in_demo:
+  name: "Исп. в демо-режиме"
 
-  matrix_mode_text_overlay:
-    name: "Текст поверх эффектов"
+matrix_mode_text_overlay:
+  name: "Текст поверх эффектов"
 
-  matrix_mode_clock_overlay:
-    name: "Часы поверх эффеков"
+matrix_mode_clock_overlay:
+  name: "Часы поверх эффеков"
 
-  matrix_mode_segments:
-    name: "Сегменты"
+matrix_mode_segments:
+  name: "Сегменты"
 
+matrix_mode_use_in_demo_visibility:
 
-  matrix_mode_use_in_demo_visibility:
+matrix_mode_text_overlay_visibility:
 
-  matrix_mode_text_overlay_visibility:
+matrix_mode_clock_overlay_visibility:
 
-  matrix_mode_clock_overlay_visibility:
+matrix_mode_contrast_visibility:
 
+matrix_mode_color_visibility:
 
-  matrix_mode_contrast_visibility:
+matrix_mode_speed_visibility:
 
-  matrix_mode_color_visibility:
+matrix_mode_saturation_visibility:
 
-  matrix_mode_speed_visibility:
+matrix_mode_variant_visibility:
 
-
-  matrix_mode_saturation_visibility:
-  
-  matrix_mode_variant_visibility:
-
-  matrix_mode_segments_visibility:
+matrix_mode_segments_visibility:
 
 ###################################   БЕГУЩАЯ СТРОКА   #################################
 
-  matrix_running_text_over_effects:
-    name: "Текст поверх эффектов"
+matrix_running_text_over_effects:
+  name: "Текст поверх эффектов"
 
 ###################################   НАСТРОЙКИ ЧАСОВ   #################################
 
-  matrix_clock_ntp_sync:
-    name: "Синхронизация NTP"
+matrix_clock_ntp_sync:
+  name: "Синхронизация NTP"
 
-  matrix_clock_temperature:
-    name: "Температура с малыми часами"
+matrix_clock_temperature:
+  name: "Температура с малыми часами"
 
-  matrix_clock_color_temperature_day:
-    name: "Температура цветом днем"
+matrix_clock_color_temperature_day:
+  name: "Температура цветом днем"
 
-  matrix_clock_color_temperature_night:
-    name: "Температура цветом ночью"
+matrix_clock_color_temperature_night:
+  name: "Температура цветом ночью"
 
-  matrix_clock_date:
-    name: "Дата с малыми часами"
+matrix_clock_date:
+  name: "Дата с малыми часами"
 
-  matrix_clock_date_over_effects:
-    name: "Часы поверх эффектов"
+matrix_clock_date_over_effects:
+  name: "Часы поверх эффектов"

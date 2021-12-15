@@ -1,0 +1,27 @@
+#Доброе утро Саша
+- alias: Turn on morning show when alex wake up
+  #  initial_state: True
+  trigger:
+    platform: state
+    entity_id: input_boolean.sleep_alex
+    from: "on"
+    to: "off"
+    for:
+      seconds: 30
+  action:
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_mg0000000000000192070000e0cd4a69
+      data:
+        media_content_id: Доброе утро, Сашка!
+        media_content_type: text
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_mg0000000000000192070000e0cd4a69
+      data:
+        media_content_id: Желаю тебе хорошего дня, скоро расскажу о актуальных новостях и включу немного музыки.
+        media_content_type: text
+    - delay: 60
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_mg0000000000000192070000e0cd4a69
+      data:
+        media_content_id: Включи утреннее шоу
+        media_content_type: command
