@@ -113,7 +113,6 @@ shell_command: !include shell_commands.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
 
-
 fan:
   - platform: xiaomi_miio_airpurifier
     name: Приточка
@@ -223,7 +222,8 @@ ble_monitor:
     - mac: "AC:9A:22:F2:CA:D2"
     - mac: "C6:DA:34:3C:AE:CC"
     - mac: "74:A3:4A:C0:17:13"
-    - mac: "F8:24:41:ED:8F:55"
+#    - mac: "F8:24:41:ED:8F:55"
+#    - mac: "F8:24:41:ED:08:0F"
 
 binary_sensor: !include binary_sensor.yaml
 
