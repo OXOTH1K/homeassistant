@@ -37,7 +37,7 @@
   action:
     - service: frontend.set_theme
       data:
-        name: ios-dark-mode
+        name: ios-dark-mode-dark-blue
 
 - alias: "Set light theme for the day"
   trigger:
@@ -47,7 +47,7 @@
   action:
     - service: frontend.set_theme
       data:
-        name: ios-light-mode
+        name: ios-light-mode-light-blue
 - alias: "Set theme at startup"
   trigger:
     - platform: homeassistant
@@ -57,9 +57,9 @@
     data_template:
       name: >
         {% if states.sun.sun.state == "below_horizon" %}
-          ios-dark-mode
+          ios-dark-mode-dark-blue
         {% else %}
-          ios-light-mode
+          ios-light-mode-light-blue
         {% endif %}
 
 #Звонок в дверь

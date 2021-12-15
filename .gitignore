@@ -2,6 +2,7 @@
 custom_components/
 deps/
 esphome/
+image/
 neighbours/
 tts/
 www/
