@@ -16,11 +16,11 @@
 #   payload_on: "1"
 #   payload_off: "0"
 #   device_class: power
-- platform: hikvision
-  name: Подъезд
-  host: 192.168.1.155
-  username: !secret camera_kitchen_switch_login
-  password: !secret camera_kitchen_switch_password
+# - platform: hikvision
+#   name: Подъезд
+#   host: 192.168.1.155
+#   username: !secret camera_kitchen_switch_login
+#   password: !secret camera_kitchen_switch_password
 - platform: mqtt
   name: "kitchen_motion_wirenboard"
   state_topic: "/spruthub/accessories/84/32/34"
