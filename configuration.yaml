@@ -292,12 +292,12 @@ camera:
     name: Домофон
     still_image_url: !secret domofon_pic
     stream_source: !secret domofon_url
-  - platform: generic
-    name: Парковка
-    still_image_url: !secret parkovka_pic
-    stream_source: !secret parkovka_url
-    username: !secret parkovka_login
-    password: !secret parkovka_password
+  # - platform: generic
+  #   name: Парковка
+  #   still_image_url: !secret parkovka_pic
+  #   stream_source: !secret parkovka_url
+  #   username: !secret parkovka_login
+  #   password: !secret parkovka_password
   - platform: generic
     name: dacha
     still_image_url: !secret dacha_pic
@@ -320,12 +320,12 @@ camera:
     name: Вход
     still_image_url: !secret vhod_pic
     stream_source: !secret vhod_url
-  - platform: generic
-    name: Подъезд
-    still_image_url: podezd_pic
-    stream_source: podezd_url
-    username: !secret podezd_login
-    password: !secret podezd_password
+  # - platform: generic
+  #   name: Подъезд
+  #   still_image_url: podezd_pic
+  #   stream_source: podezd_url
+  #   username: !secret podezd_login
+  #   password: !secret podezd_password
   - platform: generic
     name: Двор
     still_image_url: !secret dvor_pic
@@ -464,14 +464,19 @@ homekit:
       include_entities:
         - binary_sensor.datchik_dvizheniia_motion
         - binary_sensor.kitchen_motion_wirenboard
-        - binary_sensor.podezd_motion
         - binary_sensor.motion_sensor_158d0001b177e8
         - binary_sensor.water_leak
         - cover.garage_door
+        - light.1_polka
+        - light.2_polka
+        - light.3_polka
+        - light.obshchii
+        - light.tree
+        - light.table
         - media_player.marantz
         - switch.komp_kusei
         - switch.plug_158d0001b195fd
-        - light.gateway_light_286c07f1c549
+        - switch.sonoff_mini_relay
         - humidifier.smartmi_evaporative_humidifer_2
         - humidifier.uvlazhnitel
       exclude_entities:
