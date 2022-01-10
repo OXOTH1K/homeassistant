@@ -37,7 +37,7 @@
   action:
     - service: frontend.set_theme
       data:
-        name: google-dark-theme
+        name: google_dark_theme
 
 - alias: "Set light theme for the day"
   trigger:
@@ -47,7 +47,7 @@
   action:
     - service: frontend.set_theme
       data:
-        name: google-light-theme
+        name: google_light_theme
 - alias: "Set theme at startup"
   trigger:
     - platform: homeassistant
@@ -57,9 +57,9 @@
     data_template:
       name: >
         {% if states.sun.sun.state == "below_horizon" %}
-          google-dark-theme
+          google_dark_theme
         {% else %}
-          google-light-theme
+          google_light_theme
         {% endif %}
 
 #Звонок в дверь
