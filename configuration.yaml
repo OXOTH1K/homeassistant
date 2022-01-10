@@ -57,6 +57,7 @@ yandex_smart_home:
       - media_player.gostinaia
       - sensor.dining_room_humidity
       - sensor.dining_room_temperature
+      - vacuum.pylesos
 
 logbook:
 person:
@@ -103,6 +104,7 @@ tts:
     voice: Maxim
 
 automation: !include_dir_merge_list automations
+button: !include button.yaml
 group: !include groups.yaml
 input_boolean: !include input_boolean.yaml
 input_number: !include input_number.yaml
@@ -178,20 +180,23 @@ light:
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/86/11/13/Set"
-    state_topic: "/spruthub/accessories/86/11/13"
+    command_topic: "/spruthub/accessories/132/11/13/Set"
+    state_topic: "/spruthub/accessories/132/11/13"
     name: "Ванная"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/85/11/13/Set"
-    state_topic: "/spruthub/accessories/85/11/13"
+    command_topic: "/spruthub/accessories/100/11/13/Set"
+    state_topic: "/spruthub/accessories/100/11/13"
+    # brightness_command_topic: "/spruthub/accessories/111/11/14/Set"
+    # brightness_state_topic: "/spruthub/accessories/111/11/14"
+    # brightness_scale: 100
     name: "Коридор"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/88/11/13/Set"
-    state_topic: "/spruthub/accessories/88/11/13"
+    command_topic: "/spruthub/accessories/133/11/13/Set"
+    state_topic: "/spruthub/accessories/133/11/13"
     name: "Прачечная"
     payload_on: "true"
     payload_off: "false"
@@ -288,6 +293,15 @@ weather:
     mode: daily
 
 camera:
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret xiaomi_vacuum_host
+    token: !secret xiaomi_vacuum_token
+    username: !secret xiaomi_cloud_username
+    password: !secret xiaomi_cloud_password
+    country: cn
+    draw: ['all']
+    attributes:
+      - calibration_points    
   - platform: generic
     name: Домофон
     still_image_url: !secret domofon_pic
@@ -479,6 +493,7 @@ homekit:
         - switch.sonoff_mini_relay
         - humidifier.smartmi_evaporative_humidifer_2
         - humidifier.uvlazhnitel
+        - vacuum.pylesos
       exclude_entities:
         - climate.aeronik
         - climate.ballu
@@ -608,6 +623,13 @@ media_player:
 
 webhook:
 wake_on_lan:
+
+vacuum:
+  - platform: miio2
+    host: !secret xiaomi_vacuum_host
+    token: !secret xiaomi_vacuum_token
+    name: Пылесос
+
 
 bodymiscale:
   alex:
