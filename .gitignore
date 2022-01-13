@@ -1,4 +1,5 @@
 .*
+blueprints/
 custom_components/
 deps/
 esphome/
