@@ -301,7 +301,13 @@ camera:
     country: cn
     draw: ['all']
     attributes:
-      - calibration_points    
+      - calibration_points
+    map_transformation:
+      trim:
+        top: 35
+        bottom: 43
+        left: 47
+        right: 25
   - platform: generic
     name: Домофон
     still_image_url: !secret domofon_pic
@@ -487,7 +493,7 @@ homekit:
         - light.obshchii
         - light.tree
         - light.table
-        - media_player.marantz
+        - media_player.samsung_tv_remote
         - switch.komp_kusei
         - switch.plug_158d0001b195fd
         - switch.sonoff_mini_relay
