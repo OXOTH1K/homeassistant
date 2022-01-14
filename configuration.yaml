@@ -617,6 +617,12 @@ homekit:
     filter:
       include_entities:
         - lock.domofon
+  - name: Телевизор
+    port: 21078
+    mode: accessory
+    filter:
+      include_entities:
+        - media_player.samsung_tv_remote
 
 media_player:
   - platform: mpd

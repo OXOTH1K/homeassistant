@@ -129,8 +129,8 @@ device_tracker.liliia:
 device_tracker.oxoth1ks_iphone:
   entity_picture: /local/me.jpg
   friendly_name: Сашка
-media_player.samsung_tv_remote:
-  device_class: tv
+# media_player.samsung_tv_remote:
+#   device_class: tv
 media_player.marantz:
   device_class: speaker
 binary_sensor.lifecontrol_door_ias_zone:
