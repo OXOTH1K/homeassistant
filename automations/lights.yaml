@@ -27,16 +27,8 @@
     entity_id:
       - light.vannaia
 
-- alias: Toggle bedroom light
-  trigger:
-    platform: mqtt
-    topic: "/spruthub/accessories/86/10/StatelessProgrammableSwitch/ProgrammableSwitchEvent"
-    payload: "0"
-  action:
-    service: light.toggle
-    entity_id: light.bedroom_all
 
-- alias: Turn on hall light
+- alias: Turn on hall light day
   trigger:
     platform: state
     entity_id: binary_sensor.kitchen_motion_wirenboard
@@ -47,9 +39,12 @@
     after_offset: "-00:30:00"
   action:
     service: light.turn_on
-    entity_id: light.koridor
+    target:
+      entity_id: light.koridor
+    data:
+      brightness: 255
 
-- alias: Turn on dining room light
+- alias: Turn on hall light night
   trigger:
     platform: state
     entity_id: binary_sensor.kitchen_motion_wirenboard
@@ -59,8 +54,13 @@
     before: sunrise
     after_offset: "-00:30:00"
   action:
-    service: light.turn_on
-    entity_id: light.nochnik
+    - service: light.turn_on
+      target:
+        entity_id: light.koridor
+      data:
+        brightness: 1
+    - service: light.turn_on
+      entity_id: light.nochnik
 
 - alias: Turn off dining room light
   trigger:
@@ -72,8 +72,12 @@
     before: sunrise
     after_offset: "-00:30:00"
   action:
-    service: light.turn_off
-    entity_id: light.nochnik
+    - service: light.turn_off
+      target:
+        entity_id: light.nochnik
+    - service: light.turn_off
+      target:
+        entity_id: light.koridor
 
 - alias: Turn off hall light
   trigger:

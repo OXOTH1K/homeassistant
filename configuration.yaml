@@ -180,17 +180,17 @@ light:
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/132/11/13/Set"
-    state_topic: "/spruthub/accessories/132/11/13"
+    command_topic: "/spruthub/accessories/100/11/13/Set"
+    state_topic: "/spruthub/accessories/100/11/13"
     name: "Ванная"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/100/11/13/Set"
-    state_topic: "/spruthub/accessories/100/11/13"
-    # brightness_command_topic: "/spruthub/accessories/111/11/14/Set"
-    # brightness_state_topic: "/spruthub/accessories/111/11/14"
-    # brightness_scale: 100
+    command_topic: "/spruthub/accessories/140/12/14/Set"
+    state_topic: "/spruthub/accessories/140/12/14"
+    brightness_command_topic: "/spruthub/accessories/140/12/15/Set"
+    brightness_state_topic: "/spruthub/accessories/140/12/15"
+    brightness_scale: 100
     name: "Коридор"
     payload_on: "true"
     payload_off: "false"
@@ -626,7 +626,7 @@ homekit:
 
 media_player:
   - platform: mpd
-    host: 192.168.1.247
+    host: 192.168.1.101
   - platform: smartir
     name: Marantz
     unique_id: marantz
