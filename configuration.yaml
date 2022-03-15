@@ -26,8 +26,8 @@ start_time:
 logger:
   default: warn
   logs:
-    custom_components.sensor.xiaomi_miio_raw: debug
-    miio: debug
+    homeassistant.components.homekit: debug
+    pyhap: debug
 http:
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
@@ -72,7 +72,7 @@ proximity:
 
 map:
 sun:
-system_health:
+
 
 lock:
   - platform: template
@@ -89,8 +89,8 @@ lock:
         entity_id: input_boolean.lock
   - platform: mqtt
     name: Вход
-    command_topic: "/spruthub/accessories/75/11/14/Set"
-    state_topic: "/spruthub/accessories/75/11/14"
+    command_topic: "/spruthub/accessories/148/12/15/Set"
+    state_topic: "/spruthub/accessories/148/12/14"
     payload_lock: "1"
     payload_unlock: "0"
     state_locked: "1"
@@ -180,8 +180,8 @@ light:
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/100/11/13/Set"
-    state_topic: "/spruthub/accessories/100/11/13"
+    command_topic: "/spruthub/accessories/142/12/14/Set"
+    state_topic: "/spruthub/accessories/142/12/14"
     name: "Ванная"
     payload_on: "true"
     payload_off: "false"
@@ -195,8 +195,17 @@ light:
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/133/11/13/Set"
-    state_topic: "/spruthub/accessories/133/11/13"
+    command_topic: "/spruthub/accessories/127/11/13/Set"
+    state_topic: "/spruthub/accessories/127/11/13"
+    brightness_command_topic: "/spruthub/accessories/127/11/14/Set"
+    brightness_state_topic: "/spruthub/accessories/127/11/14"
+    brightness_scale: 100
+    name: "Стол"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/98/11/13/Set"
+    state_topic: "/spruthub/accessories/98/11/13"
     name: "Прачечная"
     payload_on: "true"
     payload_off: "false"
@@ -209,32 +218,40 @@ light:
     name: "Ночник"
     payload_on: "true"
     payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/150/24/26/Set"
+    state_topic: "/spruthub/accessories/150/24/25"
+    brightness_command_topic: "/spruthub/accessories/150/24/27/Set"
+    brightness_state_topic: "/spruthub/accessories/150/24/27"
+    brightness_scale: 100
+    name: "Светильник прикроватный"
+    payload_on: "true"
+    payload_off: "false"
 
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
 ble_monitor:
   discovery: False
+  restore_state: true
   bt_interface: "00:1A:7D:DA:71:13"
   devices:
     - mac: "A4:C1:38:0F:E9:97"
-      encryption_key: "12A34E57E20934BFE92E3E48879C4738"
+      encryption_key: "aa01b2a3003288225383d4165fd77640"
       temperature_unit: C
     - mac: "A4:C1:38:22:14:A3"
       temperature_unit: C
-      encryption_key: "75d518668211c28e602286203815e0f2"
+      encryption_key: "edf6aea5109b51093b8e815cc17be42f"
     - mac: "E7:2E:00:13:50:D1"
     - mac: "AC:9A:22:F2:CA:D2"
     - mac: "C6:DA:34:3C:AE:CC"
     - mac: "74:A3:4A:C0:17:13"
-#    - mac: "F8:24:41:ED:8F:55"
-#    - mac: "F8:24:41:ED:08:0F"
+    - mac: "F8:24:41:ED:8F:55" #Спальня
+    - mac: "F8:24:41:ED:08:0F" #Кухня гостиная
 
 binary_sensor: !include binary_sensor.yaml
 
 rest_command:
-  on_eco:
-    url: http://192.168.1.240/eco/on
   domru_open_door:
     url: "http://192.168.1.247:10080/api/open/340012536816/10737943"
 switch:
@@ -287,10 +304,10 @@ switch:
           data:
             entity_id: fan.pritochka
         icon_template: mdi:volume-high
-weather:
-  - platform: darksky
-    api_key: !secret darksky_api_key
-    mode: daily
+#weather:
+#  - platform: darksky
+#    api_key: !secret darksky_api_key
+#    mode: daily
 
 camera:
   - platform: xiaomi_cloud_map_extractor
@@ -298,6 +315,8 @@ camera:
     token: !secret xiaomi_vacuum_token
     username: !secret xiaomi_cloud_username
     password: !secret xiaomi_cloud_password
+    store_map_image: true
+    store_map_path: /config/www/photo_captures/
     country: cn
     draw: ['all']
     attributes:
@@ -476,16 +495,14 @@ zone:
     icon: mdi:shovel
 
 homekit:
-  - name: Hassio
+  - name: Hass.io
+    advertise_ip: 192.168.1.247
+    port: 21081
     filter:
       include_domains:
         - climate
         - alarm_control_panel
       include_entities:
-        - binary_sensor.datchik_dvizheniia_motion
-        - binary_sensor.kitchen_motion_wirenboard
-        - binary_sensor.motion_sensor_158d0001b177e8
-        - binary_sensor.water_leak
         - cover.garage_door
         - light.1_polka
         - light.2_polka
@@ -493,7 +510,6 @@ homekit:
         - light.obshchii
         - light.tree
         - light.table
-        - media_player.samsung_tv_remote
         - switch.komp_kusei
         - switch.plug_158d0001b195fd
         - switch.sonoff_mini_relay
@@ -506,119 +522,121 @@ homekit:
     entity_config:
       alarm_control_panel.signalizatsiia:
         code: !secret alarm_code
-  - name: Камера Домофон
-    port: 21067
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.domofon
-    entity_config:
-      camera.domofon:
-        video_codec: copy
-        linked_doorbell_sensor: binary_sensor.domofon_incoming_call
-        support_audio: false
-  - name: Камера Двор
-    port: 21068
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.dvor
-    entity_config:
-      camera.dvor:
-        video_codec: copy
-        support_audio: false
-  - name: Камера 1 Подъезд
-    port: 21069
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.1_podezd
-    entity_config:
-      camera.1_podezd:
-        video_codec: copy
-        support_audio: false
-  - name: Камера 2 Подъезд
-    port: 21070
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.2_podezd
-    entity_config:
-      camera.2_podezd:
-        video_codec: copy
-        support_audio: false
-  - name: Камера Парк
-    port: 21071
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.park
-    entity_config:
-      camera.park:
-        video_codec: copy
-        support_audio: false
-  - name: Камера Парковка
-    port: 21072
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.parkovka
-    entity_config:
-      camera.parkovka:
-        video_codec: copy
-        support_audio: false
-  - name: Камера Парковка 2
-    port: 21073
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.parkovka2
-    entity_config:
-      camera.parkovka2:
-        video_codec: copy
-        support_audio: false
-  - name: Камера Парковка 3
-    port: 21074
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.parkovka3
-    entity_config:
-      camera.parkovka3:
-        video_codec: copy
-        support_audio: false
-  - name: Камера Вход
-    port: 21075
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.vkhod
-    entity_config:
-      camera.vkhod:
-        video_codec: copy
-        audio_codec: copy
-        stream_source: !secret vhod_stream_source
-  - name: Камера Подъезд
-    port: 21076
-    mode: accessory
-    filter:
-      include_entities:
-        - camera.podezd
-    entity_config:
-      camera.podezd:
-        video_codec: copy
-        support_audio: false
-        stream_source: !secret podezd_stream_source
-        linked_motion_sensor: binary_sensor.podezd_motion
-        linked_doorbell_sensor: binary_sensor.zvonok
-  - name: Замок домофон
-    port: 21077
+  # - name: Камера Домофон
+  #   port: 21067
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.domofon
+  #   entity_config:
+  #     camera.domofon:
+  #       video_codec: copy
+  #       linked_doorbell_sensor: binary_sensor.domofon_incoming_call
+  #       support_audio: false
+  # - name: Камера Двор
+  #   port: 21068
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.dvor
+  #   entity_config:
+  #     camera.dvor:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера 1 Подъезд
+  #   port: 21069
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.1_podezd
+  #   entity_config:
+  #     camera.1_podezd:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера 2 Подъезд
+  #   port: 21070
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.2_podezd
+  #   entity_config:
+  #     camera.2_podezd:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера Парк
+  #   port: 21071
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.park
+  #   entity_config:
+  #     camera.park:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера Парковка
+  #   port: 21072
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.parkovka
+  #   entity_config:
+  #     camera.parkovka:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера Парковка 2
+  #   port: 21073
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.parkovka2
+  #   entity_config:
+  #     camera.parkovka2:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера Парковка 3
+  #   port: 21074
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.parkovka3
+  #   entity_config:
+  #     camera.parkovka3:
+  #       video_codec: copy
+  #       support_audio: false
+  # - name: Камера Вход
+  #   port: 21075
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.vkhod
+  #   entity_config:
+  #     camera.vkhod:
+  #       video_codec: copy
+  #       audio_codec: copy
+  #       stream_source: !secret vhod_stream_source
+  # - name: Камера Подъезд
+  #   port: 21076
+  #   mode: accessory
+  #   filter:
+  #     include_entities:
+  #       - camera.podezd
+  #   entity_config:
+  #     camera.podezd:
+  #       video_codec: copy
+  #       support_audio: false
+  #       stream_source: !secret podezd_stream_source
+  #       linked_motion_sensor: binary_sensor.podezd_motion
+  #       linked_doorbell_sensor: binary_sensor.zvonok
+  - name: Домофон
+    advertise_ip: 192.168.1.247
+    port: 21079
     mode: accessory
     filter:
       include_entities:
         - lock.domofon
-  - name: Телевизор
-    port: 21078
+  - name: Телек
+    advertise_ip: 192.168.1.247
+    port: 21080
     mode: accessory
     filter:
       include_entities:
@@ -626,21 +644,21 @@ homekit:
 
 media_player:
   - platform: mpd
-    host: 192.168.1.101
+    host: 192.168.1.247
   - platform: smartir
     name: Marantz
     unique_id: marantz
     device_code: 9001
-    controller_data: 192.168.1.240
+    controller_data: 192.168.1.215
 
 webhook:
 wake_on_lan:
 
-vacuum:
-  - platform: miio2
-    host: !secret xiaomi_vacuum_host
-    token: !secret xiaomi_vacuum_token
-    name: Пылесос
+# vacuum:
+#   - platform: miio2
+#     host: !secret xiaomi_vacuum_host
+#     token: !secret xiaomi_vacuum_token
+#     name: Пылесос
 
 
 bodymiscale:

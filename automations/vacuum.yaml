@@ -1,0 +1,18 @@
+# Пылесос закончил уборку
+- id: vacuum_cleaning_is_end
+  alias: vacuum cleaning is end
+  trigger:
+    platform: state
+    entity_id: vacuum.pylesos
+    from: "cleaning"
+    to: "returning"
+  action:
+    - service: telegram_bot.send_photo
+      data_template:
+        target: !secret telegram_bot_group_chat_id
+        file: /config/www/photo_captures/map_image_viomi.vacuum.v7.png
+        caption: |
+          {{"\U0001F9F9"}}Пылесос закончил уборку
+          {{"\U000023F1"}}Время уборки: {{ state_attr('vacuum.pylesos','cleaning_time') }} мин;
+          {{"\U0001F3E0"}}Площадь уборки: {{ state_attr('vacuum.pylesos','cleaned_area') }} м²;
+          {{"\U0001F50B"}}Осталось заряда: {{ state_attr('vacuum.pylesos','battery_level') }}%.

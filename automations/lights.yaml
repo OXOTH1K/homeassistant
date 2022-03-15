@@ -88,108 +88,98 @@
     service: light.turn_off
     entity_id: light.koridor
 #Управление светильниками с пульта
-# - alias: Turn on dining room and kitchen light
-#   trigger:
-#     platform: state
-#     entity_id: binary_sensor.ble_remote_binary_single_press_f82441ed8f55
-#     to: "on"
-#   action:
-#     - service: light.turn_on
-#       entity_id: light.yeelight_ceilb_0x182d2cc2
-#     - service: light.turn_on
-#       entity_id: light.yeelight_ceila_0x184309e8
+- alias: Turn on dining room and kitchen light
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ble_remote_binary_single_press_f82441ed080f
+    to: "on"
+  action:
+    - service: light.turn_on
+      entity_id: light.yeelight_ceilb_0x182d2cc2
+    - service: light.turn_on
+      entity_id: light.yeelight_ceila_0x184309e8
 
-# - alias: Turn off dining room and kitchen light
-#   trigger:
-#     platform: state
-#     entity_id: binary_sensor.ble_remote_binary_single_press_f82441ed8f55
-#     to: "off"
-#   action:
-#     - service: light.turn_off
-#       entity_id: light.yeelight_ceilb_0x182d2cc2
-#     - service: light.turn_off
-#       entity_id: light.yeelight_ceila_0x184309e8
+- alias: Turn off dining room and kitchen light
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ble_remote_binary_single_press_f82441ed080f
+    to: "off"
+  action:
+    - service: light.turn_off
+      entity_id: light.yeelight_ceilb_0x182d2cc2
+    - service: light.turn_off
+      entity_id: light.yeelight_ceila_0x184309e8
 
-# - alias: Dimm on dining room and kitchen light
-#   trigger:
-#     platform: state
-#     entity_id: sensor.ble_remote_f82441ed8f55
-#   condition:
-#     condition: state
-#     entity_id: sensor.ble_remote_f82441ed8f55
-#     state: "single press +"
-#   action:
-#     - service: light.turn_on
-#       data:
-#         entity_id: light.yeelight_ceilb_0x182d2cc2
-#         brightness_step_pct: 10
-#     - service: light.turn_on
-#       data:
-#         entity_id: light.yeelight_ceila_0x184309e8
-#         brightness_step_pct: 10
+- alias: Dimm on dining room and kitchen light
+  trigger:
+    platform: state
+    entity_id: sensor.ble_remote_f82441ed080f
+  condition:
+    condition: state
+    entity_id: sensor.ble_remote_f82441ed080f
+    state: "single press +"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.yeelight_ceilb_0x182d2cc2
+        brightness_step_pct: 20
+    - service: light.turn_on
+      data:
+        entity_id: light.yeelight_ceila_0x184309e8
+        brightness_step_pct: 20
 
-# - alias: Dimm on dining room and kitchen light
-#   trigger:
-#     platform: state
-#     entity_id: sensor.ble_remote_f82441ed8f55
-#   condition:
-#     condition: state
-#     entity_id: sensor.ble_remote_f82441ed8f55
-#     state: "single press -"
-#   action:
-#     - service: light.turn_on
-#       data:
-#         entity_id: light.yeelight_ceilb_0x182d2cc2
-#         brightness_step_pct: -10
-#     - service: light.turn_on
-#       data:
-#         entity_id: light.yeelight_ceila_0x184309e8
-#         brightness_step_pct: -10
+- alias: Dimm on dining room and kitchen light
+  trigger:
+    platform: state
+    entity_id: sensor.ble_remote_f82441ed080f
+  condition:
+    condition: state
+    entity_id: sensor.ble_remote_f82441ed080f
+    state: "single press -"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.yeelight_ceilb_0x182d2cc2
+        brightness_step_pct: -20
+    - service: light.turn_on
+      data:
+        entity_id: light.yeelight_ceila_0x184309e8
+        brightness_step_pct: -20
 
-# - alias: Turn on dining room and kitchen night light
-#   trigger:
-#     platform: state
-#     entity_id: sensor.ble_remote_f82441ed8f55
-#   condition:
-#     condition: and
-#     conditions:
-#       - condition: state
-#         entity_id: sensor.ble_remote_f82441ed8f55
-#         state: "single press m"
-#       - condition: state
-#         entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
-#         state: "off"
-#   action:
-#     - service: light.turn_off
-#       entity_id: light.yeelight_ceilb_0x182d2cc2
-#     - service: light.turn_off
-#       entity_id: light.yeelight_ceila_0x184309e8
-#     - delay: 1
-#     - service: light.turn_on
-#       entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
-#     - service: light.turn_on
-#       entity_id: light.yeelight_ceila_0x184309e8_nightlight
+- alias: Turn on dining room and kitchen night light
+  trigger:
+    platform: state
+    entity_id: sensor.ble_remote_f82441ed080f
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: sensor.ble_remote_f82441ed080f
+        state: "single press m"
+      - condition: state
+        entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
+        state: "off"
+  action:
+    - service: light.turn_on
+      entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
+    - service: light.turn_on
+      entity_id: light.yeelight_ceila_0x184309e8_nightlight
 
-# - alias: Turn off dining room and kitchen night light
-#   trigger:
-#     platform: state
-#     entity_id: sensor.ble_remote_f82441ed8f55
-#   condition:
-#     condition: and
-#     conditions:
-#       - condition: state
-#         entity_id: sensor.ble_remote_f82441ed8f55
-#         state: "single press m"
-#       - condition: state
-#         entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
-#         state: "on"
-#   action:
-#     - service: light.turn_off
-#       entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
-#     - service: light.turn_off
-#       entity_id: light.yeelight_ceila_0x184309e8_nightlight
-#     - delay: 1
-#     - service: light.turn_on
-#       entity_id: light.yeelight_ceilb_0x182d2cc2
-#     - service: light.turn_on
-#       entity_id: light.yeelight_ceila_0x184309e8
+- alias: Turn off dining room and kitchen night light
+  trigger:
+    platform: state
+    entity_id: sensor.ble_remote_f82441ed080f
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: sensor.ble_remote_f82441ed080f
+        state: "single press m"
+      - condition: state
+        entity_id: light.yeelight_ceilb_0x182d2cc2_nightlight
+        state: "on"
+  action:
+    - service: light.turn_on
+      entity_id: light.yeelight_ceilb_0x182d2cc2
+    - service: light.turn_on
+      entity_id: light.yeelight_ceila_0x184309e8

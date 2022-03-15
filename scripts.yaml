@@ -106,3 +106,14 @@ matrix_set_time:
         topic: WiFiPanel-0/cmd
         payload_template: >
           $19 8 {{ now().strftime('%Y %m %d %H %M') }};
+
+#### Пылесос
+
+vacuum_map:
+  alias: "Скриншот карты уборки"
+  sequence:
+    - service: camera.snapshot
+      target:
+        entity_id: camera.xiaomi_cloud_map_extractor
+      data:
+        filename: '/config/www/photo_captures/cleaning_map.jpg'

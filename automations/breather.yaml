@@ -30,6 +30,16 @@
       at: "16:00:00"
     - platform: time
       at: "18:00:00"
+    - platform: time
+      at: "19:00:00"
+    - platform: time
+      at: "20:00:00"
+    - platform: time
+      at: "21:00:00"
+    - platform: time
+      at: "22:00:00"
+    - platform: time
+      at: "23:00:00"
   action:
     - service: fan.turn_on
       target:
@@ -38,15 +48,25 @@
 - alias: Выключить днем
   trigger:
     - platform: time
-      at: "10:30:00"
+      at: "10:15:00"
     - platform: time
-      at: "12:30:00"
+      at: "12:15:00"
     - platform: time
-      at: "14:30:00"
+      at: "14:15:00"
     - platform: time
-      at: "16:30:00"
+      at: "16:15:00"
     - platform: time
-      at: "18:30:00"
+      at: "18:20:00"
+    - platform: time
+      at: "19:20:00"
+    - platform: time
+      at: "20:20:00"
+    - platform: time
+      at: "21:20:00"
+    - platform: time
+      at: "22:20:00"
+    - platform: time
+      at: "23:20:00"
   action:
     - service: fan.turn_off
       target:
@@ -82,25 +102,25 @@
 - alias: Выключить ночью
   trigger:
     - platform: time
-      at: "00:10:00"
+      at: "00:15:00"
     - platform: time
-      at: "01:10:00"
+      at: "01:15:00"
     - platform: time
-      at: "02:10:00"
+      at: "02:15:00"
     - platform: time
-      at: "03:10:00"
+      at: "03:15:00"
     - platform: time
-      at: "04:10:00"
+      at: "04:15:00"
     - platform: time
-      at: "05:10:00"
+      at: "05:15:00"
     - platform: time
-      at: "06:10:00"
+      at: "06:15:00"
     - platform: time
-      at: "07:10:00"
+      at: "07:15:00"
     - platform: time
-      at: "08:10:00"
+      at: "08:15:00"
     - platform: time
-      at: "09:10:00"
+      at: "09:15:00"
   action:
     - service: fan.turn_off
       target:

@@ -8,11 +8,11 @@
     - type: processor_use
     - type: last_boot
 
-- platform: github
-  access_token: !secret github_access_token
-  repositories:
-    - path: "SberHome/infra"
-    - path: "SberHome/devops_stuff"
+#- platform: github
+#  access_token: !secret github_access_token
+#  repositories:
+#    - path: "SberHome/infra"
+#    - path: "SberHome/devops_stuff"
 
 - platform: time_date
   display_options:
@@ -348,3 +348,26 @@
 #  host: 192.168.1.121
 #  token: 202aafe5d9944f08adcd780ad5b765d7
 #  default_properties_getter: get_properties
+
+- platform: command_line
+  name: curl az1
+  unit_of_measurement: "ms"
+  value_template: "{{ value | multiply(1000) | round(0) }}"
+  command: !secret az1
+- platform: command_line
+  name: curl az2
+  unit_of_measurement: "ms"
+  value_template: "{{ value | multiply(1000) | round(0) }}"
+  command: !secret az2
+- platform: command_line
+  name: curl az3
+  unit_of_measurement: "ms"
+  value_template: "{{ value | multiply(1000) | round(0) }}"
+  command: !secret az3
+
+- platform: min_max
+  name: Max AZ response
+  entity_ids:
+    - sensor.curl_az1
+    - sensor.curl_az2
+    - sensor.curl_az3

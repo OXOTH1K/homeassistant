@@ -5,7 +5,9 @@ deps/
 esphome/
 image/
 neighbours/
+scrypted/
 tts/
+tileboard/
 www/
 backup.yaml
 home-assistant.log*

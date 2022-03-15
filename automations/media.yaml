@@ -27,3 +27,25 @@
       data:
         entity_id:
           - switch.sub
+
+- alias: "Turn on TV with ATV"
+  trigger:
+    platform: state
+    entity_id: media_player.gostinaia
+    from: "standby"
+  action:
+    - service: media_player.turn_on
+      data:
+        entity_id:
+          - media_player.samsung_tv_remote
+
+- alias: "Turn off TV with ATV"
+  trigger:
+    platform: state
+    entity_id: media_player.gostinaia
+    to: "standby"
+  action:
+    - service: media_player.turn_off
+      data:
+        entity_id:
+          - media_player.samsung_tv_remote
