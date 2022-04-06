@@ -1,22 +1,4 @@
-- alias: Select favorite speed by slider
-  trigger:
-    platform: state
-    entity_id: input_number.xiaomi_fresh_air_ventilator_favorite_speed
-  action:
-    - service: xiaomi_miio_airpurifier.fan_set_favorite_speed
-      data_template:
-        entity_id: fan.pritochka
-        speed: "{{ states.input_number.xiaomi_fresh_air_ventilator_favorite_speed.state|int }}"
 
-- alias: Monitor favorite speed and update slider
-  trigger:
-    platform: state
-    entity_id: sensor.xiaomi_fresh_air_ventilator_favorite_speed
-  action:
-    - service: input_number.set_value
-      entity_id: input_number.xiaomi_fresh_air_ventilator_favorite_speed
-      data_template:
-        value: "{{ states.fan.pritochka.attributes.favorite_speed }}"
 
 - alias: Проветрить днем
   trigger:

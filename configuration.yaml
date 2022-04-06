@@ -115,12 +115,12 @@ shell_command: !include shell_commands.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
 
-fan:
-  - platform: xiaomi_miio_airpurifier
-    name: Приточка
-    host: 192.168.1.164
-    token: !secret xiaomi_miio_airpurifier_token
-    model: dmaker.airfresh.a1
+#fan:
+ # - platform: xiaomi_miio_airpurifier
+#    name: Приточка
+#    host: 192.168.1.164
+#    token: !secret xiaomi_miio_airpurifier_token
+#    model: dmaker.airfresh.a1
 
 light:
   #Spruthub
@@ -253,7 +253,7 @@ binary_sensor: !include binary_sensor.yaml
 
 rest_command:
   domru_open_door:
-    url: "http://192.168.1.247:10080/api/open/340012536816/10737943"
+    url: "http://192.168.1.247:10180/api/open/340012536816/10737943"
 switch:
   - platform: mqtt
     name: "sub"
@@ -264,46 +264,7 @@ switch:
   - platform: wake_on_lan
     mac: 70:85:c2:2e:9a:4e
     name: Комп Кусей
-  - platform: template
-    switches:
-      xiaomi_fresh_air_ventilator_display:
-        friendly_name: Дисплей
-        value_template: "{{ is_state_attr('fan.pritochka', 'display', True) }}"
-        turn_on:
-          service: xiaomi_miio_airpurifier.fan_set_display_on
-          data:
-            entity_id: fan.pritochka
-        turn_off:
-          service: xiaomi_miio_airpurifier.fan_set_display_off
-          data:
-            entity_id: fan.pritochka
-        icon_template: mdi:lightbulb-outline
 
-      xiaomi_fresh_air_ventilator_child_lock:
-        friendly_name: Защита от детей
-        value_template: "{{ is_state_attr('fan.pritochka', 'child_lock', True) }}"
-        turn_on:
-          service: xiaomi_miio_airpurifier.fan_set_child_lock_on
-          data:
-            entity_id: fan.pritochka
-        turn_off:
-          service: xiaomi_miio_airpurifier.fan_set_child_lock_off
-          data:
-            entity_id: fan.pritochka
-        icon_template: mdi:lock-outline
-
-      xiaomi_fresh_air_ventilator_buzzer:
-        friendly_name: Пищалка
-        value_template: "{{ is_state_attr('fan.pritochka', 'buzzer', True) }}"
-        turn_on:
-          service: xiaomi_miio_airpurifier.fan_set_buzzer_on
-          data:
-            entity_id: fan.pritochka
-        turn_off:
-          service: xiaomi_miio_airpurifier.fan_set_buzzer_off
-          data:
-            entity_id: fan.pritochka
-        icon_template: mdi:volume-high
 #weather:
 #  - platform: darksky
 #    api_key: !secret darksky_api_key
@@ -327,6 +288,9 @@ camera:
         bottom: 43
         left: 47
         right: 25
+#   - platform: ffmpeg
+#     name: Streaming
+#     input: "/config/www/rickroll.mp4"
   - platform: generic
     name: Домофон
     still_image_url: !secret domofon_pic

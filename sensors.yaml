@@ -96,28 +96,7 @@
           {% endif %}
       unit_of_measurement: "ohm"
       icon_template: mdi:omega
-    xiaomi_fresh_air_ventilator_co2:
-      friendly_name: CO² спальня
-      value_template: "{{ states.fan.pritochka.attributes.co2 }}"
-      unit_of_measurement: "ppm"
-      icon_template: mdi:molecule-co2
 
-    xiaomi_fresh_air_ventilator_pm25:
-      friendly_name: PM2.5 спальня
-      value_template: "{{ states.fan.pritochka.attributes.pm25 }}"
-      unit_of_measurement: "µg/m³"
-      icon_template: mdi:grain
-
-    xiaomi_fresh_air_ventilator_temperature:
-      friendly_name: Температура приточка
-      value_template: "{{ states.fan.pritochka.attributes.temperature }}"
-      unit_of_measurement: "°C"
-      icon_template: mdi:thermometer
-
-    xiaomi_fresh_air_ventilator_favorite_speed:
-      friendly_name: Favorite speed
-      value_template: "{{ states.fan.pritochka.attributes.favorite_speed }}"
-      icon_template: mdi:speedometer
 - platform: darksky
   api_key: !secret darksky_api_key
   forecast:
@@ -364,6 +343,15 @@
   unit_of_measurement: "ms"
   value_template: "{{ value | multiply(1000) | round(0) }}"
   command: !secret az3
+# - platform: command_line
+#   name: curl elb
+#   unit_of_measurement: "ms"
+#   value_template: "{{ value | multiply(1000) | round(0) }}"
+#   command: !secret elb
+- platform: command_line
+  name: curl prod devices list
+  value_template: "{{ value_json.results[19].status }}"
+  command: !secret prod_dev
 
 - platform: min_max
   name: Max AZ response

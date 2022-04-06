@@ -1,9 +1,3 @@
-  xiaomi_fresh_air_ventilator_favorite_speed:
-    name: Скорость приточки
-    icon: mdi:weather-windy
-    min: 60
-    max: 150
-    step: 2
 
 ###################################   МАТРИЦА   #################################
 
