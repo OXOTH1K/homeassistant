@@ -97,26 +97,6 @@
       unit_of_measurement: "ohm"
       icon_template: mdi:omega
 
-- platform: darksky
-  api_key: !secret darksky_api_key
-  forecast:
-    - 0
-    - 1
-    - 2
-  language: ru
-  monitored_conditions:
-    - summary
-    - icon
-    - temperature
-    - wind_speed
-    - humidity
-    - visibility
-    - temperature_high
-    - temperature_low
-    - apparent_temperature_high
-    - apparent_temperature_low
-    - apparent_temperature
-    - precip_probability
 
 # Spruthub
 - platform: "mqtt"
@@ -281,10 +261,6 @@
   unit_of_measurement: "m3"
   icon: "mdi:water"
 
-- platform: filesize
-  file_paths:
-    - /config/home-assistant_v2.db
-
 - platform: rest
   resource: http://192.168.1.215/device
   name: LOOK.in состояние
@@ -329,25 +305,25 @@
 #  default_properties_getter: get_properties
 
 - platform: command_line
-  name: curl az1
+  name: curl old gw
   unit_of_measurement: "ms"
   value_template: "{{ value | multiply(1000) | round(0) }}"
-  command: !secret az1
-- platform: command_line
-  name: curl az2
-  unit_of_measurement: "ms"
-  value_template: "{{ value | multiply(1000) | round(0) }}"
-  command: !secret az2
-- platform: command_line
-  name: curl az3
-  unit_of_measurement: "ms"
-  value_template: "{{ value | multiply(1000) | round(0) }}"
-  command: !secret az3
+  command: !secret old_gw
 # - platform: command_line
-#   name: curl elb
+#   name: curl az2
 #   unit_of_measurement: "ms"
 #   value_template: "{{ value | multiply(1000) | round(0) }}"
-#   command: !secret elb
+#   command: !secret az2
+# - platform: command_line
+#   name: curl az3
+#   unit_of_measurement: "ms"
+#   value_template: "{{ value | multiply(1000) | round(0) }}"
+#   command: !secret az3
+- platform: command_line
+  name: curl new gw
+  unit_of_measurement: "ms"
+  value_template: "{{ value | multiply(1000) | round(0) }}"
+  command: !secret new_gw
 - platform: command_line
   name: curl prod devices list
   value_template: "{{ value_json.results[19].status }}"
@@ -356,6 +332,6 @@
 - platform: min_max
   name: Max AZ response
   entity_ids:
-    - sensor.curl_az1
-    - sensor.curl_az2
-    - sensor.curl_az3
+    - sensor.curl_old_gw
+    - sensor.curl_new_gw
+    # - sensor.curl_az3

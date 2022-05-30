@@ -107,3 +107,133 @@
     - service: fan.turn_off
       target:
         entity_id: fan.pritochka
+
+- alias: Увеличить скорость если жарко
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.ble_temperature_a4c1382214a3
+      above: 25
+  condition:
+    alias: "Процент между 1 и 10 приточка включена выключено отопление и на улице теплее 5 градусов и холоднее 25"
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: fan.pritochka
+        attribute: percentage
+        above: 1
+        below: 10
+      - condition: state
+        entity_id: climate.living_room
+        state: "off"
+      - condition: state
+        entity_id: fan.pritochka
+        state: "on"
+      - condition: numeric_state
+        entity_id: weather.yandex_weather
+        attribute: temperature
+        above: 5
+        below: 25
+  action:
+    - service: fan.increase_speed
+      target:
+        entity_id: fan.pritochka
+      data: 
+        percentage_step: 10
+
+- alias: Увеличить еще скорость если жарко
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.ble_temperature_a4c1382214a3
+      above: 26
+      below: 27
+  condition:
+    alias: "Процент между 11 и 20 приточка включена выключено отопление и на улице теплее 5 градусов и холоднее 25"
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: fan.pritochka
+        attribute: percentage
+        above: 11
+        below: 20
+      - condition: state
+        entity_id: climate.living_room
+        state: "off"
+      - condition: state
+        entity_id: fan.pritochka
+        state: "on"
+      - condition: numeric_state
+        entity_id: weather.yandex_weather
+        attribute: temperature
+        above: 5
+        below: 25
+  action:
+    - service: fan.increase_speed
+      target:
+        entity_id: fan.pritochka
+      data: 
+        percentage_step: 10
+
+- alias: Уменьшить скорость если прохладно
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.ble_temperature_a4c1382214a3
+      below: 25
+  condition:
+    alias: "Процент между 10 и 20 приточка включена выключено отопление и на улице теплее 5 градусов и холоднее 25"
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: fan.pritochka
+        attribute: percentage
+        above: 10
+        below: 20
+      - condition: state
+        entity_id: climate.living_room
+        state: "off"
+      - condition: state
+        entity_id: fan.pritochka
+        state: "on"
+      - condition: numeric_state
+        entity_id: weather.yandex_weather
+        attribute: temperature
+        above: 5
+        below: 25
+  action: 
+    - service: fan.decrease_speed
+      target:
+        entity_id: fan.pritochka
+      data: 
+        percentage_step: 10
+
+- alias: Уменьшить еще скорость если прохладно
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.ble_temperature_a4c1382214a3
+      below: 25
+  condition:
+    alias: "Процент между 20 и 30 приточка включена выключено отопление и на улице теплее 5 градусов и холоднее 25"
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: fan.pritochka
+        attribute: percentage
+        above: 20
+        below: 30
+      - condition: state
+        entity_id: climate.living_room
+        state: "off"
+      - condition: state
+        entity_id: fan.pritochka
+        state: "on"
+      - condition: numeric_state
+        entity_id: weather.yandex_weather
+        attribute: temperature
+        above: 5
+        below: 25
+  action: 
+    - service: fan.decrease_speed
+      target:
+        entity_id: fan.pritochka
+      data: 
+        percentage_step: 10
+        

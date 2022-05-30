@@ -62,6 +62,16 @@
           "Google Light Theme"
         {% endif %}
 
+- alias: "Backup Home Assistant every night at 3 AM"
+  trigger:
+    platform: time
+    at: "03:00:00"
+  action:
+    alias: "Create backup now"
+    service: hassio.backup_full
+    data:
+      name: "Automated backup {{ now().strftime('%F') }}"
+
 #Звонок в дверь
 - id: notify_door_bell
   alias: Notify Door Bell
@@ -71,7 +81,7 @@
     to: "on"
   action:
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_ff98f0105f763367a6fa6596
+      entity_id: media_player.yandex_station_mg0000000000000192070000e0cd4a69
       data:
         media_content_id: Хозяин, кто-то звонит в дверь!
         media_content_type: text

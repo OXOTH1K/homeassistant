@@ -11,9 +11,9 @@ homeassistant:
   internal_url: !secret internal_url
   allowlist_external_dirs:
     - /config
-  customize_glob:
-    "sensor.*_energy":
-      last_reset: "1970-01-01T00:00:00+00:00"
+#  customize_glob:
+#    "sensor.*_energy":
+#      last_reset: "1970-01-01T00:00:00+00:00"
 ssdp:
 default_config:
 # Enables the frontend
@@ -32,7 +32,7 @@ http:
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
 
-updater:
+
 
 discovery:
 history:
@@ -468,6 +468,7 @@ homekit:
         - alarm_control_panel
       include_entities:
         - cover.garage_door
+        - fan.pritochka
         - light.1_polka
         - light.2_polka
         - light.3_polka
@@ -625,20 +626,20 @@ wake_on_lan:
 #     name: Пылесос
 
 
-bodymiscale:
-  alex:
-    sensors:
-      weight: sensor.weight_alex
-      impedance: sensor.impedance_alex
-    height: 180
-    born: "1989-11-14"
-    gender: "male"
-    model_miscale: "181B"
-  lilypad:
-    sensors:
-      weight: sensor.weight_lilypad
-      impedance: sensor.impedance_lilypad
-    height: 156
-    born: "1993-01-14"
-    gender: "female"
-    model_miscale: "181B"
+# bodymiscale:
+#   alex:
+#     sensors:
+#       weight: sensor.weight_alex
+#       impedance: sensor.impedance_alex
+#     height: 180
+#     born: "1989-11-14"
+#     gender: "male"
+#     model_miscale: "181B"
+#   lilypad:
+#     sensors:
+#       weight: sensor.weight_lilypad
+#       impedance: sensor.impedance_lilypad
+#     height: 156
+#     born: "1993-01-14"
+#     gender: "female"
+#     model_miscale: "181B"
