@@ -141,7 +141,8 @@
 - alias: Sync Nest Cool temp
   trigger:
     platform: state
-    entity_id: sensor.temperature_nest_set_bedroom
+    entity_id: climate.living_room
+    attribute: temperature
   condition:
     condition: and
     conditions:
@@ -156,4 +157,56 @@
       data_template:
         entity_id: climate.ballu
         temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
+        hvac_mode: cool
+
+
+#Включить охлаждение конциционера в гостиной
+- alias: Set Nest living room cool to on 
+  trigger:
+    platform: state
+    entity_id: binary_sensor.nest_cooler_gostinaia
+    from: "off"
+    to: "on"
+    for:
+      seconds: 5
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.aeronik
+        temperature: "{{state_attr('climate.dining_room', 'temperature') | int}}"
+        hvac_mode: cool
+
+#Выключить охлаждение конциционера в гостиной
+- alias: Set Nest living room cool to off
+  trigger:
+    platform: state
+    entity_id: binary_sensor.nest_cooler_gostinaia
+    from: "on"
+    to: "off"
+    for:
+      seconds: 5
+  action:
+    - service: climate.turn_off
+      entity_id: climate.aeronik
+
+#Синхронизация температуры охлаждения конциционера в гостиной
+- alias: Sync Nest living room Cool temp
+  trigger:
+    platform: state
+    entity_id: climate.dining_room
+    attribute: temperature
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: climate.aeronik
+        state: "cool"
+      - condition: state
+        entity_id: binary_sensor.nest_cooler_gostinaia
+        state: "on"
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.aeronik
+        temperature: "{{state_attr('climate.dining_room', 'temperature') | int}}"
         hvac_mode: cool
