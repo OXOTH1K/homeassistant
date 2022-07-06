@@ -44,6 +44,7 @@
     data:
       brightness: 255
 
+
 - alias: Turn on hall light night
   trigger:
     platform: state
@@ -61,6 +62,25 @@
         brightness: 1
     - service: light.turn_on
       entity_id: light.nochnik
+
+- alias: Turn on kitchen light
+  trigger:
+    platform: state
+    entity_id: binary_sensor.rabochaia_zona
+    to: "on"
+  condition:
+    condition: or
+    conditions:
+      - condition: sun
+        before: sunrise
+        after_offset: "-00:30:00"
+      - condition: sun
+        after: sunset
+        after_offset: "-00:30:00"
+  action:
+    service: light.turn_on
+    entity_id: light.podsvetka
+
 
 - alias: Turn off dining room light
   trigger:
