@@ -45,12 +45,20 @@ yandex_station:
   recognition_lang: ru-RU
 yandex_smart_home:
   filter:
-    include_domains:
-      - light
     include_entities:
       - climate.dining_room
       - climate.living_room
       - cover.garage_door
+      - light.yeelight_ceilb_0x182d2cc2
+      - light.xiaomi_yeelink
+      - light.vannaia
+      - light.podsvetka_2
+      - light.prachechnaia
+      - light.yeelight_ceila_0x184309e8
+      - light.podsvetka
+      - light.stol
+      - light.koridor
+      - light.yeelight_ceilb_0x1787a303
       - lock.vkhod
       - lock.domofon
       - media_player.samsung_tv_remote
@@ -227,6 +235,24 @@ light:
     name: "Светильник прикроватный"
     payload_on: "true"
     payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/153/13/15/Set"
+    state_topic: "/spruthub/accessories/153/13/15"
+    brightness_command_topic: "/spruthub/accessories/153/13/16/Set"
+    brightness_state_topic: "/spruthub/accessories/153/13/16"
+    brightness_scale: 100
+    name: "Лампа Лили"
+    payload_on: "true"
+    payload_off: "false"
+  - platform: mqtt
+    command_topic: "/spruthub/accessories/154/13/15/Set"
+    state_topic: "/spruthub/accessories/154/13/15"
+    brightness_command_topic: "/spruthub/accessories/154/13/16/Set"
+    brightness_state_topic: "/spruthub/accessories/154/13/16"
+    brightness_scale: 100
+    name: "Лампа саши"
+    payload_on: "true"
+    payload_off: "false"
 
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
@@ -253,7 +279,7 @@ binary_sensor: !include binary_sensor.yaml
 
 rest_command:
   domru_open_door:
-    url: "http://192.168.1.247:10180/api/open/340012536816/10737943"
+    url: "http://192.168.1.247:10180/api/open/340012536816/41130761"
 switch:
   - platform: mqtt
     name: "sub"
