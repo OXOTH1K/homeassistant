@@ -108,57 +108,6 @@
         entity_id: climate.living_room
         preset_mode: heat
 
-#Включить охлаждение конциционера
-- alias: Set Nest cool to on
-  trigger:
-    platform: state
-    entity_id: binary_sensor.nest_cooler
-    from: "off"
-    to: "on"
-    for:
-      seconds: 5
-  action:
-    - service: climate.set_temperature
-      data_template:
-        entity_id: climate.ballu
-        temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
-        hvac_mode: cool
-
-#Выключить охлаждение конциционера
-- alias: Set Nest cool to off
-  trigger:
-    platform: state
-    entity_id: binary_sensor.nest_cooler
-    from: "on"
-    to: "off"
-    for:
-      seconds: 5
-  action:
-    - service: climate.turn_off
-      entity_id: climate.ballu
-
-#Синхронизация температуры охлаждения конциционера
-- alias: Sync Nest Cool temp
-  trigger:
-    platform: state
-    entity_id: climate.living_room
-    attribute: temperature
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: climate.ballu
-        state: "cool"
-      - condition: state
-        entity_id: binary_sensor.nest_cooler
-        state: "on"
-  action:
-    - service: climate.set_temperature
-      data_template:
-        entity_id: climate.ballu
-        temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
-        hvac_mode: cool
-
 
 #Включить охлаждение конциционера в гостиной
 - alias: Set Nest living room cool to on 
@@ -209,4 +158,55 @@
       data_template:
         entity_id: climate.aeronik
         temperature: "{{state_attr('climate.dining_room', 'temperature') | int}}"
+        hvac_mode: cool
+        
+#Включить охлаждение конциционера в спальне
+- alias: Set Nest bedroom cool to on 
+  trigger:
+    platform: state
+    entity_id: binary_sensor.nest_cooler_bedroom
+    from: "off"
+    to: "on"
+    for:
+      seconds: 5
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ballu
+        temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
+        hvac_mode: cool
+
+#Выключить охлаждение конциционера в спальне
+- alias: Set Nest bedroom  cool to off
+  trigger:
+    platform: state
+    entity_id: binary_sensor.nest_cooler_bedroom
+    from: "on"
+    to: "off"
+    for:
+      seconds: 5
+  action:
+    - service: climate.turn_off
+      entity_id: climate.ballu
+
+#Синхронизация температуры охлаждения конциционера в спальне
+- alias: Sync Nest bedroom Cool temp
+  trigger:
+    platform: state
+    entity_id: climate.living_room
+    attribute: temperature
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: climate.ballu
+        state: "cool"
+      - condition: state
+        entity_id: binary_sensor.nest_cooler_bedroom
+        state: "on"
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.ballu
+        temperature: "{{state_attr('climate.living_room', 'temperature') | int}}"
         hvac_mode: cool

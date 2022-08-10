@@ -8,10 +8,7 @@
       data:
         entity_id:
           - media_player.marantz
-    - service: switch.turn_off
-      data:
-        entity_id:
-          - switch.sub
+
 
 - alias: "Turn on sound"
   trigger:
@@ -23,10 +20,6 @@
       data:
         entity_id:
           - media_player.marantz
-    - service: switch.turn_on
-      data:
-        entity_id:
-          - switch.sub
 
 - alias: "Turn on TV with ATV"
   trigger:

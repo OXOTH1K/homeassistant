@@ -97,8 +97,8 @@ lock:
         entity_id: input_boolean.lock
   - platform: mqtt
     name: Вход
-    command_topic: "/spruthub/accessories/148/12/15/Set"
-    state_topic: "/spruthub/accessories/148/12/14"
+    command_topic: "SprutHub/accessories/148/12/15/set"
+    state_topic: "SprutHub/accessories/148/12/14"
     payload_lock: "1"
     payload_unlock: "0"
     state_locked: "1"
@@ -133,122 +133,122 @@ sensor: !include sensors.yaml
 light:
   #Spruthub
   - platform: mqtt
-    command_topic: "/spruthub/accessories/52/11/13/Set"
-    state_topic: "/spruthub/accessories/52/11/13"
-    brightness_command_topic: "/spruthub/accessories/52/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/52/11/14"
+    command_topic: "SprutHub/accessories/52/11/13/set"
+    state_topic: "SprutHub/accessories/52/11/13"
+    brightness_command_topic: "SprutHub/accessories/52/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/52/11/14"
     brightness_scale: 100
-    color_temp_command_topic: "/spruthub/accessories/52/11/15/Set"
+    color_temp_command_topic: "SprutHub/accessories/52/11/15/set"
     name: "Кухня"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/53/11/13/Set"
-    state_topic: "/spruthub/accessories/53/11/13"
-    brightness_command_topic: "/spruthub/accessories/53/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/53/11/14"
+    command_topic: "SprutHub/accessories/53/11/13/set"
+    state_topic: "SprutHub/accessories/53/11/13"
+    brightness_command_topic: "SprutHub/accessories/53/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/53/11/14"
     brightness_scale: 100
-    color_temp_command_topic: "/spruthub/accessories/53/11/15/Set"
+    color_temp_command_topic: "SprutHub/accessories/53/11/15/set"
     name: "Столовая"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/92/11/13/Set"
-    state_topic: "/spruthub/accessories/92/11/13"
-    brightness_command_topic: "/spruthub/accessories/92/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/92/11/14"
+    command_topic: "SprutHub/accessories/92/11/13/set"
+    state_topic: "SprutHub/accessories/92/11/13"
+    brightness_command_topic: "SprutHub/accessories/92/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/92/11/14"
     brightness_scale: 100
     name: "Подсветка"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/97/11/13/Set"
-    state_topic: "/spruthub/accessories/97/11/13"
+    command_topic: "SprutHub/accessories/97/11/13/set"
+    state_topic: "SprutHub/accessories/97/11/13"
     name: "Детская"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/61/11/13/Set"
-    state_topic: "/spruthub/accessories/61/11/13"
-    brightness_command_topic: "/spruthub/accessories/61/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/61/11/14"
+    command_topic: "SprutHub/accessories/61/11/13/set"
+    state_topic: "SprutHub/accessories/61/11/13"
+    brightness_command_topic: "SprutHub/accessories/61/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/61/11/14"
     brightness_scale: 100
-    color_temp_command_topic: "/spruthub/accessories/61/11/15/Set"
-    color_temp_state_topic: "/spruthub/accessories/61/11/15"
+    color_temp_command_topic: "SprutHub/accessories/61/11/15/set"
+    color_temp_state_topic: "SprutHub/accessories/61/11/15"
     name: "Спальня"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/94/11/13/Set"
-    state_topic: "/spruthub/accessories/94/11/13"
-    brightness_command_topic: "/spruthub/accessories/94/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/94/11/14"
+    command_topic: "SprutHub/accessories/94/11/13/set"
+    state_topic: "SprutHub/accessories/94/11/13"
+    brightness_command_topic: "SprutHub/accessories/94/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/94/11/14"
     brightness_scale: 100
     name: "Подсветка"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/142/12/14/Set"
-    state_topic: "/spruthub/accessories/142/12/14"
+    command_topic: "SprutHub/accessories/142/12/14/set"
+    state_topic: "SprutHub/accessories/142/12/14"
     name: "Ванная"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/140/12/14/Set"
-    state_topic: "/spruthub/accessories/140/12/14"
-    brightness_command_topic: "/spruthub/accessories/140/12/15/Set"
-    brightness_state_topic: "/spruthub/accessories/140/12/15"
+    command_topic: "SprutHub/accessories/140/12/14/set"
+    state_topic: "SprutHub/accessories/140/12/14"
+    brightness_command_topic: "SprutHub/accessories/140/12/15/set"
+    brightness_state_topic: "SprutHub/accessories/140/12/15"
     brightness_scale: 100
     name: "Коридор"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/127/11/13/Set"
-    state_topic: "/spruthub/accessories/127/11/13"
-    brightness_command_topic: "/spruthub/accessories/127/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/127/11/14"
+    command_topic: "SprutHub/accessories/127/11/13/set"
+    state_topic: "SprutHub/accessories/127/11/13"
+    brightness_command_topic: "SprutHub/accessories/127/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/127/11/14"
     brightness_scale: 100
     name: "Стол"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/98/11/13/Set"
-    state_topic: "/spruthub/accessories/98/11/13"
+    command_topic: "SprutHub/accessories/98/11/13/set"
+    state_topic: "SprutHub/accessories/98/11/13"
     name: "Прачечная"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/115/11/13/Set"
-    state_topic: "/spruthub/accessories/115/11/13"
-    brightness_command_topic: "/spruthub/accessories/115/11/14/Set"
-    brightness_state_topic: "/spruthub/accessories/115/11/14"
+    command_topic: "SprutHub/accessories/115/11/13/set"
+    state_topic: "SprutHub/accessories/115/11/13"
+    brightness_command_topic: "SprutHub/accessories/115/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/115/11/14"
     brightness_scale: 100
     name: "Ночник"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/150/24/26/Set"
-    state_topic: "/spruthub/accessories/150/24/25"
-    brightness_command_topic: "/spruthub/accessories/150/24/27/Set"
-    brightness_state_topic: "/spruthub/accessories/150/24/27"
+    command_topic: "SprutHub/accessories/150/24/26/set"
+    state_topic: "SprutHub/accessories/150/24/25"
+    brightness_command_topic: "SprutHub/accessories/150/24/27/set"
+    brightness_state_topic: "SprutHub/accessories/150/24/27"
     brightness_scale: 100
     name: "Светильник прикроватный"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/153/13/15/Set"
-    state_topic: "/spruthub/accessories/153/13/15"
-    brightness_command_topic: "/spruthub/accessories/153/13/16/Set"
-    brightness_state_topic: "/spruthub/accessories/153/13/16"
+    command_topic: "SprutHub/accessories/153/13/15/set"
+    state_topic: "SprutHub/accessories/153/13/15"
+    brightness_command_topic: "SprutHub/accessories/153/13/16/set"
+    brightness_state_topic: "SprutHub/accessories/153/13/16"
     brightness_scale: 100
     name: "Лампа Лили"
     payload_on: "true"
     payload_off: "false"
   - platform: mqtt
-    command_topic: "/spruthub/accessories/154/13/15/Set"
-    state_topic: "/spruthub/accessories/154/13/15"
-    brightness_command_topic: "/spruthub/accessories/154/13/16/Set"
-    brightness_state_topic: "/spruthub/accessories/154/13/16"
+    command_topic: "SprutHub/accessories/154/13/15/set"
+    state_topic: "SprutHub/accessories/154/13/15"
+    brightness_command_topic: "SprutHub/accessories/154/13/16/set"
+    brightness_state_topic: "SprutHub/accessories/154/13/16"
     brightness_scale: 100
     name: "Лампа саши"
     payload_on: "true"
@@ -272,8 +272,8 @@ ble_monitor:
     - mac: "AC:9A:22:F2:CA:D2"
     - mac: "C6:DA:34:3C:AE:CC"
     - mac: "74:A3:4A:C0:17:13"
-    - mac: "F8:24:41:ED:8F:55" #Спальня
-    - mac: "F8:24:41:ED:08:0F" #Кухня гостиная
+#    - mac: "F8:24:41:ED:8F:55" #Спальня
+#    - mac: "F8:24:41:ED:08:0F" #Кухня гостиная
 
 binary_sensor: !include binary_sensor.yaml
 
@@ -283,8 +283,8 @@ rest_command:
 switch:
   - platform: mqtt
     name: "sub"
-    command_topic: "/spruthub/accessories/63/11/13/set"
-    state_topic: "/spruthub/accessories/63/11/13"
+    command_topic: "SprutHub/accessories/63/11/13/set"
+    state_topic: "SprutHub/accessories/63/11/13"
     payload_off: "false"
     payload_on: "true"
   - platform: wake_on_lan
@@ -393,8 +393,8 @@ climate:
     temperature_sensor: sensor.temperature_nest_living_room
   - platform: smartir
     name: Ballu
-    device_code: 5520
-    controller_data: 192.168.1.215
+    device_code: 1522 #5520
+    controller_data: remote.universal_remote_remote
     temperature_sensor: sensor.temperature_nest_bedroom
 
 telegram_bot:
@@ -495,11 +495,11 @@ homekit:
       include_entities:
         - cover.garage_door
         - fan.pritochka
-        - light.1_polka
-        - light.2_polka
-        - light.3_polka
-        - light.obshchii
-        - light.tree
+        # - light.1_polka
+        # - light.2_polka
+        # - light.3_polka
+        # - light.obshchii
+        # - light.tree
         - light.table
         - switch.komp_kusei
         - switch.plug_158d0001b195fd
