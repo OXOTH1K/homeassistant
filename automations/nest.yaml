@@ -119,6 +119,7 @@
     for:
       seconds: 5
   action:
+    - delay: 5
     - service: climate.set_temperature
       data_template:
         entity_id: climate.aeronik
@@ -170,6 +171,7 @@
     for:
       seconds: 5
   action:
+    - delay: 5
     - service: climate.set_temperature
       data_template:
         entity_id: climate.ballu
