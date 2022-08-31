@@ -1,0 +1,10 @@
+- alias: "cube-test"
+  trigger:
+    platform: mqtt
+    topic: "SprutHub/accessories/83/11/13"
+    payload: "0"
+  action:
+    - service: media_player.toggle
+      data:
+        entity_id:
+          - media_player.samsung_tv_remote
