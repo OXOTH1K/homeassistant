@@ -1,0 +1,233 @@
+binary_sensor:
+  - name: "Nest Cooler bedroom"
+    state_topic: "SprutHub/accessories/42/11/13"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: power
+  - name: "Nest Cooler Гостиная"
+    state_topic: "SprutHub/accessories/46/11/13"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: power
+  - name: "kitchen_motion_wirenboard"
+    state_topic: "SprutHub/accessories/84/32/34"
+    payload_on: "true"
+    payload_off: "false"
+    device_class: motion
+  - name: "Ванная протечка"
+    state_topic: "SprutHub/accessories/58/11/13"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: moisture
+  - name: "Прачечная протечка"
+    state_topic: "SprutHub/accessories/65/11/13"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: moisture
+  - name: "Вход"
+    state_topic: "SprutHub/accessories/72/11/13"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: door
+  - name: "Звонок"
+    state_topic: "SprutHub/accessories/120/11/13"
+    payload_on: "0"
+    payload_off: "1"
+    device_class: sound
+  - name: "Ванная"
+    state_topic: "SprutHub/accessories/57/11/13"
+    payload_on: "true"
+    payload_off: "false"
+    device_class: motion
+  - name: "Рабочая зона"
+    state_topic: "SprutHub/accessories/66/11/13"
+    payload_on: "true"
+    payload_off: "false"
+    device_class: motion
+light:
+  - command_topic: "SprutHub/accessories/92/11/13/set"
+    state_topic: "SprutHub/accessories/92/11/13"
+    brightness_command_topic: "SprutHub/accessories/92/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/92/11/14"
+    brightness_scale: 100
+    name: "Подсветка"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/97/11/13/set"
+    state_topic: "SprutHub/accessories/97/11/13"
+    name: "Детская"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/94/11/13/set"
+    state_topic: "SprutHub/accessories/94/11/13"
+    brightness_command_topic: "SprutHub/accessories/94/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/94/11/14"
+    brightness_scale: 100
+    name: "Подсветка"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/142/12/14/set"
+    state_topic: "SprutHub/accessories/142/12/14"
+    name: "Ванная"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/140/12/14/set"
+    state_topic: "SprutHub/accessories/140/12/14"
+    brightness_command_topic: "SprutHub/accessories/140/12/15/set"
+    brightness_state_topic: "SprutHub/accessories/140/12/15"
+    brightness_scale: 100
+    name: "Коридор"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/127/11/13/set"
+    state_topic: "SprutHub/accessories/127/11/13"
+    brightness_command_topic: "SprutHub/accessories/127/11/14/set"
+    brightness_state_topic: "SprutHub/accessories/127/11/14"
+    brightness_scale: 100
+    name: "Стол"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/98/11/13/set"
+    state_topic: "SprutHub/accessories/98/11/13"
+    name: "Прачечная"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/153/13/15/set"
+    state_topic: "SprutHub/accessories/153/13/15"
+    brightness_command_topic: "SprutHub/accessories/153/13/16/set"
+    brightness_state_topic: "SprutHub/accessories/153/13/16"
+    brightness_scale: 100
+    name: "Лампа Лили"
+    payload_on: "true"
+    payload_off: "false"
+  - command_topic: "SprutHub/accessories/154/13/15/set"
+    state_topic: "SprutHub/accessories/154/13/15"
+    brightness_command_topic: "SprutHub/accessories/154/13/16/set"
+    brightness_state_topic: "SprutHub/accessories/154/13/16"
+    brightness_scale: 100
+    name: "Лампа саши"
+    payload_on: "true"
+    payload_off: "false"
+lock:
+  - name: Вход
+    command_topic: "SprutHub/accessories/148/12/15/set"
+    state_topic: "SprutHub/accessories/148/12/14"
+    payload_lock: "1"
+    payload_unlock: "0"
+    state_locked: "1"
+    state_unlocked: "0"
+sensor:
+  - state_topic: "SprutHub/accessories/84/21/24"
+    name: "CO2 Kitchen"
+    unit_of_measurement: "ppm"
+    icon: mdi:molecule-co2
+  - state_topic: "SprutHub/accessories/84/11/13"
+    name: "Temperature Kitchen"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    icon: mdi:thermometer
+  - state_topic: "SprutHub/accessories/84/14/16"
+    name: "Humidity Kitchen"
+    unit_of_measurement: "%"
+    device_class: humidity
+    icon: mdi:water-percent
+  - state_topic: "SprutHub/accessories/84/17/20"
+    name: "VOC Kitchen"
+    unit_of_measurement: "ppm"
+    icon: mdi:nuke
+  - state_topic: "SprutHub/accessories/84/29/31"
+    name: "LUX Kitchen"
+    unit_of_measurement: "lx"
+    device_class: illuminance
+  - state_topic: "SprutHub/accessories/49/21/24"
+    name: "VOC Lifecontrol"
+    unit_of_measurement: "ppm"
+    icon: mdi:nuke
+  - state_topic: "SprutHub/accessories/49/11/13"
+    name: "Temperature Lifecontrol"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    icon: mdi:thermometer
+  - state_topic: "SprutHub/accessories/49/14/16"
+    name: "Humidity Lifecontrol"
+    unit_of_measurement: "%"
+    device_class: humidity
+    icon: mdi:water-percent
+  - state_topic: "SprutHub/accessories/49/17/20"
+    name: "CO2 Lifecontrol"
+    unit_of_measurement: "ppm"
+    icon: mdi:molecule-co2
+#Energy
+  - name: "Напряжение"
+    device_class: voltage
+    unit_of_measurement: V
+    state_topic: "SprutHub/accessories/102/11/13"
+  - name: "Full Energy"
+    device_class: energy
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    state_topic: "SprutHub/accessories/103/14/16"
+  - name: "Общee потребление"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/103/11/13"
+  - name: "PC Energy"
+    device_class: energy
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    state_topic: "SprutHub/accessories/104/14/16"
+  - name: "Комп потребление"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/104/11/13"
+  - name: "Server Energy"
+    device_class: energy
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    state_topic: "SprutHub/accessories/105/14/16"
+  - name: "Серверная потребление"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/105/11/13"
+  - name: "Bedroom Energy"
+    device_class: energy
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    state_topic: "SprutHub/accessories/106/14/16"
+  - name: "Спальня потребление"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/106/11/13"
+  - name: "Childroom Energy"
+    device_class: energy
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    state_topic: "SprutHub/accessories/107/14/16"
+  - name: "Детская потребление"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/107/11/13"
+  - name: "Washing Room Energy"
+    device_class: energy
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    state_topic: "SprutHub/accessories/108/14/16"
+  - name: "Прачечная потребление"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/108/11/13"
+  - name: "Ballu Energy"
+    device_class: energy
+    state_class: total_increasing
+    unit_of_measurement: kWh
+    state_topic: "SprutHub/accessories/63/18/20"
+  - name: "Текущее Потребление кондиционера"
+    device_class: power
+    unit_of_measurement: W
+    state_topic: "SprutHub/accessories/63/15/17"
+switch:
+  - name: "sub"
+    command_topic: "SprutHub/accessories/63/11/13/set"
+    state_topic: "SprutHub/accessories/63/11/13"
+    payload_off: "false"
+    payload_on: "true"

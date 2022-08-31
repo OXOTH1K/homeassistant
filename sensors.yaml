@@ -99,167 +99,167 @@
 
 
 # Spruthub
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/84/21/24"
-  name: "CO2 Kitchen"
-  unit_of_measurement: "ppm"
-  icon: mdi:molecule-co2
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/84/21/24"
+#   name: "CO2 Kitchen"
+#   unit_of_measurement: "ppm"
+#   icon: mdi:molecule-co2
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/84/11/13"
-  name: "Temperature Kitchen"
-  unit_of_measurement: "°C"
-  device_class: temperature
-  icon: mdi:thermometer
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/84/11/13"
+#   name: "Temperature Kitchen"
+#   unit_of_measurement: "°C"
+#   device_class: temperature
+#   icon: mdi:thermometer
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/84/14/16"
-  name: "Humidity Kitchen"
-  unit_of_measurement: "%"
-  device_class: humidity
-  icon: mdi:water-percent
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/84/14/16"
+#   name: "Humidity Kitchen"
+#   unit_of_measurement: "%"
+#   device_class: humidity
+#   icon: mdi:water-percent
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/84/17/20"
-  name: "VOC Kitchen"
-  unit_of_measurement: "ppm"
-  icon: mdi:nuke
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/84/17/20"
+#   name: "VOC Kitchen"
+#   unit_of_measurement: "ppm"
+#   icon: mdi:nuke
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/84/29/31"
-  name: "LUX Kitchen"
-  unit_of_measurement: "lx"
-  device_class: illuminance
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/84/29/31"
+#   name: "LUX Kitchen"
+#   unit_of_measurement: "lx"
+#   device_class: illuminance
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/49/21/24"
-  name: "VOC Lifecontrol"
-  unit_of_measurement: "ppm"
-  icon: mdi:nuke
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/49/21/24"
+#   name: "VOC Lifecontrol"
+#   unit_of_measurement: "ppm"
+#   icon: mdi:nuke
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/49/11/13"
-  name: "Temperature Lifecontrol"
-  unit_of_measurement: "°C"
-  device_class: temperature
-  icon: mdi:thermometer
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/49/11/13"
+#   name: "Temperature Lifecontrol"
+#   unit_of_measurement: "°C"
+#   device_class: temperature
+#   icon: mdi:thermometer
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/49/14/16"
-  name: "Humidity Lifecontrol"
-  unit_of_measurement: "%"
-  device_class: humidity
-  icon: mdi:water-percent
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/49/14/16"
+#   name: "Humidity Lifecontrol"
+#   unit_of_measurement: "%"
+#   device_class: humidity
+#   icon: mdi:water-percent
 
-- platform: "mqtt"
-  state_topic: "SprutHub/accessories/49/17/20"
-  name: "CO2 Lifecontrol"
-  unit_of_measurement: "ppm"
-  icon: mdi:molecule-co2
-#Energy
-- platform: mqtt
-  name: "Напряжение"
-  device_class: voltage
-  unit_of_measurement: V
-  state_topic: "SprutHub/accessories/102/11/13"
+# - platform: "mqtt"
+#   state_topic: "SprutHub/accessories/49/17/20"
+#   name: "CO2 Lifecontrol"
+#   unit_of_measurement: "ppm"
+#   icon: mdi:molecule-co2
+# #Energy
+# - platform: mqtt
+#   name: "Напряжение"
+#   device_class: voltage
+#   unit_of_measurement: V
+#   state_topic: "SprutHub/accessories/102/11/13"
 
-- platform: mqtt
-  name: "Full Energy"
-  device_class: energy
-  unit_of_measurement: kWh
-  state_class: measurement
-  state_topic: "SprutHub/accessories/103/14/16"
+# - platform: mqtt
+#   name: "Full Energy"
+#   device_class: energy
+#   unit_of_measurement: kWh
+#   state_class: measurement
+#   state_topic: "SprutHub/accessories/103/14/16"
 
-- platform: mqtt
-  name: "Общee потребление"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/103/11/13"
+# - platform: mqtt
+#   name: "Общee потребление"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/103/11/13"
 
-- platform: mqtt
-  name: "PC Energy"
-  device_class: energy
-  unit_of_measurement: kWh
-  state_class: measurement
-  state_topic: "SprutHub/accessories/104/14/16"
+# - platform: mqtt
+#   name: "PC Energy"
+#   device_class: energy
+#   unit_of_measurement: kWh
+#   state_class: measurement
+#   state_topic: "SprutHub/accessories/104/14/16"
 
-- platform: mqtt
-  name: "Комп потребление"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/104/11/13"
+# - platform: mqtt
+#   name: "Комп потребление"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/104/11/13"
 
-- platform: mqtt
-  name: "Server Energy"
-  device_class: energy
-  unit_of_measurement: kWh
-  state_class: measurement
-  state_topic: "SprutHub/accessories/105/14/16"
+# - platform: mqtt
+#   name: "Server Energy"
+#   device_class: energy
+#   unit_of_measurement: kWh
+#   state_class: measurement
+#   state_topic: "SprutHub/accessories/105/14/16"
 
-- platform: mqtt
-  name: "Серверная потребление"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/105/11/13"
+# - platform: mqtt
+#   name: "Серверная потребление"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/105/11/13"
 
-- platform: mqtt
-  name: "Bedroom Energy"
-  device_class: energy
-  unit_of_measurement: kWh
-  state_class: measurement
-  state_topic: "SprutHub/accessories/106/14/16"
+# - platform: mqtt
+#   name: "Bedroom Energy"
+#   device_class: energy
+#   unit_of_measurement: kWh
+#   state_class: measurement
+#   state_topic: "SprutHub/accessories/106/14/16"
 
-- platform: mqtt
-  name: "Спальня потребление"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/106/11/13"
+# - platform: mqtt
+#   name: "Спальня потребление"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/106/11/13"
 
-- platform: mqtt
-  name: "Childroom Energy"
-  device_class: energy
-  unit_of_measurement: kWh
-  state_class: measurement
-  state_topic: "SprutHub/accessories/107/14/16"
+# - platform: mqtt
+#   name: "Childroom Energy"
+#   device_class: energy
+#   unit_of_measurement: kWh
+#   state_class: measurement
+#   state_topic: "SprutHub/accessories/107/14/16"
 
-- platform: mqtt
-  name: "Детская потребление"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/107/11/13"
+# - platform: mqtt
+#   name: "Детская потребление"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/107/11/13"
 
-- platform: mqtt
-  name: "Washing Room Energy"
-  device_class: energy
-  unit_of_measurement: kWh
-  state_class: measurement
-  state_topic: "SprutHub/accessories/108/14/16"
+# - platform: mqtt
+#   name: "Washing Room Energy"
+#   device_class: energy
+#   unit_of_measurement: kWh
+#   state_class: measurement
+#   state_topic: "SprutHub/accessories/108/14/16"
 
-- platform: mqtt
-  name: "Прачечная потребление"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/108/11/13"
+# - platform: mqtt
+#   name: "Прачечная потребление"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/108/11/13"
 
-- platform: mqtt
-  name: "Ballu Energy"
-  device_class: energy
-  state_class: measurement
-  unit_of_measurement: kWh
-  state_topic: "SprutHub/accessories/63/18/20"
+# - platform: mqtt
+#   name: "Ballu Energy"
+#   device_class: energy
+#   state_class: measurement
+#   unit_of_measurement: kWh
+#   state_topic: "SprutHub/accessories/63/18/20"
 
-- platform: mqtt
-  name: "Текущее Потребление кондиционера"
-  device_class: power
-  unit_of_measurement: W
-  state_topic: "SprutHub/accessories/63/15/17"
+# - platform: mqtt
+#   name: "Текущее Потребление кондиционера"
+#   device_class: power
+#   unit_of_measurement: W
+#   state_topic: "SprutHub/accessories/63/15/17"
 
-- platform: "mqtt"
-  name: "Вода счетчик 1"
-  state_topic: "powermeter/main/value"
-  value_template: "{{ value }}"
-  unit_of_measurement: "m3"
-  icon: "mdi:water"
+# - platform: "mqtt"
+#   name: "Вода счетчик 1"
+#   state_topic: "powermeter/main/value"
+#   value_template: "{{ value }}"
+#   unit_of_measurement: "m3"
+#   icon: "mdi:water"
 
 - platform: rest
   resource: http://192.168.1.215/device
@@ -298,11 +298,6 @@
   start: "device_tracker.oxoth1ks_iphone"
   destination: !secret ya_unico
   name: Yandex route to work hunt mf
-#- platform: xiaomi_miio_raw
-#  name: Поилка
-#  host: 192.168.1.121
-#  token: 202aafe5d9944f08adcd780ad5b765d7
-#  default_properties_getter: get_properties
 
 - platform: command_line
   name: curl old gw

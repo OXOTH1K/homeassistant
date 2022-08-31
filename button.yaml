@@ -1,10 +1,1 @@
 #SprutHub
-- platform: mqtt
-  unique_id: kitchen_left_single_button
-  command_topic: "SprutHub/accessories/138/11/13"
-  payload_press: "0"
-
-- platform: mqtt
-  unique_id: kitchen_left_double_button
-  command_topic: "SprutHub/accessories/138/11/13"
-  payload_press: "1"
