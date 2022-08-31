@@ -1,47 +1,47 @@
-maximum:
-  alias: Radio Maximum
-  sequence:
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.mpd
-      media_content_type: playlist
-      media_content_id: maximum
-nashe:
-  alias: Наше радио
-  sequence:
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.mpd
-      media_content_type: playlist
-      media_content_id: nashe
-ultra:
-  alias: Radio Ultra
-  sequence:
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.mpd
-      media_content_type: playlist
-      media_content_id: ultra
-volgogradfm:
-  alias: Волгоград ФМ
-  sequence:
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.mpd
-      media_content_type: playlist
-      media_content_id: volgogradfm
-play_pause_mpd:
-  alias: Плей, Пауза
-  sequence:
-  - service: media_player.media_play_pause
-    data:
-      entity_id: media_player.mpd
-stop_mpd:
-  alias: Остановить
-  sequence:
-  - service: media_player.media_stop
-    data:
-      entity_id: media_player.mpd
+# maximum:
+#   alias: Radio Maximum
+#   sequence:
+#   - service: media_player.play_media
+#     data:
+#       entity_id: media_player.mpd
+#       media_content_type: playlist
+#       media_content_id: maximum
+# nashe:
+#   alias: Наше радио
+#   sequence:
+#   - service: media_player.play_media
+#     data:
+#       entity_id: media_player.mpd
+#       media_content_type: playlist
+#       media_content_id: nashe
+# ultra:
+#   alias: Radio Ultra
+#   sequence:
+#   - service: media_player.play_media
+#     data:
+#       entity_id: media_player.mpd
+#       media_content_type: playlist
+#       media_content_id: ultra
+# volgogradfm:
+#   alias: Волгоград ФМ
+#   sequence:
+#   - service: media_player.play_media
+#     data:
+#       entity_id: media_player.mpd
+#       media_content_type: playlist
+#       media_content_id: volgogradfm
+# play_pause_mpd:
+#   alias: Плей, Пауза
+#   sequence:
+#   - service: media_player.media_play_pause
+#     data:
+#       entity_id: media_player.mpd
+# stop_mpd:
+#   alias: Остановить
+#   sequence:
+#   - service: media_player.media_stop
+#     data:
+#       entity_id: media_player.mpd
 restart_ha:
   alias: Перезагрузка HA
   sequence:
@@ -85,27 +85,6 @@ yandex_beta:
       media_content_id: true
       media_content_type: beta
 
-###################################   МАТРИЦА   #################################
-
-matrix_test_running_text:
-  alias: "Просмотр"
-  icon: "mdi:motion-play-outline"
-  sequence:
-    - service: mqtt.publish
-      data_template:
-        topic: WiFiPanel-0/cmd
-        payload_template: >
-          $13 1 {{ states('input_text.matrix_running_text_string_name') }};
-
-matrix_set_time:
-  alias: "Установить время"
-  icon: "mdi:web-clock"
-  sequence:
-    - service: mqtt.publish
-      data_template:
-        topic: WiFiPanel-0/cmd
-        payload_template: >
-          $19 8 {{ now().strftime('%Y %m %d %H %M') }};
 
 #### Пылесос
 

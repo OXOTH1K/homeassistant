@@ -10,6 +10,7 @@ tts/
 tileboard/
 www/
 backup.yaml
+frigate.yaml
 home-assistant.log*
 home-assistant_v2.db*
 known_devices.yaml

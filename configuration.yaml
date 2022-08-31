@@ -65,7 +65,7 @@ yandex_smart_home:
       - media_player.gostinaia
       - sensor.dining_room_humidity
       - sensor.dining_room_temperature
-      - vacuum.pylesos
+      - vacuum.valetudo_wateryfirmswallow
 
 logbook:
 person:
@@ -95,14 +95,7 @@ lock:
       service: input_boolean.turn_off
       data:
         entity_id: input_boolean.lock
-  - platform: mqtt
-    name: Вход
-    command_topic: "SprutHub/accessories/148/12/15/set"
-    state_topic: "SprutHub/accessories/148/12/14"
-    payload_lock: "1"
-    payload_unlock: "0"
-    state_locked: "1"
-    state_unlocked: "0"
+
 
 tts:
   - platform: amazon_polly
@@ -122,7 +115,7 @@ script: !include scripts.yaml
 shell_command: !include shell_commands.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
-
+mqtt: !include mqtt.yaml
 #fan:
  # - platform: xiaomi_miio_airpurifier
 #    name: Приточка
@@ -132,133 +125,84 @@ sensor: !include sensors.yaml
 
 light:
   #Spruthub
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/52/11/13/set"
-    state_topic: "SprutHub/accessories/52/11/13"
-    brightness_command_topic: "SprutHub/accessories/52/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/52/11/14"
-    brightness_scale: 100
-    color_temp_command_topic: "SprutHub/accessories/52/11/15/set"
-    name: "Кухня"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/53/11/13/set"
-    state_topic: "SprutHub/accessories/53/11/13"
-    brightness_command_topic: "SprutHub/accessories/53/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/53/11/14"
-    brightness_scale: 100
-    color_temp_command_topic: "SprutHub/accessories/53/11/15/set"
-    name: "Столовая"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/92/11/13/set"
-    state_topic: "SprutHub/accessories/92/11/13"
-    brightness_command_topic: "SprutHub/accessories/92/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/92/11/14"
-    brightness_scale: 100
-    name: "Подсветка"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/97/11/13/set"
-    state_topic: "SprutHub/accessories/97/11/13"
-    name: "Детская"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/61/11/13/set"
-    state_topic: "SprutHub/accessories/61/11/13"
-    brightness_command_topic: "SprutHub/accessories/61/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/61/11/14"
-    brightness_scale: 100
-    color_temp_command_topic: "SprutHub/accessories/61/11/15/set"
-    color_temp_state_topic: "SprutHub/accessories/61/11/15"
-    name: "Спальня"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/94/11/13/set"
-    state_topic: "SprutHub/accessories/94/11/13"
-    brightness_command_topic: "SprutHub/accessories/94/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/94/11/14"
-    brightness_scale: 100
-    name: "Подсветка"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/142/12/14/set"
-    state_topic: "SprutHub/accessories/142/12/14"
-    name: "Ванная"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/140/12/14/set"
-    state_topic: "SprutHub/accessories/140/12/14"
-    brightness_command_topic: "SprutHub/accessories/140/12/15/set"
-    brightness_state_topic: "SprutHub/accessories/140/12/15"
-    brightness_scale: 100
-    name: "Коридор"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/127/11/13/set"
-    state_topic: "SprutHub/accessories/127/11/13"
-    brightness_command_topic: "SprutHub/accessories/127/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/127/11/14"
-    brightness_scale: 100
-    name: "Стол"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/98/11/13/set"
-    state_topic: "SprutHub/accessories/98/11/13"
-    name: "Прачечная"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/115/11/13/set"
-    state_topic: "SprutHub/accessories/115/11/13"
-    brightness_command_topic: "SprutHub/accessories/115/11/14/set"
-    brightness_state_topic: "SprutHub/accessories/115/11/14"
-    brightness_scale: 100
-    name: "Ночник"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/150/24/26/set"
-    state_topic: "SprutHub/accessories/150/24/25"
-    brightness_command_topic: "SprutHub/accessories/150/24/27/set"
-    brightness_state_topic: "SprutHub/accessories/150/24/27"
-    brightness_scale: 100
-    name: "Светильник прикроватный"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/153/13/15/set"
-    state_topic: "SprutHub/accessories/153/13/15"
-    brightness_command_topic: "SprutHub/accessories/153/13/16/set"
-    brightness_state_topic: "SprutHub/accessories/153/13/16"
-    brightness_scale: 100
-    name: "Лампа Лили"
-    payload_on: "true"
-    payload_off: "false"
-  - platform: mqtt
-    command_topic: "SprutHub/accessories/154/13/15/set"
-    state_topic: "SprutHub/accessories/154/13/15"
-    brightness_command_topic: "SprutHub/accessories/154/13/16/set"
-    brightness_state_topic: "SprutHub/accessories/154/13/16"
-    brightness_scale: 100
-    name: "Лампа саши"
-    payload_on: "true"
-    payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/92/11/13/set"
+  #   state_topic: "SprutHub/accessories/92/11/13"
+  #   brightness_command_topic: "SprutHub/accessories/92/11/14/set"
+  #   brightness_state_topic: "SprutHub/accessories/92/11/14"
+  #   brightness_scale: 100
+  #   name: "Подсветка"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/97/11/13/set"
+  #   state_topic: "SprutHub/accessories/97/11/13"
+  #   name: "Детская"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/94/11/13/set"
+  #   state_topic: "SprutHub/accessories/94/11/13"
+  #   brightness_command_topic: "SprutHub/accessories/94/11/14/set"
+  #   brightness_state_topic: "SprutHub/accessories/94/11/14"
+  #   brightness_scale: 100
+  #   name: "Подсветка"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/142/12/14/set"
+  #   state_topic: "SprutHub/accessories/142/12/14"
+  #   name: "Ванная"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/140/12/14/set"
+  #   state_topic: "SprutHub/accessories/140/12/14"
+  #   brightness_command_topic: "SprutHub/accessories/140/12/15/set"
+  #   brightness_state_topic: "SprutHub/accessories/140/12/15"
+  #   brightness_scale: 100
+  #   name: "Коридор"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/127/11/13/set"
+  #   state_topic: "SprutHub/accessories/127/11/13"
+  #   brightness_command_topic: "SprutHub/accessories/127/11/14/set"
+  #   brightness_state_topic: "SprutHub/accessories/127/11/14"
+  #   brightness_scale: 100
+  #   name: "Стол"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/98/11/13/set"
+  #   state_topic: "SprutHub/accessories/98/11/13"
+  #   name: "Прачечная"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/153/13/15/set"
+  #   state_topic: "SprutHub/accessories/153/13/15"
+  #   brightness_command_topic: "SprutHub/accessories/153/13/16/set"
+  #   brightness_state_topic: "SprutHub/accessories/153/13/16"
+  #   brightness_scale: 100
+  #   name: "Лампа Лили"
+  #   payload_on: "true"
+  #   payload_off: "false"
+  # - platform: mqtt
+  #   command_topic: "SprutHub/accessories/154/13/15/set"
+  #   state_topic: "SprutHub/accessories/154/13/15"
+  #   brightness_command_topic: "SprutHub/accessories/154/13/16/set"
+  #   brightness_state_topic: "SprutHub/accessories/154/13/16"
+  #   brightness_scale: 100
+  #   name: "Лампа саши"
+  #   payload_on: "true"
+  #   payload_off: "false"
 
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
 ble_monitor:
-  discovery: False
+  discovery: false
   restore_state: true
   bt_interface: "00:1A:7D:DA:71:13"
   devices:
@@ -267,7 +211,7 @@ ble_monitor:
       temperature_unit: C
     - mac: "A4:C1:38:22:14:A3"
       temperature_unit: C
-      encryption_key: "edf6aea5109b51093b8e815cc17be42f"
+      encryption_key: "f64bf367a9daf72e8b648b4fcc9b7206"
     - mac: "E7:2E:00:13:50:D1"
     - mac: "AC:9A:22:F2:CA:D2"
     - mac: "C6:DA:34:3C:AE:CC"
@@ -281,12 +225,12 @@ rest_command:
   domru_open_door:
     url: "http://192.168.1.247:10180/api/open/340012536816/41130761"
 switch:
-  - platform: mqtt
-    name: "sub"
-    command_topic: "SprutHub/accessories/63/11/13/set"
-    state_topic: "SprutHub/accessories/63/11/13"
-    payload_off: "false"
-    payload_on: "true"
+  # - platform: mqtt
+  #   name: "sub"
+  #   command_topic: "SprutHub/accessories/63/11/13/set"
+  #   state_topic: "SprutHub/accessories/63/11/13"
+  #   payload_off: "false"
+  #   payload_on: "true"
   - platform: wake_on_lan
     mac: 70:85:c2:2e:9a:4e
     name: Комп Кусей
@@ -296,92 +240,98 @@ switch:
 #    api_key: !secret darksky_api_key
 #    mode: daily
 
-camera:
-  - platform: xiaomi_cloud_map_extractor
-    host: !secret xiaomi_vacuum_host
-    token: !secret xiaomi_vacuum_token
-    username: !secret xiaomi_cloud_username
-    password: !secret xiaomi_cloud_password
-    store_map_image: true
-    store_map_path: /config/www/photo_captures/
-    country: cn
-    draw: ['all']
-    attributes:
-      - calibration_points
-    map_transformation:
-      trim:
-        top: 35
-        bottom: 43
-        left: 47
-        right: 25
+#camera:
+#  - platform: xiaomi_cloud_map_extractor
+#    host: !secret xiaomi_vacuum_host
+#    token: !secret xiaomi_vacuum_token
+#    username: !secret xiaomi_cloud_username
+#    password: !secret xiaomi_cloud_password
+#    store_map_image: true
+#    store_map_path: /config/www/photo_captures/
+#    country: cn
+#    draw: ['all']
+#    attributes:
+#      - calibration_points
+#    map_transformation:
+#      scale: 3
+#      trim:
+#        top: 47
+#        bottom: 25
+#        left: 33
+#        right: 47
 #   - platform: ffmpeg
 #     name: Streaming
 #     input: "/config/www/rickroll.mp4"
-  - platform: generic
-    name: Домофон
-    still_image_url: !secret domofon_pic
-    stream_source: !secret domofon_url
+  # - platform: generic
+  #   name: Домофон
+  #   still_image_url: !secret domofon_pic
+  #   stream_source: !secret domofon_url
   # - platform: generic
   #   name: Парковка
   #   still_image_url: !secret parkovka_pic
   #   stream_source: !secret parkovka_url
   #   username: !secret parkovka_login
   #   password: !secret parkovka_password
-  - platform: generic
-    name: dacha
-    still_image_url: !secret dacha_pic
-    stream_source: !secret dacha_url
-    username: !secret dacha_login
-    password: !secret dacha_password
-  - platform: generic
-    name: dacha2
-    still_image_url: !secret dacha2_pic
-    stream_source: !secret dacha2_url
-    username: !secret dacha2_login
-    password: !secret dacha2_password
-  - platform: generic
-    name: dacha3
-    still_image_url: !secret dacha3_pic
-    stream_source: !secret dacha3_url
-    username: !secret dacha3_login
-    password: !secret dacha3_password
-  - platform: generic
-    name: Вход
-    still_image_url: !secret vhod_pic
-    stream_source: !secret vhod_url
+  # - platform: generic
+  #   name: dacha
+  #   still_image_url: !secret dacha_pic
+  #   stream_source: !secret dacha_url
+  #   username: !secret dacha_login
+  #   password: !secret dacha_password
+  # - platform: generic
+  #   name: dacha2
+  #   still_image_url: !secret dacha2_pic
+  #   stream_source: !secret dacha2_url
+  #   username: !secret dacha2_login
+  #   password: !secret dacha2_password
+  # - platform: generic
+  #   name: dacha3
+  #   still_image_url: !secret dacha3_pic
+  #   stream_source: !secret dacha3_url
+  #   username: !secret dacha3_login
+  #   password: !secret dacha3_password
+  # - platform: generic
+  #   name: Вход
+  #   still_image_url: !secret vhod_pic
+  #   stream_source: !secret vhod_url
   # - platform: generic
   #   name: Подъезд
   #   still_image_url: podezd_pic
   #   stream_source: podezd_url
   #   username: !secret podezd_login
   #   password: !secret podezd_password
-  - platform: generic
-    name: Двор
-    still_image_url: !secret dvor_pic
-    stream_source: !secret dvor_url
-  - platform: generic
-    name: Парковка2
-    still_image_url: !secret parkovka2_pic
-    stream_source: !secret parkovka2_url
-  - platform: generic
-    name: Парковка3
-    still_image_url: !secret parkovka3_pic
-    stream_source: !secret parkovka3_url
-  - platform: generic
-    name: Парк
-    still_image_url: !secret park_pic
-    stream_source: !secret park_url
-  - platform: generic
-    name: 1 подъезд
-    still_image_url: !secret 1podezd_pic
-    stream_source: !secret 1podezd_url
-  - platform: generic
-    name: 2 подъезд
-    still_image_url: !secret 2podezd_pic
-    stream_source: !secret 2podezd_url
+  # - platform: generic
+  #   name: Двор
+  #   still_image_url: !secret dvor_pic
+  #   stream_source: !secret dvor_url
+  # - platform: generic
+  #   name: Парковка2
+  #   still_image_url: !secret parkovka2_pic
+  #   stream_source: !secret parkovka2_url
+  # - platform: generic
+  #   name: Парковка3
+  #   still_image_url: !secret parkovka3_pic
+  #   stream_source: !secret parkovka3_url
+  # - platform: generic
+  #   name: Парк
+  #   still_image_url: !secret park_pic
+  #   stream_source: !secret park_url
+  # - platform: generic
+  #   name: 1 подъезд
+  #   still_image_url: !secret 1podezd_pic
+  #   stream_source: !secret 1podezd_url
+  # - platform: generic
+  #   name: 2 подъезд
+  #   still_image_url: !secret 2podezd_pic
+  #   stream_source: !secret 2podezd_url
+
+# vacuum:
+#   - platform: miio2
+#     host: 192.168.1.183
+#     token: !secret xiaomi_vacuum_token
+#     name: Пылесос
 
 stream:
-
 smartir:
   update_branch: rc
 
@@ -419,7 +369,7 @@ notify:
       - service: mobile_app_liliia
 
 recorder:
-  purge_keep_days: 14
+  #purge_keep_days: 60
 
 alarm_control_panel:
   - platform: manual
@@ -466,11 +416,11 @@ google_assistant:
     # - cover
     - camera
 
-nest:
-  client_id: !secret nest_client_id
-  client_secret: !secret nest_client_secret
-  project_id: !secret nest_project_id # ("Project ID" in the Device Access Console)
-  subscriber_id: !secret nest_subscriber_id
+# nest:
+#   client_id: !secret nest_client_id
+#   client_secret: !secret nest_client_secret
+#   project_id: !secret nest_project_id # ("Project ID" in the Device Access Console)
+#   subscriber_id: !secret nest_subscriber_id
 
 zone:
   - name: Unico
@@ -634,14 +584,16 @@ homekit:
         - media_player.samsung_tv_remote
 
 media_player:
-  - platform: mpd
-    host: 192.168.1.247
   - platform: smartir
     name: Marantz
     unique_id: marantz
     device_code: 9001
     controller_data: 192.168.1.215
-
+  - platform: smartir
+    name: Mi Box S
+    unique_id: mibox
+    device_code: 1380
+    controller_data: remote.universal_remote_remote
 webhook:
 wake_on_lan:
 
